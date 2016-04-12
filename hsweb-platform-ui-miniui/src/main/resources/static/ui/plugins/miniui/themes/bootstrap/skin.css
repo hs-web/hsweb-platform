@@ -1,0 +1,732 @@
+﻿.mini-button
+{
+    border-radius: 4px; 
+}
+.mini-buttonedit-border,
+.mini-textbox-border
+{
+    border-radius: 4px; 
+}
+.mini-panel-border
+{
+    border-radius:4px;   
+}
+.mini-tab
+{
+    border-radius:4px;   
+}
+.mini-tabs-header-right .mini-tab
+{
+    border-top-left-radius:0px;
+    border-bottom-left-radius:0px;     
+}
+
+.mini-tabs-header-left .mini-tab
+{
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;     
+}
+.mini-tabs-header-bottom .mini-tab
+{
+    border-top-right-radius:0px;
+    border-top-left-radius:0px;     
+}
+.mini-tabs-header-top .mini-tab
+{
+    border-bottom-right-radius:0px;
+    border-bottom-left-radius:0px; 
+}
+
+
+/*----------------------------------- bgcss ----------------------------------*/
+.bg-toolbar
+{
+    background:#f0f0f0;
+}
+
+
+/*----------------------------------- tools ----------------------------------*/
+/*
+.mini-tools .mini-tools-collapse
+{
+    background:url(images/tools/collapse.gif) no-repeat 50% 50%;
+    width:15px;	
+}
+.mini-tools .mini-tools-expand
+{
+    background:url(images/tools/expand.gif) no-repeat 50% 50%;
+    width:15px;	
+}
+.mini-tools-close
+{
+    background:url(images/tools/close.gif) no-repeat 50% 0px;
+    width:15px;	
+}
+*/
+
+/*----------------------------------- toolbar ----------------------------------*/
+
+.mini-toolbar
+{
+    border:solid 1px #ccc;
+    background:#fafafa;
+}
+.separator
+{
+    border-left:solid 1px #bbb;    
+}
+
+/*----------------------------------- button ----------------------------------*/
+
+.mini-button
+{
+    
+    background: #FFFFFF;
+    border-color: #CCCCCC;
+    color: #333333;
+}
+body a:hover.mini-button
+{
+	color:#333;
+	border-color:#adadad;
+	background:#ebebeb	      
+}
+body .mini-button-pressed, body a:hover.mini-button-pressed,
+body .mini-button-checked, body a:hover.mini-button-checked,
+body a.mini-button-popup, body a:hover.mini-button-popup
+{
+	background:#ebebeb;
+	border-color:#adadad;
+	color:#333333;
+	/*-webkit-box-shadow:inset 0 0 5px 3px #d4d4d4;
+	box-shadow:inset 0 0 5px 3px #d4d4d4	*/
+}
+body a.mini-button-disabled, body a:hover.mini-button-disabled
+{
+	color:#999;
+	border-color:#ccc;	
+	background:none;
+}
+
+
+/*----------------------------------- textbox ----------------------------------*/
+.mini-textbox-border
+{
+    background:white;
+	border-color:#ccc;   
+}
+body .mini-textbox-focus .mini-textbox-border
+{
+    border-color: #adadad;
+}
+
+
+/*----------------------------------- buttonedit ----------------------------------*/
+
+.mini-buttonedit-border
+{
+	background:white;
+	border-color:#CCCCCC;    
+}
+body .mini-buttonedit-focus .mini-buttonedit-border
+{
+    border-color: #adadad;
+    
+}
+.mini-buttonedit-button
+{
+    background: #ffffff;    
+    border-left:solid 1px #ccc;
+    color: #333333;
+	padding:0;
+	margin:0;
+	height:20px;
+}
+.mini-buttonedit-button-hover,
+.mini-buttonedit-hover .mini-buttonedit-button
+{
+	color:#333;		
+	background:#ebebeb;
+	border-width:0px;
+	border-left:solid 1px #adadad;
+}
+.mini-buttonedit-button-pressed,
+.mini-buttonedit-popup .mini-buttonedit-button
+{
+	background:#ebebeb;
+	color:#333333;
+	border-width:0px;
+	border-left:solid 1px #adadad;
+}
+.mini-buttonedit-icon
+{
+    margin-top:2px;
+}
+.mini-popupedit .mini-buttonedit-icon
+{
+    background:url(images/buttonedit/arrow.gif) no-repeat  1px 2px;
+}
+.mini-datepicker .mini-buttonedit-icon
+{
+    background:url(images/buttonedit/date.gif) no-repeat  1px 2px;
+}
+
+
+/*------------------------- panel -----------------------*/
+
+.mini-panel-border
+{    
+    border:1px solid #ccc;     
+}
+.mini-panel-header
+{
+    height:25px;
+    background:#F5F5F5;
+    color:#333;
+    font-weight:normal;
+    border-bottom:solid 1px #ccc;
+}
+.mini-panel-header-inner
+{
+   padding-top:4px;
+}
+.mini-panel-toolbar
+{
+    border-bottom:solid 1px #ccc;
+    background:#fafafa;
+}
+
+.mini-panel-footer
+{
+    border-top:solid 1px #ccc;
+    background:#fafafa;
+}
+
+
+
+
+/*----------------------------- window -------------------------*/
+.mini-window .mini-panel-header
+{    
+    background:#F5F5F5;
+}
+.mini-window .mini-panel-footer
+{
+    background:#fafafa;
+}
+/*.mini-tools-max
+{
+	background:url(images/tools/max.gif) no-repeat;
+}
+.mini-tools-restore
+{
+	background:url(images/tools/restore.gif) no-repeat;
+}*/
+
+
+/*------------------- navbar ------------------*/
+.mini-outlookbar-border
+{
+    border:1px solid #ccc;         
+}
+.mini-outlookbar .mini-outlookbar-groupHeader
+{
+  /*  background:#d9e8fb url(images/navbar/header.gif) repeat-x 0 0;    */
+  background:#F5F5F5;
+    border-color:#ccc;
+}
+.mini-outlookbar .mini-outlookbar-groupTitle
+{
+    font-weight:normal;
+}
+.mini-outlookbar .mini-outlookbar-group 
+{
+    border-color:#ccc;
+}
+.mini-outlookbar .mini-outlookbar-groupBody
+{    
+    border-color:#ccc;
+}
+/* view2 */
+.mini-outlookbar-view2 .mini-outlookbar-groupHeader
+{
+    border:solid 1px #ccc; 
+}
+.mini-outlookbar-view2 .mini-outlookbar-groupBody
+{    
+    background:#fff;
+}
+/* view3 */
+.mini-outlookbar-view3 .mini-outlookbar-group
+{
+    border:solid 1px #ccc; 
+}
+
+.mini-outlookbar .mini-tools-collapse
+{
+    width:15px;	
+}
+/*
+.mini-outlookbar .mini-outlookbar-expand .mini-tools-collapse
+{
+    background:url(images/navbar/expand.gif) no-repeat 50% 50%;   
+}
+.mini-outlookbar .mini-outlookbar-collapse .mini-tools-collapse
+{
+    background:url(images/navbar/collapse.gif) no-repeat 50% 50%;   
+}
+
+*/
+
+
+
+/*----------------------- splitter -----------------------*/
+.mini-splitter-border
+{
+    border:solid 1px #ccc;     
+}
+.mini-splitter .mini-splitter-pane1{
+    border-color:#ccc;
+}
+.mini-splitter .mini-splitter-pane2{
+    border-color:#ccc;
+}
+
+/*----------------------- layout -----------------------*/
+.mini-layout-border
+{
+    border-color:#ccc;
+}
+.mini-layout-region
+{
+    border-color:#ccc;    
+}
+.mini-layout-region-header
+{
+    background:#F5F5F5;
+    border-bottom:solid 1px #dedede;
+}
+.mini-layout-proxy
+{
+    border-color:#ccc;
+    background:#F5F5F5;
+}
+.mini-layout-proxy-hover
+{
+    background:#fafafa;    
+}
+
+
+
+/*------------------------- menu --------------------------------*/
+
+.mini-menu
+{
+	background:#fff;		
+	border-color:#f5f5f5;
+    color:black;    
+}
+.mini-menu-border
+{
+    /*border-radius: 2px; */
+    border-color:#ccc;
+}
+.mini-menuitem
+{
+    line-height:20px;    
+}
+.mini-menuitem-hover,  .mini-menu-popup
+{
+    border-color:#fafafa;
+	background:#f5f5f5;
+}
+
+.mini-menuitem-selected
+{
+    border-color:#fafafa;
+    background:#f5f5f5;
+}
+.mini-menuitem-text, .mini-menuitem-text a
+{
+    color:black;
+}
+.mini-separator
+{
+    border-top:solid 1px #ccc;
+}
+
+/* menu horizontal */
+.mini-menu-horizontal .mini-menu-inner
+{
+    background:#f5f5f5;
+}
+.mini-menu-horizontal .mini-menuitem-hover
+{
+    border:solid 1px #ccc;
+    background:#ebebeb;
+}
+.mini-menu-horizontal  .mini-menu-popup
+{
+    border:solid 1px #ccc;
+    background:#ebebeb;
+    border-bottom:0px;
+}
+
+/*---------------------- listbox -----------------------------*/
+.mini-listbox-border
+{    
+    border:#ccc 1px solid;
+}
+.mini-listbox-border td
+{
+    line-height:20px;       
+}
+.mini-listbox-item td{
+	border-top:white 1px dotted;
+	border-bottom:white 1px dotted;	
+}
+.mini-listbox-item-hover td{
+    background:#fafafa;
+	border-top:#ccc 1px dotted;
+	border-bottom:#ccc 1px dotted;
+}
+.mini-listbox-item-selected td{
+	background:#f5f5f5;
+	border-top:#ccc 1px dotted;
+	border-bottom:#ccc 1px dotted;
+}
+.mini-listbox-header
+{
+    background:#f5f5f5;
+    border-bottom:solid 1px #ccc;
+}
+
+/*------------------- treegrid --------------------*/
+.mini-treegrid-border
+{
+    border-color:#98c0f4;
+}
+
+.mini-treegrid-header
+{
+    border-bottom:none;
+}
+.mini-treegrid-headerInner
+{
+    background:#E7EBEF url(images/treegrid/header.png) repeat-x 0 0;
+}
+.mini-treegrid td
+{
+    border-color:#d0d0d0;    
+}
+.mini-treegrid-header td
+{
+    border-color:#d0d0d0;
+}
+
+.mini-treegrid-selectedNode
+{
+	background:#cbdaf0;
+}
+.mini-treegrid-hoverNode
+{
+    background:#dfe8f6;
+}
+/*
+.mini-treegrid-expand .mini-treegrid-ec-icon
+{
+	background-image:url(images/treegrid/expand.gif);
+	background-position:50% 50%;
+}
+.mini-treegrid-collapse .mini-treegrid-ec-icon
+{
+	background-image:url(images/treegrid/collapse.gif);
+	background-position:50% 50%;
+}*/
+.mini-treegrid-leaf
+{
+    background-image:url(images/treegrid/file.png);
+}
+.mini-treegrid-folder
+{
+    background-image:url(images/treegrid/folder.gif);
+}
+
+/*---------------------- calendar -----------------------------*/
+.mini-calendar
+{    
+    border:1px solid #ccc;       
+}
+.mini-calendar-header
+{   
+    background:#f5f5f5;    
+    border-bottom:solid 1px #ccc;    
+}
+.mini-calendar-footer
+{
+    border-top:solid 1px #ccc;
+    background:#fafafa;    
+}
+.mini-calendar-tadayButton, .mini-calendar-clearButton,
+.mini-calendar-okButton, .mini-calendar-cancelButton
+{
+    background: #FFFFFF;
+    border-color: #CCCCCC;
+    color: #333333;
+}
+.mini-calendar-menu-selected, a:hover.mini-calendar-menu-selected
+{
+    color:#333;
+    background:#fafafa;
+    border:solid 1px #ccc;
+}
+
+.mini-calendar .mini-calendar-selected
+{
+     color:#333;
+    background:#f5f5f5;
+    border:solid 1px #ccc;
+}
+.mini-calendar .mini-calendar-today
+{
+    border:1px solid #C00000;
+}
+.mini-calendar-daysheader td
+{border-bottom:solid 1px #dedede;    
+}
+    
+/*---------------------- tabs -----------------------------*/
+
+.mini-tabs-scrollCt
+{
+    border-color:#ccc;
+    background:#fafafa;
+}
+
+.mini-tabs-leftButton, .mini-tabs-rightButton
+{
+    border:solid 1px #b5afaf;
+    background-color:#EBEBEE;
+}
+a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
+{
+    border:solid 1px #80a4d0;
+    background-color:#E1E8FD;
+}
+/* top */
+.mini-tabs-bodys
+{
+    border-color:#ccc;
+}
+.mini-tabs-space
+{
+    border-color:#ccc;
+}
+.mini-tabs-space2
+{
+    border-color:#ccc;
+}
+
+.mini-tab
+{
+    background: #fafafa;
+    border: 1px solid #ccc;
+    color: #333;    
+    
+}
+.mini-tab-hover
+{    
+    background:#fff;
+}
+.mini-tab-active
+{
+    border-bottom:solid 1px #f5f5f5;
+    background:#f5f5f5;
+}
+
+/* bottom */
+.mini-tabs-header-bottom .mini-tabs-space,
+.mini-tabs-header-bottom .mini-tabs-space2
+{
+    border:0;
+    border-top: 1px solid #ccc;
+}
+.mini-tabs-header-bottom .mini-tabs-bodys
+{    
+    border:solid 1px #ccc;
+    border-bottom:0;
+}
+.mini-tabs-header-bottom .mini-tab-active
+{
+    border-top:solid 1px white;
+    border-bottom:solid 1px #ccc;
+}
+.mini-tabs-body-bottom
+{
+    border:solid 1px #ccc;
+    border-bottom:0;
+}
+/* left */
+.mini-tabs-header-left .mini-tabs-space,
+.mini-tabs-header-left .mini-tabs-space2
+{
+    border:0;
+    border-right: 1px solid #ccc;
+}
+.mini-tabs-header-left .mini-tabs-bodys
+{
+    border:solid 1px #ccc;
+    border-left:0;
+}
+.mini-tabs-header-left .mini-tab-active
+{    
+    border:solid 1px #ccc;
+    border-right:solid 1px white;
+}
+.mini-tabs-body-left
+{
+    border:solid 1px #ccc;
+    border-left:0;
+}
+/* right */
+.mini-tabs-header-right .mini-tabs-space,
+.mini-tabs-header-right .mini-tabs-space2
+{
+    border:0;
+    border-left: 1px solid #ccc;
+}
+.mini-tabs-header-right .mini-tabs-bodys
+{    
+    border:solid 1px #ccc;
+    border-right:0;
+}
+.mini-tabs-header-right .mini-tab-active
+{    
+    border:solid 1px #ccc;
+    border-left:solid 1px white;
+}
+.mini-tabs-body-right
+{
+    border:solid 1px #ccc;
+    border-right:0;
+}
+/*---------------------- tree -----------------------------*/
+
+
+.mini-tree-node-hover .mini-tree-nodeshow
+{
+    background:#fafafa;
+	border:solid 1px #ccc;	
+	border-radius: 4px; 	  
+}
+.mini-tree-selectedNode .mini-tree-nodeshow
+{
+    background:#f5f5f5;
+	border:solid 1px #ccc;	
+	border-radius: 4px; 
+}
+
+.mini-tree-leaf
+{
+    background-image:url(images/tree/leaf.gif);
+}
+.mini-tree-folder
+{
+    background-image:url(images/tree/folder.gif);
+}
+.mini-tree-expand .mini-tree-folder
+{
+    background-image:url(images/tree/folder-open.gif);
+}
+
+/*------------------- grid --------------------*/
+.mini-grid-border
+{
+    border-color:#cccccc;
+}
+.mini-grid-header
+{
+    background:#f5f5f5;
+}
+.mini-grid-headerCell, .mini-grid-topRightCell
+{
+    background:#f5f5f5;
+    border-right:#c5c5c5 1px solid;
+    border-bottom:#c5c5c5 1px solid;
+}
+.mini-grid-cell
+{
+    border-color:#e5e5e5;
+    border-bottom-color:#e5e5e5;
+}
+.mini-grid-filterRow
+{
+    background:#fafafa;
+}
+.mini-grid-footer, .mini-grid-pager
+{
+    border-top:solid 1px #ccc;    
+    background:#fafafa;
+}
+.mini-grid-columnproxy
+{
+    background:#f5f5f5;
+    border:#c5c5c5 1px solid;    
+}
+
+
+body .mini-grid-row-hover, body .mini-grid-row-hover .mini-grid-frozenCell
+{
+    background:#fafafa;    
+}
+html body .mini-grid-row-selected, body .mini-grid-row-selected .mini-grid-frozenCell
+{
+    background:#f5f5f5;		
+}
+
+/*------------------- pager --------------------*/
+.mini-pager-first
+{    
+    background:url(images/pager/first.gif) no-repeat;
+}
+.mini-pager-prev
+{
+    background-image:url(images/pager/prev.gif);
+}
+.mini-pager-next
+{
+    background-image:url(images/pager/next.gif);
+}
+.mini-pager-last
+{
+    background-image:url(images/pager/last.gif);
+}
+
+/*htmlfile*/
+.mini-htmlfile .mini-buttonedit-button
+{   
+    border:1px solid #cccccc;
+    border-top:#ffffff; 
+    border-right:#ffffff;
+    background:#ffffff;
+    color:#333; 
+}
+/*---------------------- progressbar -----------------------------*/
+.mini-progressbar
+{
+    border:1px solid #ccc;
+    border-radius: 4px; 
+}
+.mini-progressbar-border
+{
+    border:1px solid #ccc;
+    border-radius: 4px; 
+}
+.mini-progressbar-bar
+{
+    background:#e2eff8;
+}
+.mini-progressbar-text
+{ 
+    color:#222; 
+}
