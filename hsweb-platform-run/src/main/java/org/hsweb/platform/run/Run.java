@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.webbuilder.utils.storage.counter.support.redis.RedisCounter;
+import org.webbuilder.utils.storage.instance.LocalCacheStorage;
 
 /**
  * Created by zhouhao on 16-4-12.

@@ -49,9 +49,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>
-                    true
-                </filtering>
+                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
@@ -112,6 +110,10 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-platform-core</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.hsweb</groupId>

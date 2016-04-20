@@ -10,7 +10,7 @@
     <logger name="org.springframework.web" level="ERROR" />
     <logger name="org.apache.tomcat" level="ERROR" />
     <logger name="org.eclipse" level="ERROR" />
-    <logger name="org.hsweb" level="ERROR" />
+    <logger name="org.hsweb" level="DEBUG" />
     <logger name="jndi" level="ERROR" />
     <root level="DEBUG">
         <appender-ref ref="Console"/>
