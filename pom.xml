@@ -12,6 +12,7 @@
     <modules>
         <module>hsweb-platform-ui-miniui</module>
         <module>hsweb-platform-run</module>
+        <module>hsweb-platform-core</module>
     </modules>
     <artifactId>hsweb-platform</artifactId>
 
@@ -35,6 +36,13 @@
                 <artifactId>hsweb-platform-ui-miniui</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.hsweb</groupId>
+                <artifactId>hsweb-platform-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
+
+
     </dependencyManagement>
 </project>
