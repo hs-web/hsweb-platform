@@ -1,6 +1,8 @@
 package org.hsweb.platform.ui;
 
 import org.hsweb.web.authorize.annotation.Authorize;
+import org.hsweb.web.bean.common.QueryParam;
+import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;

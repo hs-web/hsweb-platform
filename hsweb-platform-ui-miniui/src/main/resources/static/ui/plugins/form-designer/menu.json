@@ -1,0 +1,23 @@
+[
+  {
+    "id": "commons",
+    "text": "常用控件",
+    "pid":"-1"
+  },
+  {
+    "id":"textbox",
+    "text":"单行文本",
+    "pid":"commons"
+  },
+  {
+    "id":"combobox",
+    "text":"下拉列表",
+    "pid":"commons"
+  }
+,
+  {
+    "id":"datepicker",
+    "text":"日期选择",
+    "pid":"commons"
+  }
+]
