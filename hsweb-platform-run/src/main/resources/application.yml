@@ -42,5 +42,5 @@ spring:
 # MyBatis
 mybatis:
     type-aliases-package: org.hsweb.web.bean.po
-    mapper-locations: classpath*:org/hsweb/web/dao/impl/mybatis/mapper/oracle/**/*.xml
+    mapper-locations: classpath*:org/hsweb/web/dao/impl/mybatis/mapper/${jdbc.type}/**/*.xml
     config: classpath:config/mybatis-config.xml
