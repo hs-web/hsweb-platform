@@ -29,12 +29,32 @@
             color: white;
             height: 100%;
         }
+
+        .debug {
+            color: #00b7ee;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .warn {
+            color: red;
+        }
     </style>
 </head>
 <body>
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
     <div class="header" region="north" height="40" showSplit="false" showHeader="false">
         <span style="font-size: 20px;">hsweb 表单设计器</span>
+
+        <div style="position:absolute;top:10px;right:100px;">
+            <a class="mini-button" iconCls="icon-save" onclick="save()" plain="true">保存</a>
+            &nbsp;&nbsp;
+            <a class="mini-button" onclick="save(preview)" iconCls="icon-find" onclick="deploy()" plain="true">预览</a>
+            &nbsp;&nbsp;
+            <a class="mini-button" style="color: red" iconCls="icon-goto" onclick="deploy()" plain="true">发布</a>
+        </div>
     </div>
     <div title="south" region="east" showSplit="true" showHeader="false" width="200" bodyStyle="border:0px;">
         <div class="mini-fit" style="height:100px;">
@@ -74,118 +94,16 @@
     </div>
     <div showHeader="false" region="south" height="100px" bodyStyle="overflow-y:auto;overflow-x:hidden;">
         <div class="mini-fit logger" style="height:100px;">
-            $->info: 双击菜单，插入控件。右侧属性表格中编辑属性
+            $->INFO: 双击菜单，插入控件。右侧属性表格中编辑属性，按[ctrl+s]可自动保存。
         </div>
     </div>
 </body>
 </html>
-<@global.importPlugin "form-designer/designer.config.js"/>
 <script type="text/javascript">
-    var fieldData = {};
-    mini.parse();
-    var ue = UE.getEditor('container');
-    var propertiesTable = mini.get('properties-table');
-    var nowEditorTarget = "main";
-
-    fieldData.main = Designer.fields.main.getDefaultProperties();
-
-    initProperties();
-
-    ue.addListener('focus', function () {
-        propertiesTable.commitEdit();
-    });
-    ue.addListener('selectionchange', function () {
-        var focusNode = ue.selection.getStart();
-        var id = $(focusNode).attr("field-id");
-        if (id) {
-            nowEditorTarget = id;
-        } else {
-            nowEditorTarget = "main";
-        }
-        initProperties();
-    });
-
-    function showEditor(e) {
-        var row = e.record;
-        var data = list2Map(propertiesTable.getData());
-        var conf = Designer.fields[data._meta];
-        if (conf) {
-            var editor = conf.getPropertiesEditor()[row.key];
-            if (editor) {
-                editor(data, function (e) {
-                    $(fieldData[nowEditorTarget]).each(function (index, d) {
-                        if (d.key == row.key) {
-                            d.value = e;
-                        }
-                    });
-                    initProperties();
-                });
-                e.cancel = true;
-            }
-        }
+    var id = "${param.id!''}";
+    function preview(){
+        window.open('/admin/form/view.html?id='+id);
     }
-
-    function list2Map(list) {
-        var map = {};
-        $(list).each(function (index, o) {
-            map[o.key] = o.value;
-        });
-        return map;
-    }
-    function cellbeginedit(e) {
-        var row = e.record;
-        if (row.key == '_meta') {
-            var conf = Designer.fields[row.value];
-            if (!conf.propertiesEditable(row.key)) {
-                e.cancel = true;
-            }
-        }
-        showEditor(e);
-    }
-    function submitProperties(e) {
-        fieldData[nowEditorTarget] = propertiesTable.getData();
-    }
-    function initProperties() {
-        propertiesTable.setData(fieldData[nowEditorTarget]);
-    }
-    function insert(id) {
-        var conf = Designer.fields[id];
-        var f_id = randomChar();
-        if (conf) {
-            ue.execCommand('insertHtml', conf.html(f_id))
-            nowEditorTarget = f_id;
-            fieldData[nowEditorTarget] = conf.getDefaultProperties();
-            initProperties();
-        }
-    }
-
-    function nodedblclick(e) {
-        var node = e.node;
-        insert(node.id);
-    }
-
-    function randomChar(len) {
-        len = len || 32;
-        var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz';
-        var maxPos = $chars.length;
-        var pwd = '';
-        for (var i = 0; i < len; i++) {
-            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-        }
-        return pwd;
-    }
-
-    var logger = {
-        append: function (level, msg) {
-            $(".logger").append("<br/>$->" + level + ": " + msg);
-            $(".logger").scrollTop($(".logger").scrollTop() + 100);//= document.getElementById(id).scrollTop+99999999;
-        }
-        , info: function (msg) {
-            logger.append("info", "<span class='info'>" + msg + "</span>");
-        }, debug: function (msg) {
-            logger.append("debug", "<span class='debug'>" + msg + "</span>");
-        }, error: function (msg) {
-            logger.append("error", "<span class='error'>" + msg + "</span>");
-        }
-    };
 </script>
+<@global.importRequest />
+<@global.importPlugin "form-designer/designer.config.js","form-designer/designer.js"/>

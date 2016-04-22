@@ -2,6 +2,43 @@
  * Created by zhouhao on 16-4-18.
  */
 var Designer = {};
+Designer.createDefault = function (type, clazz, html, defaultData) {
+    return {
+        html: html,
+        propertiesEditable: function (name) {
+            var cf = Designer.fields[type].getPropertiesTemplate()[name];
+            if (!cf)return true;
+            if (cf['editable'] == false)return false;
+            return cf['editable'] || true;
+        },
+        getPropertiesTemplate: Designer.getPropertiesTemplate,
+        getDefaultProperties: function () {
+            var list = [];
+            var tmp = Designer.fields[type].getPropertiesTemplate();
+            tmp._meta.value = type;
+            tmp['class'].value = clazz;
+            for (var f in tmp) {
+                list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
+            }
+            return list;
+        },
+        //属性编辑器，当双击行时，如果编辑器存在，则使用对于的编辑器进行编辑。
+        getPropertiesEditor: function () {
+            var editors = Designer.getPropertiesEditors();
+            if (!defaultData)return editors;
+            editors.domPropertyProxy = editors.domProperty;
+            editors.domProperty = function (value, callback) {
+                editors.domPropertyProxy(value, callback);
+                var data = mini.decode(value['domProperty']);
+                if (data.length == 0) {
+                    data = defaultData;
+                    mini.get("tmp_table").setData(data);
+                }
+            };
+            return editors;
+        }
+    };
+}
 Designer.getPropertiesTemplate = function () {
     var template = {
         name: {
@@ -17,7 +54,9 @@ Designer.getPropertiesTemplate = function () {
         }, _meta: {
             describe: "控件类型",
             value: "textbox",
-            editable: false
+        }, class: {
+            describe: "class",
+            value: "mini-textbox",
         }, "validator-list": {
             describe: "验证器",
             value: "[]"
@@ -93,8 +132,8 @@ Designer.getPropertiesEditors = function () {
             ];
             Designer.showTableTemplate(columns, data, "其他控件配置", callback);
         }
-}
-return editors;
+    }
+    return editors;
 }
 Designer.fields = {
     main: {
@@ -102,13 +141,14 @@ Designer.fields = {
         },
         propertiesEditable: function (name) {
             var cf = Designer.fields.main.getPropertiesTemplate()[name];
-            if (!cf)return false;
-            return cf['editable'] || false;
+            if (!cf)return true;
+            if (cf['editable'] == false)return false;
+            return cf['editable'] || true;
         },
         getPropertiesTemplate: function () {
             var template = {
                 name: {
-                    describe: "表单名称"
+                    describe: "表名"
                 }, comment: {
                     describe: "表单描述"
                 }, _meta: {
@@ -139,89 +179,60 @@ Designer.fields = {
             return editors;
         }
     },
-    textbox: {
-        html: function (id) {
-            return "<input class='mini-textbox' field-id='" + id + "' />";
-        },
-        propertiesEditable: function (name) {
-            var cf = Designer.fields.textbox.getPropertiesTemplate()[name];
-            if (!cf)return false;
-            return cf['editable'] || false;
-        },
-        getPropertiesTemplate: function () {
-            return Designer.getPropertiesTemplate();
-        },
-        getDefaultProperties: function () {
-            var list = [];
-            var tmp = Designer.fields.textbox.getPropertiesTemplate();
-            for (var f in tmp) {
-                list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
-            }
-            return list;
-        },
-        //属性编辑器，当双击行时，如果编辑器存在，则使用对于的编辑器进行编辑。
-        getPropertiesEditor: function () {
-            var editors = Designer.getPropertiesEditors();
-            return editors;
-        }
-    }
-    , combobox: {
-        html: function (id) {
-            return "<input class='mini-combobox' field-id='" + id + "' />";
-        },
-        propertiesEditable: function (name) {
-            var cf = Designer.fields.combobox.getPropertiesTemplate()[name];
-            if (!cf)return false;
-            return cf['editable'] || false;
-        },
-        getPropertiesTemplate: function () {
-            var template = Designer.getPropertiesTemplate();
-            template.data = {
-                describe: "data"
-            };
-            template.url = {
-                describe: "url"
-            };
-            template.domProperty = {
-                describe: "其他控件配置",
-                value: "[]",
-            };
-            return template;
-        },
-        getDefaultProperties: function () {
-            var list = [];
-            var tmp = Designer.fields.combobox.getPropertiesTemplate();
-            tmp._meta.value = "combobox";
-            for (var f in tmp) {
-                list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
-            }
-            return list;
-        },
-        //属性编辑器，当双击行时，如果编辑器存在，则使用对于的编辑器进行编辑。
-        getPropertiesEditor: function () {
-            var editors = Designer.getPropertiesEditors();
-            editors.domPropertyProxy=editors.domProperty;
-            editors.domProperty = function (value, callback) {
-                editors.domPropertyProxy(value,callback);
-                var data = mini.decode(value['domProperty']);
-                if (data.length == 0) {
-                    data = [
-                        {key: "value", value: "", describe: "默认值"}
-                        //, {key: "valueField", value: "id", describe: "值字段"}
-                        //, {key: "textField", value: "text", describe: "文本显示字段"}
-                        //, {key: "pinyinField", value: "", describe: "拼音字段"}
-                        //, {key: "dataField", value: "", describe: "数据列表字段"}
-                        //, {key: "multiSelect", value: "false", describe: "多选"}
-                        //, {key: "showNullItem", value: "false", describe: "显示空项"}
-                        //, {key: "nullItemText", value: "", describe: "空项文本"}
-                        //, {key: "valueFromSelect", value: "", describe: "必须从选择项录入"}
-                        //, {key: "clearOnLoad", value: "true", describe: "自动清空未在列表中的value"}
-                    ]
-                    mini.get("tmp_table").setData(data);
-                }
-            };
-            return editors;
-        }
-    }
+    textarea: Designer.createDefault("textarea", "mini-textarea", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+
+    textbox: Designer.createDefault("textbox", "mini-textbox", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    hidden: Designer.createDefault("hidden", 'mini-hidden', function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    datepicker: Designer.createDefault("datepicker", 'mini-datepicker', function (id) {
+        return "<input field-id='" + id + "' />";
+    })
+    , combobox: Designer.createDefault("combobox", 'mini-combobox',
+        function (id) {
+            return "<input field-id='" + id + "' />";
+        }, [
+            {key: "value", value: "", describe: "默认值"}
+            , {key: "data", value: "", describe: "可选数据项（js对象，属性以' '包装）"}
+            , {key: "url", value: "", describe: "可选数据项来自url"}
+            , {key: "valueField", value: "", describe: "值字段(默认id)"}
+            , {key: "textField", value: "", describe: "文本显示字段(默认text)"}
+            , {key: "pinyinField", value: "", describe: "拼音字段"}
+            , {key: "dataField", value: "", describe: "数据列表字段"}
+            , {key: "multiSelect", value: "false", describe: "多选"}
+            , {key: "showNullItem", value: "false", describe: "显示空项"}
+            , {key: "nullItemText", value: "", describe: "空项文本"}
+            , {key: "valueFromSelect", value: "", describe: "必须从选择项录入"}
+            , {key: "clearOnLoad", value: "true", describe: "自动清空未在列表中的value"}
+        ])
+    , checkboxlist: Designer.createDefault("checkboxlist", 'mini-checkboxlist',
+        function (id) {
+            return "<input field-id='" + id + "' />";
+        }, [
+            {key: "value", value: "", describe: "默认值"}
+            , {key: "data", value: "", describe: "可选数据项（js对象，属性以' '包装）"}
+            , {key: "url", value: "", describe: "可选数据项来自url"}
+            , {key: "valueField", value: "", describe: "值字段(默认id)"}
+            , {key: "textField", value: "", describe: "文本显示字段(默认text)"}
+            , {key: "repeatItems", value: "5", describe: "自动换行数量"}
+            , {key: "repeatLayout", value: "table", describe: "布局方式"}
+        ])
+    , radiobuttonlist: Designer.createDefault("radiobuttonlist", 'mini-radiobuttonlist',
+        function (id) {
+            return "<input field-id='" + id + "' />";
+        }, [
+            {key: "value", value: "", describe: "默认值"}
+            , {key: "data", value: "", describe: "可选数据项（js对象，属性以' '包装）"}
+            , {key: "url", value: "", describe: "可选数据项来自url"}
+            , {key: "valueField", value: "", describe: "值字段(默认id)"}
+            , {key: "textField", value: "", describe: "文本显示字段(默认text)"}
+            , {key: "repeatItems", value: "5", describe: "自动换行数量"}
+            , {key: "repeatLayout", value: "table", describe: "布局方式"}
+            , {key: "repeatDirection", value: "vertical", describe: "方向"}
+        ])
 
 }

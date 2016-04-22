@@ -42,10 +42,10 @@
             'directionalityltr', 'directionalityrtl', 'indent', '|',
             'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
             'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment','insertframe', 'insertcode', 'pagebreak', 'template', 'background', '|',
+            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment','insertframe', 'insertcode', 'pagebreak',  'background', '|',
             'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
             'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
-            'print', 'preview', 'searchreplace', 'help', 'drafts'
+             'searchreplace', 'help', 'drafts'
         ]]
         //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
         //,labelMap:{
@@ -228,17 +228,24 @@
         //    {tag:'span',name:'hi', label:'', style:'font-style:italic;font-weight:bold;color:rgb(51, 153, 204)'}
         //]
 
-        //打开右键菜单功能
+        ////打开右键菜单功能
         //,enableContextMenu: true
-        //右键菜单的内容，可以参考plugins/contextmenu.js里边的默认菜单的例子，label留空支持国际化，否则以此配置为准
+        ////右键菜单的内容，可以参考plugins/contextmenu.js里边的默认菜单的例子，label留空支持国际化，否则以此配置为准
         //,contextMenu:[
         //    {
-        //        label:'',       //显示的名称
-        //        cmdName:'selectall',//执行的command命令，当点击这个右键菜单时
+        //        label:'预览',       //显示的名称
+        //        cmdName:'preview',//执行的command命令，当点击这个右键菜单时
         //        //exec可选，有了exec就会在点击时执行这个function，优先级高于cmdName
         //        exec:function () {
         //            //this是当前编辑器的实例
-        //            //this.ui._dialogs['inserttableDialog'].open();
+        //          window.open("/admin/form/view.html?id="+id);
+        //        }
+        //    },  {
+        //        label:'保存',       //显示的名称
+        //        cmdName:'preview',//执行的command命令，当点击这个右键菜单时
+        //        exec:function () {
+        //            //this是当前编辑器的实例
+        //            save();
         //        }
         //    }
         //]

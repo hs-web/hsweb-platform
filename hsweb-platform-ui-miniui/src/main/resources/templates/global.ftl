@@ -9,6 +9,13 @@
         </#if>
     </#list>
 </#macro>
+
+<#--资源文件-->
+<#macro importRequest()>
+ <@importPlugin "ajax/Request.js" />
+<script type="text/javascript">Request.BASH_PATH="/";</script>
+</#macro>
+
 <#--资源文件-->
 <#macro resources(path)>
 <script src="/ui/resources/${path}"></script>
@@ -37,9 +44,11 @@
     , "ueditor/lang/zh-cn/zh-cn.js"
     />
 </#macro>
+
 <#macro pluginUrl(uri)>
 /ui/plugins/${uri}
 </#macro>
+
 <#macro api(uri)>
 ${uri}
 </#macro>

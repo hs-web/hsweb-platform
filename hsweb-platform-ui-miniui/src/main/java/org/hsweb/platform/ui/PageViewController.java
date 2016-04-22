@@ -4,10 +4,13 @@ import org.hsweb.web.authorize.annotation.Authorize;
 import org.hsweb.web.bean.common.QueryParam;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Created by zhouhao on 16-4-8.
@@ -18,7 +21,8 @@ public class PageViewController {
 
 
     @RequestMapping(value = "/admin/**/*.html")
-    public ModelAndView view(HttpServletRequest request) {
+    public ModelAndView view(HttpServletRequest request,
+                             @RequestParam(required = false) Map<String, Object> param) {
         String path = request.getRequestURI();
         String content = request.getContextPath();
         if (path.startsWith(content)) {
@@ -27,6 +31,8 @@ public class PageViewController {
         if (path.contains("."))
             path = path.split("[.]")[0];
         ModelAndView modelAndView = new ModelAndView(path);
+        modelAndView.addObject("param", param);
+
         return modelAndView;
     }
 }
