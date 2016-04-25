@@ -1,5 +1,5 @@
-FROM hsweb/java8
+FROM java:8
 
-COPY target/hsweb-web-run-1.0-SNAPSHOT.jar /app.jar
+COPY target/hsweb-platform-run-1.0-SNAPSHOT.jar /app.jar
 EXPOSE 8088
-ENTRYPOINT ["java","-Xdebug","-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
