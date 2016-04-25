@@ -59,27 +59,33 @@
                     </th>
                 </tr>
                 <tr>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="right">权限ID</td>
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right">权限ID</td>
                     <td width="129" valign="middle" style="word-break: break-all;" align="left">
-                        <input style="width:100%" name="u_id" id="u_id" class="mini-textbox"/>
+                        <input style="width:100%" name="u_id" id="u_id" class="mini-textbox" required="true"/>
                     </td>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="right">权限名称</td>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="left"><input style="width:100%" name="name" id="name" class="mini-textbox"/></td>
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right">权限名称</td>
+                    <td width="129" valign="middle" style="word-break: break-all;" align="left">
+                        <input style="width:100%" name="name" id="name" class="mini-textbox" required="true"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="right">路径映射</td>
-                    <td width="129" valign="middle" align="left" colspan="3"><input style="width:100%" name="uri" id="uri" class="mini-textbox"></td>
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right">路径映射</td>
+                    <td width="129" valign="middle" align="left" colspan="3">
+                        <input style="width:100%" name="uri" id="uri" class="mini-textbox">
+                    </td>
                 </tr>
                 <tr>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="right"><a href="http://fontawesome.io/icons/" target="_blank">图标</a></td>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="left"><input style="width:100%" name="icon" id="icon" class="mini-textbox"/></td>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="right">父级权限ID</td>
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right"><a href="http://fontawesome.io/icons/" target="_blank">图标</a></td>
+                    <td width="129" valign="middle" style="word-break: break-all;" align="left">
+                        <input style="width:100%" name="icon" id="icon" class="mini-textbox"/>
+                    </td>
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right">父级权限ID</td>
                     <td width="129" valign="middle" align="left"><input enabled="flase" name="p_id" id="p_id" class="mini-textbox"/>&nbsp;*拖拽左侧菜单调整结构</td>
                 </tr>
                 <tr>
-                    <td width="129" valign="middle" style="word-break: break-all;" align="right">备注<br></td>
-                    <td valign="middle" rowspan="1" colspan="1" width="128" align="left"><input style="width:100%" name="remark" id="remark" class="mini-textarea"/></td>
-                    <td rowspan="1" valign="middle" align="right" width="128" style="word-break: break-all;">排序</td>
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right">备注<br></td>
+                    <td valign="middle" rowspan="1" colspan="1" width="50" align="left"><input style="width:100%" name="remark" id="remark" class="mini-textarea"/></td>
+                    <td rowspan="1" valign="middle" align="right" width="50" style="word-break: break-all;">排序</td>
                     <td rowspan="1" valign="middle" align="left" width="128"><input name="sort_index" enabled="flase" id="sort_index" class="mini-textbox"/>&nbsp;*拖拽左侧菜单即可排序</td>
                 </tr>
                 <tr>
@@ -269,12 +275,13 @@
         var childNodes = tree.getChildNodes(node);
         $(childNodes).each(function (i, e) {
             var index = parseInt(node.sort_index);
-            if (isNaN(index))index = i + 1;
+            if (isNaN(index)) e.sort_index=i+1;
+            else
             e.sort_index = index + "0" + (i + 1);
             reSortModule(e);
         });
     }
-    function showHelp(){
+    function showHelp() {
         mini.alert("左侧菜单支持右键，支持拖拽排序。<br/>编辑后，注意点击保存!");
     }
 </script>
