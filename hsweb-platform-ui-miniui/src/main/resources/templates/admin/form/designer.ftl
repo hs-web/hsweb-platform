@@ -22,6 +22,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            overflow-x: auto;
         }
 
         .logger {
@@ -44,17 +45,40 @@
     </style>
 </head>
 <body>
-<div id="layout1" class="mini-layout" style="width:100%;height:100%;">
+<div id="layout1" class="mini-layout" style="width:100%;height:100%;min-width: 800px;border: 0px;">
     <div class="header" region="north" height="40" showSplit="false" showHeader="false">
-        <span style="font-size: 20px;">hsweb 表单设计器</span>
-
-        <div style="position:absolute;top:10px;right:100px;">
-            <a class="mini-button" iconCls="icon-save" onclick="save()" plain="true">保存</a>
-            &nbsp;&nbsp;
-            <a class="mini-button" onclick="save(preview)" iconCls="icon-find" onclick="deploy()" plain="true">预览</a>
-            &nbsp;&nbsp;
-            <a class="mini-button" style="color: red" iconCls="icon-goto" onclick="deploy()" plain="true">发布</a>
+        <div id="toolbar1" class="mini-toolbar" style="padding:2px;">
+            <table style="width:100%;">
+                <tr>
+                    <td style="width:100%;">
+                        <a class="mini-menubutton" plain="true" menu="#popupMenu">文件</a>
+                        <a class="mini-button" iconCls="icon-save" onclick="save()" plain="true">保存</a>
+                        <a class="mini-button" iconCls="icon-find" onclick="save(preview)" plain="true">预览</a>
+                        <a class="mini-button" iconCls="icon-goto" style="color: red" onclick="deploy()" plain="true">发布</a>
+                        <span class="separator"></span>
+                        <a class="mini-button" iconCls="icon-reload" plain="true" onclick="window.location.reload()">刷新</a>
+                        <a class="mini-button" iconCls="icon-upload" plain="true">导入</a>
+                        <a class="mini-button" iconCls="icon-download" plain="true">下载</a>
+                    </td>
+                    <td style="white-space:nowrap;">
+                    </td>
+                </tr>
+            </table>
         </div>
+        <ul id="popupMenu" class="mini-menu" style="display:none;">
+            <li>
+                <span>操作</span>
+                <ul>
+                    <li iconCls="icon-new">新建表单</li>
+                    <li class="separator"></li>
+                    <li iconCls="icon-add">创建新版本</li>
+                </ul>
+            </li>
+            <li class="separator"></li>
+            <li iconCls="icon-open">打开</li>
+            <li iconCls="icon-remove">删除此表单</li>
+
+        </ul>
     </div>
     <div title="south" region="east" showSplit="true" showHeader="false" width="200" bodyStyle="border:0px;">
         <div class="mini-fit" style="height:100px;">
@@ -81,7 +105,7 @@
     <div title="center" region="center" bodyStyle="overflow-y:auto;overflow-x:hidden;">
         <script id="container" name="content" type="text/plain" style="align:center;width: 100%;height:80%;border: 0px;">
         </script>
-        <div id="editorWindow" class="mini-window" title="" style="width:500px;height:300px;"
+        <div id="editorWindow" class="mini-window" title="" style="width:600px;height:500px;"
              showMaxButton="false" showCollapseButton="false" showShadow="true"
              showToolbar="false" showFooter="true" showModal="true" allowResize="true" allowDrag="true">
             <div id="editorWindowFrame" class="mini-fit" style="height:100px;align:center;">
@@ -101,9 +125,21 @@
 </html>
 <script type="text/javascript">
     var id = "${param.id!''}";
-    function preview(){
-        window.open('/admin/form/view.html?id='+id);
+    function preview() {
+        // window.open('/admin/form/view.html?id='+id);
+        openWindow('/admin/form/view.html?id=' + id, "预览表单", "80%", "80%");
     }
+    function openWindow(url, title, width, height, ondestroy) {
+        mini.open({
+            url: url,
+            showMaxButton: true,
+            title: title,
+            width: width,
+            height: height,
+            ondestroy: ondestroy
+        });
+    }
+
 </script>
 <@global.importRequest />
 <@global.importPlugin "form-designer/designer.config.js","form-designer/designer.js"/>
