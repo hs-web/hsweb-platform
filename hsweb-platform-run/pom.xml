@@ -23,11 +23,17 @@
             <id>dev</id>
             <properties>
                 <environment.package>develop</environment.package>
-                <jdbc.type>mysql</jdbc.type>
-                <jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8</jdbc.url>
-                <jdbc.username>root</jdbc.username>
-                <jdbc.password>19920622</jdbc.password>
-                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+
+                <jdbc.type>oracle</jdbc.type>
+                <jdbc.url>jdbc:h2:mem:hsweb</jdbc.url>
+                <jdbc.username>sa</jdbc.username>
+                <jdbc.password></jdbc.password>
+                <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
+                <!--<jdbc.type>mysql</jdbc.type>-->
+                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>-->
+                <!--<jdbc.username>root</jdbc.username>-->
+                <!--<jdbc.password>19920622</jdbc.password>-->
+                <!--<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>-->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -39,10 +45,22 @@
                 <environment.package>product</environment.package>
                 <jdbc.type>mysql</jdbc.type>
                 <logging.path>/var/logger/hsweb/</logging.path>
-                <jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8</jdbc.url>
+                <jdbc.url>jdbc:mysql://mysql:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password>19920622</jdbc.password>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <environment.package>test</environment.package>
+                <jdbc.type>oracle</jdbc.type>
+                <jdbc.url>jdbc:h2:mem:hsweb</jdbc.url>
+                <jdbc.username>sa</jdbc.username>
+                <jdbc.password></jdbc.password>
+                <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
             </properties>
         </profile>
     </profiles>
@@ -112,6 +130,10 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.hsweb</groupId>
             <artifactId>hsweb-platform-core</artifactId>
