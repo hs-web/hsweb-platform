@@ -4,6 +4,7 @@ import org.hsweb.platform.app.WebApplicationProcess;
 import org.hsweb.platform.core.Application;
 import org.hsweb.platform.core.ApplicationContainer;
 import org.hsweb.platform.core.web.WebApplication;
+import org.hsweb.web.exception.BusinessException;
 import org.hsweb.web.message.ResponseMessage;
 import org.hsweb.web.service.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,6 @@ public class AppController {
                 return new ResponseMessage(false,e);
             }
         }
-        return new ResponseMessage(false,"未找到此应用:"+id,"404");
+      throw new BusinessException("未找到此应用");
     }
 }

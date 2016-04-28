@@ -1,6 +1,5 @@
 package org.hsweb.platform.run;
 
-import org.hsweb.web.logger.AopAccessLoggerResolver;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
