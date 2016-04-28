@@ -26,6 +26,12 @@ var Request = {
             cache: false,
             async: syc == true,
             success: callback,
+            error: function (e) {
+                if (e.responseJSON)
+                    callback(e.responseJSON);
+                else
+                    callback({code: e.status, data: e.statusText, success: false});
+            },
             dataType: 'json'
         };
         if (requestBody == true) {

@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfigura
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,7 +21,7 @@ import java.util.Map;
 public class PageViewController {
 
 
-    @RequestMapping(value = "/admin/**/*.html")
+    @RequestMapping(value = "/admin/**/*.html",method = RequestMethod.GET)
     public ModelAndView view(HttpServletRequest request,
                              @RequestParam(required = false) Map<String, Object> param) {
         String path = request.getRequestURI();

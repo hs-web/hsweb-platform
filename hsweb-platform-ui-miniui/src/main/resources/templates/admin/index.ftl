@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <@global.importMiniui/>
     <style type="text/css">
         body {
