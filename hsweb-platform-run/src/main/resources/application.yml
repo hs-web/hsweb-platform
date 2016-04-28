@@ -9,6 +9,8 @@ spring:
     devtools:
         remote:
             secret: hsweb
+    aop:
+        auto: true
     application:
         name: ${app.name}
         index: index.html
@@ -37,8 +39,16 @@ spring:
         suffix : .ftl
         request-context-attribute : request
         expose-request-attributes : true
+    mvc:
+        favicon:
+            enabled: false
     messages:
         basename: messages
+    cache:
+        type: redis
+    redis :
+        host: 127.0.0.1
+        port: 6389
 # MyBatis
 mybatis:
     type-aliases-package: org.hsweb.web.bean.po

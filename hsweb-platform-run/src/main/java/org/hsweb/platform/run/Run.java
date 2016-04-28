@@ -1,8 +1,10 @@
 package org.hsweb.platform.run;
 
+import org.hsweb.web.logger.AopAccessLoggerResolver;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -12,9 +14,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"org.hsweb.web", "org.hsweb.platform"})
+@ComponentScan(
+        basePackages = {"org.hsweb.web", "org.hsweb.platform"}
+)
 @MapperScan(basePackages = {"org.hsweb.web.dao"})
 @EnableTransactionManagement(proxyTargetClass = true)
+@EnableCaching
+//@EnableRedisHttpSession
 public class Run {
     public static void main(String[] args) {
         SpringApplication.run(Run.class, args);
