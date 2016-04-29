@@ -23,9 +23,9 @@ public class UserModuleController {
     @RequestMapping
     public ResponseMessage userModule() throws Exception {
         String[] includes = {
-                "name","u_id","p_id"
+                "name", "u_id", "p_id"
         };
-        return new ResponseMessage(true,
+        return ResponseMessage.ok(
                 moduleService.select(new QueryParam().includes(includes).orderBy("sort_index"))
         ).include(Module.class, includes).onlyData();
     }

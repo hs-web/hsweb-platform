@@ -35,12 +35,8 @@ public class AppController {
             process.setRequest(request);
             process.setConfigService(configService);
             process.var("request", request);
-            try {
-                return application.execute(process);
-            }catch (Exception e){
-                return new ResponseMessage(false,e);
-            }
+            return application.execute(process);
         }
-      throw new BusinessException("未找到此应用");
+        throw new BusinessException("未找到此应用");
     }
 }

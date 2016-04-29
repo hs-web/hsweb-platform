@@ -1,5 +1,9 @@
 package org.hsweb.platform.run;
 
+import org.hsweb.web.authorize.annotation.Authorize;
+import org.hsweb.web.bean.po.user.User;
+import org.hsweb.web.controller.login.AuthorizeController;
+import org.hsweb.web.exception.ExceptionHandlerConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

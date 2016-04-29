@@ -4,6 +4,11 @@ logging:
 server:
     port: 8088
 
+#启用登录
+login:
+    guest: guest
+    enable: true
+
 #spring config
 spring:
     devtools:
