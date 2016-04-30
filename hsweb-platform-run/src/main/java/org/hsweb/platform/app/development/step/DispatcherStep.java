@@ -27,7 +27,7 @@ public class DispatcherStep implements Step {
     public Object execute(ApplicationProcess process) {
         String type = process.getParameter("p").toString();
         DevelopmentStepProcessor processor = processorMap.get(type);
-        if (processor == null) return new ResponseMessage(false, "无效的参数p");
+        if (processor == null) ResponseMessage.error("无效的参数p");
         return processor.execute(process);
     }
 

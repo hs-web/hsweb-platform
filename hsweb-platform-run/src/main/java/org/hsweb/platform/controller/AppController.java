@@ -5,7 +5,6 @@ import org.hsweb.platform.core.Application;
 import org.hsweb.platform.core.ApplicationContainer;
 import org.hsweb.platform.core.web.WebApplication;
 import org.hsweb.web.exception.BusinessException;
-import org.hsweb.web.message.ResponseMessage;
 import org.hsweb.web.service.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by zhouhao on 16-4-14.
  */
 @RestController
-public class AppController {
+public class AppController   {
 
     @Autowired
     private ApplicationContainer container;

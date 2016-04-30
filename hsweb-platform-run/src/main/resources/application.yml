@@ -8,9 +8,10 @@ server:
 login:
     guest: guest
     enable: true
-
 #spring config
 spring:
+    activiti:
+
     devtools:
         remote:
             secret: hsweb

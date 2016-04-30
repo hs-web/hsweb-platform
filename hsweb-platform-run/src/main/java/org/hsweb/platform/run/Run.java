@@ -1,12 +1,11 @@
 package org.hsweb.platform.run;
 
-import org.hsweb.web.authorize.annotation.Authorize;
-import org.hsweb.web.bean.po.user.User;
-import org.hsweb.web.controller.login.AuthorizeController;
-import org.hsweb.web.exception.ExceptionHandlerConfiguration;
+
+import org.hsweb.platform.workflow.modeler.ActivityModelerAutoConfigure;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.test.ImportAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +22,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(basePackages = {"org.hsweb.web.dao"})
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCaching
-//@EnableRedisHttpSession
+@ImportAutoConfiguration(ActivityModelerAutoConfigure.class)
 public class Run {
     public static void main(String[] args) {
         SpringApplication.run(Run.class, args);
     }
+
 }

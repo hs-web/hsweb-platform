@@ -42,7 +42,7 @@
         <profile>
             <id>prod</id>
             <properties>
-                <environment.package>product</environment.package>
+                <envistronment.package>product</envistronment.package>
                 <jdbc.type>mysql</jdbc.type>
                 <logging.path>/var/logger/hsweb/</logging.path>
                 <jdbc.url>jdbc:mysql://mysql:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>
@@ -186,6 +186,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-platform-workflow-modeler</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

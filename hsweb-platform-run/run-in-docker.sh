@@ -8,7 +8,7 @@ link_oracle=oracle11g
 link_mysql=mysql
 server_port=9888
 if [ -f "target/hsweb-platform-run-1.0-SNAPSHOT.jar" ]; then
-        container_id=$(docker ps | grep "${container_name}" | awk '{print $1}')
+        container_id=$(docker ps -a | grep "${container_name}" | awk '{print $1}')
         if [ "${container_id}" != "" ];then
             docker stop ${container_name}
             docker rm ${container_name}
