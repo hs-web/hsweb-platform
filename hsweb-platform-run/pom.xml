@@ -191,7 +191,6 @@
         <dependency>
             <groupId>org.hsweb</groupId>
             <artifactId>hsweb-platform-workflow-modeler</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
