@@ -1,0 +1,41 @@
+/* menu */
+.mini-menuitem-text
+{
+    font-size:14px;
+}
+
+/* tabs */
+.mini-tab-text
+{
+    font-size:14px;
+}
+
+/* grid */
+.mini-grid-headerCell-inner
+{
+    font-size:16px;
+    line-height:25px;
+}
+.mini-grid-cell-inner
+{
+    font-size:14px;
+    line-height:22px;
+}
+
+/* button */
+.mini-button-text
+{
+    font-size:14px;
+}
+
+/* textbox */
+.mini-textbox-input
+{
+    font-size:14px;
+}
+
+/* buttonedit */
+.mini-buttonedit-input
+{
+    font-size:14px;
+}

@@ -234,5 +234,4 @@ Designer.fields = {
             , {key: "repeatLayout", value: "table", describe: "布局方式"}
             , {key: "repeatDirection", value: "vertical", describe: "方向"}
         ])
-
-}
+};
