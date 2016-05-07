@@ -1,4 +1,4 @@
-<#macro basePath>/</#macro>
+<#macro basePath>${absPath!'/'}</#macro>
 <#--插件-->
 <#macro importPlugin(pathList...)>
     <#list pathList as path>
@@ -14,7 +14,7 @@
 <#--资源文件-->
 <#macro importRequest()>
     <@importPlugin "ajax/Request.js" />
-<script type="text/javascript">Request.BASH_PATH = "/";</script>
+<script type="text/javascript">Request.BASH_PATH = "<@basePath/>";</script>
 </#macro>
 <#macro importFontIcon>
     <@resources "icons/css/font-awesome.min.css"/>
@@ -39,6 +39,7 @@
 <#macro importMiniui themes...>
     <@importJquery />
     <@importPlugin "miniui/miniui.js","miniui/themes/default/miniui.css","miniui/themes/icons.css" />
+    <@resources "js/miniui-global.js"/>
     <#list themes as thme >
         <@importPlugin "miniui/themes/"+thme+"/skin.css"/>
     </#list>
@@ -64,10 +65,6 @@
     />
 </#macro>
 
-<#macro pluginUrl(uri)>
-    <@basePath/>ui/plugins/${uri}
-</#macro>
+<#macro pluginUrl(uri)><@basePath/>ui/plugins/${uri}</#macro>
 
-<#macro api(uri)>
-    <@basePath/>${uri}
-</#macro>
+<#macro api(uri)><@basePath/>${uri}</#macro>
