@@ -129,16 +129,7 @@
         // window.open('/admin/form/view.html?id='+id);
         openWindow('/admin/form/view.html?id=' + id, "预览表单", "80%", "80%");
     }
-    function openWindow(url, title, width, height, ondestroy) {
-        mini.open({
-            url: url,
-            showMaxButton: true,
-            title: title,
-            width: width,
-            height: height,
-            ondestroy: ondestroy
-        });
-    }
+
 
 </script>
 <@global.importRequest />

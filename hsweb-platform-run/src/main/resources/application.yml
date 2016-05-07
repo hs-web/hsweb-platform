@@ -6,7 +6,6 @@ server:
 
 #启用登录
 login:
-    guest: guest
     enable: true
 #spring config
 spring:
