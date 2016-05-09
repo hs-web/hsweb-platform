@@ -1,5 +1,4 @@
 <#import "../global.ftl" as global />
-<#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,8 +31,7 @@
     <div showHeader="false" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
         <div id="leftTree" class="mini-tree" url="<@global.api "userModule" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="false"
-             onnodeclick="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0"
-                >
+             onnodeclick="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0">
         </div>
     </div>
     <div title="center" region="center" bodyStyle="overflow:hidden;">

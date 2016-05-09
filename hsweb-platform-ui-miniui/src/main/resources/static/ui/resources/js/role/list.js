@@ -16,16 +16,12 @@ function create(){
         grid.reload();
     });
 }
-
-function search(){
+function search() {
     var data = new mini.Form("#searchForm").getData();
-    var term={};
-    for(var f in data){
-        if(f.indexOf('$LIKE')!=-1&&data[f].indexOf('%')==-1)data[f]="%"+data[f]+"%";
-        term["term['"+f+"']"]=data[f];
-    }
-    grid.load(term);
+    var queryParam = Request.encodeParam(data);
+    grid.load(queryParam);
 }
+
 function rendererAction(e) {
     var grid = e.sender;
     var record = e.record;

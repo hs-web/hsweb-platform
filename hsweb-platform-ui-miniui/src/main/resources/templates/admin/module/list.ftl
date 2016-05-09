@@ -17,9 +17,6 @@
             height: 100%;
             overflow: hidden;
         }
-        .font-2x {
-            font-size: 15px;;
-        }
     </style>
 </head>
 <body>

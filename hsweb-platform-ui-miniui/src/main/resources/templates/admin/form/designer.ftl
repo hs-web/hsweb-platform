@@ -55,6 +55,7 @@
                         <a class="mini-button" iconCls="icon-save" onclick="save()" plain="true">保存</a>
                         <a class="mini-button" iconCls="icon-find" onclick="save(preview)" plain="true">预览</a>
                         <a class="mini-button" iconCls="icon-goto" style="color: red" onclick="deploy()" plain="true">发布</a>
+                        <a class="mini-button" iconCls="icon-bullet-cross" style="color: red" onclick="closeWindow('exit')" plain="true">退出</a>
                         <span class="separator"></span>
                         <a class="mini-button" iconCls="icon-reload" plain="true" onclick="window.location.reload()">刷新</a>
                         <a class="mini-button" iconCls="icon-upload" plain="true">导入</a>
@@ -76,8 +77,6 @@
             </li>
             <li class="separator"></li>
             <li iconCls="icon-open">打开</li>
-            <li iconCls="icon-remove">删除此表单</li>
-
         </ul>
     </div>
     <div title="south" region="east" showSplit="true" showHeader="false" width="200" bodyStyle="border:0px;">

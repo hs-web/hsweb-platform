@@ -9,7 +9,6 @@
 <@global.importMiniui/>
 <@global.importUeditorParser/>
 <@global.importFontIcon/>
-<@global.resources "css/mini-font-size-2x.css"/>
     <style type="text/css">
         body {
             margin: 0;
@@ -60,7 +59,7 @@
 </div>
 <div class="mini-fit">
     <div id="grid" class="mini-datagrid" style="width:100%;height:100%;"
-         url="<@global.api 'user'/>" ajaxOptions="{type:'GET'}" idField="id"
+         url="<@global.api 'user'/>" ajaxOptions="{type:'GET',dataType:'json'}" idField="id"
          sizeList="[10,20,50,200]" pageSize="20">
         <div property="columns">
             <div type="indexcolumn"></div>

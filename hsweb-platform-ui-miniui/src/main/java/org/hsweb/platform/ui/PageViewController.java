@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -19,8 +21,11 @@ import java.util.Map;
 public class PageViewController implements ExpressionScopeBean {
 
     @RequestMapping(value = "/admin/login.html", method = RequestMethod.GET)
-    public ModelAndView login() {
-        return  new ModelAndView("admin/login");
+    public ModelAndView login(String uri) throws UnsupportedEncodingException {
+        ModelAndView modelAndView = new ModelAndView("admin/login");
+        if (uri != null)
+            modelAndView.addObject("uri", uri);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/admin/**/*.html", method = RequestMethod.GET)
@@ -44,4 +49,5 @@ public class PageViewController implements ExpressionScopeBean {
         }
         return path;
     }
+
 }

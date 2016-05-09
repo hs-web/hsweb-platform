@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Login</title>
+    <title>用户登录</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
     <style type="text/css">
@@ -18,8 +18,7 @@
 </head>
 <body >
 <div id="loginWindow" class="mini-window" title="用户登录" style="width:350px;height:165px;"
-     showModal="true" showCloseButton="false"
-        >
+     showModal="true" showCloseButton="false" >
 
     <div id="loginForm" style="padding:15px;padding-top:10px;">
         <table >
@@ -32,8 +31,7 @@
             <tr>
                 <td style="width:60px;"><label for="pwd$text">密码：</label></td>
                 <td>
-                    <input id="password" name="password" class="mini-password" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
-                    &nbsp;&nbsp;<a href="#" >忘记密码?</a>
+                    <input id="password" name="password" class="mini-password"  required="true" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
                 </td>
             </tr>
             <tr>
@@ -45,11 +43,11 @@
             </tr>
         </table>
     </div>
-
 </div>
 <@global.importRequest/>
 <script type="text/javascript">
     mini.parse();
+    var back = "${uri!'index.html'}";
     var loginWindow = mini.get("loginWindow");
     loginWindow.show();
     function onLoginClick() {
@@ -60,7 +58,7 @@
         var data = form.getData();
        Request.post("login?username="+data.username+"&password="+data.password,{},function(e){
            loginWindow.hide();
-            if(e.success)window.location.href="index.html";
+            if(e.success)window.location.href=back;
            else mini.alert(e.message);
        });
     }

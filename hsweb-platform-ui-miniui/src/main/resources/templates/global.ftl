@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring/>
 <#macro basePath>${absPath!'/'}</#macro>
 <#--插件-->
 <#macro importPlugin(pathList...)>
@@ -40,6 +41,9 @@
     <@importJquery />
     <@importPlugin "miniui/miniui.js","miniui/themes/default/miniui.css","miniui/themes/icons.css" />
     <@resources "js/miniui-global.js"/>
+    <#if themes?size==0>
+     <link href="<@basePath/>ui/plugins/miniui/themes/<@spring.themeText 'name','pure'/>/skin.css" rel="stylesheet" type="text/css"></link>
+    </#if>
     <#list themes as thme >
         <@importPlugin "miniui/themes/"+thme+"/skin.css"/>
     </#list>

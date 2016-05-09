@@ -51,14 +51,8 @@ function disable(id) {
 
 function search() {
     var data = new mini.Form("#searchForm").getData();
-    var term = {};
-    for (var f in data) {
-        if(data[f]=="")continue;
-        if (f.indexOf('$LIKE') != -1 && data[f].indexOf('%') == -1)data[f] = "%" + data[f] + "%";
-        term["term['" + f + "']"] = data[f];
-    }
-    // term.includes=["username"]+"";
-    grid.load(term);
+    var queryParam = Request.encodeParam(data);
+    grid.load(queryParam);
 }
 
 function rendererAction(e) {

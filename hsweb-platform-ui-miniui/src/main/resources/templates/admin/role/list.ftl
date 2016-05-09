@@ -1,6 +1,5 @@
 <#import "../../global.ftl" as global />
 <#import "../../authorize.ftl" as authorize />
-<#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +14,9 @@
             padding: 0;
             border: 0;
             width: 100%;
-            height: 95%;
+            height: 100%;
             overflow: hidden;
         }
-
         .action-edit {
             color: green;
             cursor: pointer;
