@@ -50,10 +50,11 @@ spring:
     messages:
         basename: messages
     cache:
-        type: redis
-    redis :
-        host: 127.0.0.1
-        port: 6389
+        #type: redis
+        type: simple
+#    redis :
+#        host: 127.0.0.1
+#        port: 6389
 # MyBatis
 mybatis:
     type-aliases-package: org.hsweb.web.bean.po
