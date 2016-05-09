@@ -18,17 +18,29 @@ table
 {
     background:url(images/header.gif) repeat-x 0 -1px;
 }
+
+.mini-iconfont
+{
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+    font-size: 16px;
+    line-height: 16px;
+    text-align:center;
+}
     
 .mini-disabled {
     color: gray;
     cursor: default;
     opacity: .7;
-    -moz-opacity: .7;
     filter: alpha(opacity=70);
 }
-.mini-disabled * {
-    
-}
+
+
 
 .mini-repaint {
     zoom: 1;
@@ -136,7 +148,7 @@ body .mini-fixed
 .mini-tools
 {
     position:absolute;
-    top:3px;right:5px;
+    top:5px;right:5px;
 }
 .mini-tools span
 {
@@ -145,43 +157,51 @@ body .mini-fixed
     height:15px;
     overflow:hidden;    
     cursor:pointer;
-    margin-right:2px;
+    margin-left:2px;
 }
 .mini-tools-close
 {
     background:url(images/tools/close.gif) no-repeat 50% 1px;
+    _background-position:50% 3px;
 }
 .mini-tools .mini-tools-collapse
 {
     background:url(images/tools/collapse.gif) no-repeat 50% 50%;
     width:13px;	
+    _background-position:50% 3px;
 }
 .mini-tools .mini-tools-expand
 {
     background:url(images/tools/expand.gif) no-repeat 50% 50%;
     width:13px;	
+    _background-position:50% 3px;
 }
 .mini-tools-max
 {
     background:url(images/tools/max.gif) no-repeat 50% 50%;
+    _background-position:50% 3px;
 }
 .mini-tools-min
 {
     background:url(images/tools/min.gif) no-repeat 50% 50%;
+    _background-position:50% 3px;
 }
 .mini-tools-restore
 {
     background:url(images/tools/restore.gif) no-repeat 50% 50%;
+    _background-position:50% 3px;
 }
 .mini-tools-refresh
 {
     background:url(images/tools/refresh.gif) no-repeat 50% 50%;
+    _background-position:50% 3px;
 }
 
 
 
 .mini-toolbar
 {
+    position:relative;
     border:solid 1px #909aa6;
     padding:3px;   
     _padding-bottom:4px;
@@ -189,6 +209,7 @@ body .mini-fixed
 }
 .separator
 {    
+    overflow:hidden;
     display:inline-block;
     zoom:1;            
     border:0;
@@ -230,7 +251,8 @@ body .mini-pager a.mini-button-disabled, body .mini-pager a:hover.mini-button-di
     z-index:100000000;
     background:gray;
     border:solid 1px #000;
-    opacity: .4;-moz-opacity: .4;filter: alpha(opacity=40);
+    opacity: .3;
+    filter: alpha(opacity=30);
     box-sizing:content-box; 
 }
 
@@ -381,7 +403,8 @@ body .mini-buttonedit *
     
     position:absolute;
     right:1px;
-    top:0;
+    top:50%;
+    margin-top:-8px;
 }
 .mini-error .mini-listbox-border,
 .mini-error .mini-list-border
@@ -405,6 +428,237 @@ body .mini-labelfield-checkboxlist
 {
     width:auto;*zoom:1;
 }
+
+
+
+.mini-row
+{    
+    
+    *padding-right:1px;
+}
+
+.mini-col-1, .mini-col-2, .mini-col-3, .mini-col-4, .mini-col-5, .mini-col-6, .mini-col-7, .mini-col-8, .mini-col-9, .mini-col-10, .mini-col-11, .mini-col-12,
+.mini-sm .mini-col-sm-1, .mini-sm .mini-col-sm-2, .mini-sm .mini-col-sm-3, .mini-sm .mini-col-sm-4, .mini-sm .mini-col-sm-5, .mini-sm .mini-col-sm-6, .mini-sm .mini-col-sm-7, .mini-sm .mini-col-sm-8, .mini-sm .mini-col-sm-9, .mini-sm .mini-col-sm-10, .mini-sm .mini-col-sm-11, .mini-sm .mini-col-sm-12,
+.mini-md .mini-col-md-1, .mini-md .mini-col-md-2, .mini-md .mini-col-md-3, .mini-md .mini-col-md-4, .mini-md .mini-col-md-5, .mini-md .mini-col-md-6, .mini-md .mini-col-md-7, .mini-md .mini-col-md-8, .mini-md .mini-col-md-9, .mini-md .mini-col-md-10, .mini-md .mini-col-md-11, .mini-md .mini-col-md-12,
+.mini-lg .mini-col-lg-1, .mini-lg .mini-col-lg-2, .mini-lg .mini-col-lg-3, .mini-lg .mini-col-lg-4, .mini-lg .mini-col-lg-5, .mini-lg .mini-col-lg-6, .mini-lg .mini-col-lg-7, .mini-lg .mini-col-lg-8, .mini-lg .mini-col-lg-9, .mini-lg .mini-col-lg-10, .mini-lg .mini-col-lg-11, .mini-lg .mini-col-lg-12
+{
+    float:left;
+    display:inline;
+    position: relative;
+    min-height: 1px; 
+}
+
+.mini-col-12,
+.mini-sm .mini-col-sm-12{
+  width: 100%;
+}
+.mini-col-11,
+.mini-sm .mini-col-sm-11{
+  width: 91.66666667%;
+}
+.mini-col-10,
+.mini-sm .mini-col-sm-10{
+  width: 83.33333333%;
+}
+.mini-col-9,
+.mini-sm .mini-col-sm-9 {
+  width: 75%;
+}
+.mini-col-8,
+.mini-sm .mini-col-sm-8 {
+  width: 66.66666667%;
+}
+.mini-col-7,
+.mini-sm .mini-col-sm-7 {
+  width: 58.33333333%;
+}
+.mini-col-6,
+.mini-sm .mini-col-sm-6 {
+  width: 50%;
+}
+.mini-col-5,
+.mini-sm .mini-col-sm-5 {
+  width: 41.66666667%;
+}
+.mini-col-4,
+.mini-sm .mini-col-sm-4 {
+  width: 33.33333333%;
+}
+.mini-col-3,
+.mini-sm .mini-col-sm-3 {
+  width: 25%;
+}
+.mini-col-2,
+.mini-sm .mini-col-sm-2 {
+  width: 16.66666667%;
+}
+.mini-col-1,
+.mini-sm .mini-col-sm-1 {
+  width: 8.33333333%;
+}
+
+.mini-md .mini-col-md-12{
+  width: 100%;
+}
+.mini-md .mini-col-md-11{
+  width: 91.66666667%;
+}
+.mini-md .mini-col-md-10{
+  width: 83.33333333%;
+}
+.mini-md .mini-col-md-9 {
+  width: 75%;
+}
+.mini-md .mini-col-md-8 {
+  width: 66.66666667%;
+}
+.mini-md .mini-col-md-7 {
+  width: 58.33333333%;
+}
+.mini-md .mini-col-md-6 {
+  width: 50%;
+}
+.mini-md .mini-col-md-5 {
+  width: 41.66666667%;
+}
+.mini-md .mini-col-md-4 {
+  width: 33.33333333%;
+}
+.mini-md .mini-col-md-3 {
+  width: 25%;
+}
+.mini-md .mini-col-md-2 {
+  width: 16.66666667%;
+}
+.mini-md .mini-col-md-1 {
+  width: 8.33333333%;
+}
+
+.mini-lg .mini-col-lg-12{
+  width: 100%;
+}
+.mini-lg .mini-col-lg-11{
+  width: 91.66666667%;
+}
+.mini-lg .mini-col-lg-10{
+  width: 83.33333333%;
+}
+.mini-lg .mini-col-lg-9 {
+  width: 75%;
+}
+.mini-lg .mini-col-lg-8 {
+  width: 66.66666667%;
+}
+.mini-lg .mini-col-lg-7 {
+  width: 58.33333333%;
+}
+.mini-lg .mini-col-lg-6 {
+  width: 50%;
+}
+.mini-lg .mini-col-lg-5 {
+  width: 41.66666667%;
+}
+.mini-lg .mini-col-lg-4 {
+  width: 33.33333333%;
+}
+.mini-lg .mini-col-lg-3 {
+  width: 25%;
+}
+.mini-lg .mini-col-lg-2 {
+  width: 16.66666667%;
+}
+.mini-lg .mini-col-lg-1 {
+  width: 8.33333333%;
+}
+
+
+.mini-clearfix:after,
+.mini-row:after{
+  display: table;
+  content: " ";
+  clear: both;
+}
+.mini-clearfix,            
+.mini-row,
+{
+    *zoom:1;    
+}
+
+.mini-unspace
+{
+    *overflow:hidden;
+    *height:0;
+}
+
+
+
+.mini-xs-active .mini-hidden-xs,
+.mini-sm-active .mini-hidden-sm,
+.mini-md-active .mini-hidden-md,
+.mini-lg-active .mini-hidden-lg {
+  display: none !important;
+}
+
+.mini-visible-xs,
+.mini-visible-sm,
+.mini-visible-md,
+.mini-visible-lg,
+.mini-visible-xs-inline,
+.mini-visible-sm-inline,
+.mini-visible-md-inline,
+.mini-visible-lg-inline,
+.mini-visible-xs-inline-block,
+.mini-visible-sm-inline-block,
+.mini-visible-md-inline-block,
+.mini-visible-lg-inline-block {
+  display: none !important;
+}
+
+.mini-xs-active .mini-visible-xs,
+.mini-sm-active .mini-visible-sm,
+.mini-md-active .mini-visible-md,
+.mini-lg-active .mini-visible-lg {
+  display: block !important;
+}
+
+.mini-xs-active .mini-visible-xs-inline,
+.mini-sm-active .mini-visible-sm-inline,
+.mini-md-active .mini-visible-md-inline,
+.mini-lg-active .mini-visible-lg-inline {
+  display: inline !important;
+}
+
+.mini-xs-active .mini-visible-xs-inline-block,
+.mini-sm-active .mini-visible-sm-inline-block,
+.mini-md-active .mini-visible-md-inline-block,
+.mini-lg-active .mini-visible-lg-inline-block {
+  display: inline-block !important;
+  *display: inline !important;
+  *zoom:1 !important;  
+}
+
+.mini-sm-active table.mini-visible-sm,
+.mini-md-active table.mini-visible-md,
+.mini-lg-active table.mini-visible-lg {
+  display: table !important;
+}
+
+.mini-xs-active tr.mini-visible-xs,
+.mini-sm-active tr.mini-visible-sm,
+.mini-md-active tr.mini-visible-md,
+.mini-lg-active tr.mini-visible-lg {
+  display: table-row !important;
+}
+
+.mini-xs-active td.mini-visible-xs,
+.mini-sm-active td.mini-visible-sm,
+.mini-md-active td.mini-visible-md,
+.mini-lg-active td.mini-visible-lg {
+  display: table-cell !important;
+}
+
+
+
 .mini-button
 {
     padding:0;
@@ -419,12 +673,13 @@ body .mini-labelfield-checkboxlist
     text-decoration:none;
     text-align: center;
     display:inline-block;
-    zoom:1;    
+    *zoom:1;
     cursor:pointer;
     -khtml-user-select: none;
     -moz-user-select:none;
     vertical-align:middle;          
     outline:none;
+    position:relative;
 }
 .mini-button
 {
@@ -442,27 +697,49 @@ body a:hover.mini-button
 
 .mini-button-text
 {   
+    position:relative;
+    
     line-height:16px; 
-	padding:2px 8px 3px 8px;
+	padding:2px 8px 4px 8px;
 	
     line-height:17px\9;
-    vertical-align:top;
+    
     display:inline-block;    
     padding:3px 8px 2px 8px\9;    
     +padding:3px 8px 2px 8px;  
     _padding:2px 8px 2px 8px;  
+    
+    vertical-align:baseline;
 }
+
+.mini-button-icon
+{
+    position:absolute;left:5px;top:50%;
+    width:18px;height:18px;overflow:hidden;
+    margin-top:-9px;
+    +margin-top:-10px;
+    
+    line-height:18px;
+    line-height:16px\9;    
+}
+
 .mini-button .mini-button-icon
+{    
+    background-position: 50% 50%;        
+    background-repeat:no-repeat;   
+}
+
+.mini-button .mini-button-icon-text
 {
     padding-left:25px;
-    background-position: 6px 50%;        
-    background-repeat:no-repeat;    
 }
-.mini-button .mini-button-iconOnly
+.mini-button .mini-button-icon-only
 {
-    padding-left:14px;    
-    background-repeat:no-repeat;    
-    background-position:50% 50%;
+    padding-left:14px;
+}
+.mini-button .mini-button-icon-only .mini-button-icon
+{    
+    left:4px;    
 }
 
 
@@ -503,25 +780,27 @@ body .mini-button-disabled *
 }
 
 
-.mini-button-iconRight .mini-button-icon
+
+.mini-button-iconRight .mini-button-icon-text
 {
     padding-left:8px;
-    padding-right:18px;
-    background-position:right 50%;
-    margin-right:5px;
+    padding-right:25px;
+
+}
+.mini-button-iconRight .mini-button-icon
+{
+    left:auto;right:5px;
+}
+
+.mini-button-iconTop .mini-button-icon-text
+{
+    padding-left:8px;
+    padding-top:22px;      
 }
 .mini-button-iconTop .mini-button-icon
 {
-    padding-left:8px;
-    padding-top:22px;
-    background-position:50% 4px;        
-}
-.mini-button-iconBottom .mini-button-icon
-{
-    padding-left:8px;
-    padding-bottom:18px;
-    margin-bottom:4px;
-    background-position:50% bottom;        
+    left:50%;margin-left:-9px;
+    top:2px;margin-top:auto;
 }
 
 .mini-button-iconTop .mini-button-allow
@@ -534,8 +813,12 @@ body .mini-button-disabled *
 }
 
 
+
+
+
 .mini-button-allow
 {
+    position:relative;
     width:14px;
     height:16px;
     overflow:hidden;
@@ -553,27 +836,45 @@ body .mini-button-disabled *
     background:url(images/button/split_arrow.png) no-repeat 0px 50%;
 }
 
-
 .mini-checkbox
 {
     font-size:9pt;
     font-family:Tahoma,Verdana,宋体;
     line-height:22px;
+    position:relative;
 }
-.mini-checkbox-check
+.mini-checkbox label
+{
+    vertical-align:middle;
+}
+.mini-checkbox-check,
+.mini-checkbox-icon
 {
     padding:0;
     margin:0;
-    margin-right:4px;
-    vertical-align:bottom;
+    margin-right:6px;
     vertical-align:middle;
-    width:14px;height:14px;    
+    width:13px;height:13px;    
+    display:inline-block;    
+    background:url(images/icons/checkbox.gif) no-repeat 0 0;
+    overflow:hidden;
 }
 
+.mini-checkbox-checked .mini-checkbox-icon
+{
+    background-position:0 -13px;
+}
+
+
+
+.mini-checkbox-check
+{
+    display:none;
+}
 .mini-textbox
 {
-    width:125px;
-    height:21px;
+    width:150px;
+    height:24px;
     display:inline-block;
       
     padding:0;
@@ -590,11 +891,11 @@ body .mini-button-disabled *
     background:white;
     border: solid 1px #a5acb5;
     width:auto;
-    height:19px;
+    height:22px;
     display:block;    
     
     position:relative;overflow:hidden;
-    padding-left:1px;padding-right:1px;        
+    padding-left:4px;padding-right:4px;        
 }
 
 .mini-textbox-input
@@ -604,8 +905,8 @@ body .mini-button-disabled *
     
     background:url(about:blank) no-repeat\0;        
     width:100%;
-    height:19px;
-    line-height:19px;
+    height:22px;
+    line-height:20px;
     font-family: Verdana;
     font-size: 9pt;
     border:0;
@@ -627,7 +928,7 @@ body .mini-button-disabled *
 
 
 
-body .mini-textbox-focus .mini-textbox-border
+.mini-textbox-focus .mini-textbox-border
 {
     border-color:#808891;
 }
@@ -691,8 +992,8 @@ body .mini-invalid .mini-buttonedit-border
 
 .mini-buttonedit
 {
-    width:125px;
-    height:21px;
+    width:150px;
+    height:24px;
     display:inline-block;    
     vertical-align:middle;    
     overflow:hidden;	
@@ -705,11 +1006,11 @@ body .mini-invalid .mini-buttonedit-border
     background:white;
     border: solid 1px #a5acb5;
     width:auto;
-    height:19px;
+    height:22px;
     display:block;
     
     position:relative;overflow:hidden;
-    padding-right:22px;padding-left:1px;
+    padding-right:24px;padding-left:4px;
 }
 .mini-buttonedit-buttons
 {
@@ -720,9 +1021,9 @@ body .mini-invalid .mini-buttonedit-border
 
 .mini-buttonedit-height .mini-buttonedit-buttons
 {
-    height:18px;
+    height:20px;
     top:50%;
-    margin-top:-9px;
+    margin-top:-10px;
 }
 
 .mini-buttonedit-input
@@ -733,7 +1034,8 @@ body .mini-invalid .mini-buttonedit-border
     
     background:url(about:blank) no-repeat\0;        
     border: 0;     
-    line-height:19px;    
+    height:22px;
+    line-height:22px;    
     font-family: Verdana;
     font-size: 9pt;        
     padding: 0;
@@ -741,7 +1043,7 @@ body .mini-invalid .mini-buttonedit-border
     outline:none;    
     z-index:1;
     cursor:text;    
-    width:100%;height:19px;float:right;
+    width:100%;float:right;
     _position:absolute;
     _left:2px;
     _top:0px;
@@ -758,29 +1060,32 @@ body .mini-invalid .mini-buttonedit-border
     border:0px;
     padding:1px;
     background:none;
-    width:15px;height:15px;
-    overflow:hidden;cursor:pointer;
+    width:18px;height:18px;
+    overflow:hidden;
+    cursor:pointer;
     margin-top:1px;
     margin-right:1px;
     display:inline-block;
     z-index:10;    
     vertical-align:top;
+    position:relative;
 }
 .mini-buttonedit-close
 {
     display:none;
-    background:url(images/buttonedit/close.gif) no-repeat 50% 5px;
+    background:url(images/buttonedit/close.gif) no-repeat 50% 50%;
+    width:14px;
 }
 
 .mini-buttonedit-button-hover,
-.mini-buttonedit-hover .mini-buttonedit-button
+.mini-buttonedit-hover .mini-buttonedit-trigger
 {
     border:1px solid #ababab;
     padding:0;
     background:#dde6fe url(images/buttonedit/hover.png) repeat-x 0 0;   
 }
 .mini-buttonedit-button-pressed,
-.mini-buttonedit-popup .mini-buttonedit-button
+.mini-buttonedit-popup .mini-buttonedit-trigger
 {
     border:1px solid #888;
     padding:0;
@@ -832,16 +1137,25 @@ body .mini-buttonedit-disabled .mini-buttonedit-down
     height:15px;
     overflow:hidden;
     background:url(images/buttonedit/icon1.gif) no-repeat 50% 50%;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-left:-8px;
+    margin-top:-8px;
 }
-.mini-popupedit .mini-buttonedit-icon
+.mini-buttonedit .mini-buttonedit-icon
+{
+    background-position:50% 50%;
+}
+.mini-popupedit .mini-buttonedit-trigger .mini-buttonedit-icon
 {
     background:url(images/buttonedit/icon2.gif) no-repeat 3px 1px;
 }
-.mini-datepicker .mini-buttonedit-icon
+.mini-datepicker .mini-buttonedit-trigger .mini-buttonedit-icon
 {
     background:url(images/datepicker/date.gif) no-repeat 50% 2px;
 }
-.mini-autocomplete .mini-buttonedit-icon
+.mini-autocomplete .mini-buttonedit-trigger .mini-buttonedit-icon
 {
     
 }
@@ -857,15 +1171,16 @@ body .mini-buttonedit-disabled .mini-buttonedit-down
 }
 .mini-buttonedit-up span, .mini-buttonedit-down span
 {
-    background:url(images/buttonedit/up.gif) no-repeat 50% 2px;   
-    height:100%;
+    background:url(images/buttonedit/up.gif) no-repeat 50% 3px;   
+    width:16px;
     height:100%;
     overflow:hidden;    
     display:block;
+    margin:auto;
 }
 .mini-buttonedit-down span
 {
-    background:url(images/buttonedit/down.gif) no-repeat 50% 2px; 
+    background:url(images/buttonedit/down.gif) no-repeat 50% 3px; 
 }
 .mini-buttonedit-button .mini-buttonedit-button-pressed
 {
@@ -937,9 +1252,9 @@ input.mini-textarea
 .mini-panel-header
 {
     width:auto;
-    height:25px;
+    
     overflow:hidden;
-    background:#E3E6E8 url(images/panel/header.png) repeat-x 0 0px;
+    background:#edf1f5 url(images/panel/header.png) repeat-x 0 0px;
     color:#201F35;
     border-bottom:solid 1px #bbb;
     cursor:default;
@@ -949,17 +1264,15 @@ input.mini-textarea
 
 .mini-panel-header-inner
 {	
-    padding:3px;
-    padding-bottom:2px;
-    padding-top:4px;
-    padding-left:8px;
+    padding:5px 4px 5px 8px;
+    overflow:hidden;
+    *zoom:1;
 }
 .mini-panel .mini-panel-title
 {
     padding-top:0px\9;
     float:left;
     line-height:16px;
-    line-height:18px\9;
 }
 .mini-panel .mini-panel-icon
 {
@@ -989,7 +1302,7 @@ input.mini-textarea
 .mini-panel .mini-tools
 {
     position:absolute;
-    top:5px;right:3px;
+    top:5px;right:5px;
 }
 
 .mini-panel-toolbar
@@ -998,16 +1311,19 @@ input.mini-textarea
     border-bottom:solid 1px #C9C9C9;
     background:#eff2f4;
     
+    
     width:auto;
     clear:both;
     position:relative;overflow:hidden;
-    line-height:18px;zoom:1;    
+    line-height:18px;
+    zoom:1;    
 }
 
 .mini-panel-footer
 {
     border-top:solid 1px #C9C9C9;
     background:#eff2f4;
+    
     
     width:auto;
     position:relative;overflow:hidden;
@@ -1022,13 +1338,13 @@ input.mini-textarea
 .mini-panel-collapse .mini-tools-collapse
 {
     background:url(images/tools/expand.gif) no-repeat 50% 50%;
+    _background-position:50% 3px;
 }
 
 .mini-panel-titleclick .mini-panel-header
 {
     cursor:pointer;
 }
-
 
 
 .mini-window
@@ -1133,28 +1449,26 @@ input.mini-textarea
 .mini-outlookbar-groupHeader
 {
     position:relative;
-    background:url(images/navbar/header.png) repeat-x 0 0;        
+    background:#edf1f5 url(images/navbar/header.png) repeat-x 0 0;        
     cursor:pointer;    
     overflow:hidden; 
-    height:23px;
-    padding-left:2px;
-    padding-right:25px;
+    line-height:16px;
+    padding:5px 25px 5px 4px;
     font-weight:bold;      
+    *zoom:1;
 }
 .mini-outlookbar-groupTitle
 {
     overflow:hidden;
     white-space:nowrap;
     float:left; 
-    line-height:23px;
     padding-left:4px;
     width:80%;
 }
 .mini-outlookbar-groupHeader .mini-tools
 {   
     position:absolute;
-    top:3px;right:3px;
- 
+    top:5px;right:5px;    
 }
 .mini-outlookbar-groupBody
 {    
@@ -1179,8 +1493,8 @@ input.mini-textarea
     overflow:hidden;
     vertical-align:middle;
     
-    margin-top:3px;
-    margin-left:4px;
+    
+    margin-left:2px;
 }
 
 .mini-outlookbar-collapse .mini-outlookbar-groupBody
@@ -1231,6 +1545,13 @@ input.mini-textarea
 {
     margin:0;
 }
+.mini-outlookbar-view2 .mini-outlookbar-groupBody
+{    
+    background:#fff;
+    border:solid 1px #ccc;
+    border-top:0;
+}
+    
 
 
 .mini-outlookbar-view3 .mini-outlookbar-border
@@ -1300,8 +1621,9 @@ input.mini-textarea
     padding:0;
     
     position:relative;
-    top:1px;        
-    zoom:1;
+    
+    margin-bottom:-1px;
+    *zoom:1;
 }
 
 .mini-tabs-header-bottom .mini-tabs-headers
@@ -1329,6 +1651,24 @@ body .mini-tabs-position-bottom .mini-tabs-plain .mini-tabs-scrollCt
 {
     width:auto;
     overflow:hidden;
+}
+
+.mini-tabs-position-top .mini-tabs-header
+{
+    margin-top:1px;
+}
+.mini-tabs-position-bottom .mini-tabs-header
+{
+    margin-bottom:1px;
+}
+
+.mini-tabs-position-top .mini-tabs-plain .mini-tabs-header
+{
+    margin-top:0px;
+}
+.mini-tabs-position-bottom .mini-tabs-plain .mini-tabs-header
+{
+    margin-bottom:0px;
 }
 
 
@@ -1405,10 +1745,7 @@ body .mini-tabs-position-bottom .mini-tabs-plain .mini-tabs-scrollCt
     padding: 3px 10px 3px 10px;
     text-align: center;
     cursor:pointer;
-    white-space:nowrap;
-    
-            
-    
+    white-space:nowrap;    
 }
 .mini-tab-hover
 {    
@@ -1430,8 +1767,13 @@ body .mini-tabs-position-bottom .mini-tabs-plain .mini-tabs-scrollCt
     display:inline-block;
     vertical-align:middle;
     line-height:16px;
+    padding:1px;
     padding-left:2px;
-    padding-right:2px;
+    padding-right:2px;    
+}
+.mini-tabs-plain .mini-tab-text
+{
+    line-height:18px;
 }
 .mini-tab .mini-tab-icon
 {
@@ -1450,10 +1792,15 @@ body .mini-tabs-position-bottom .mini-tabs-plain .mini-tabs-scrollCt
 
     background:url(images/tabs/close.gif) no-repeat 3px 3px;
     cursor:pointer;
+    
+    opacity: .6;
+    filter: alpha(opacity=60);     
 }
 .mini-tab-close-hover
 {
     background-color:#aaa;
+    opacity: 1;
+    filter: alpha(opacity=100);     
 }
 
 
@@ -1651,15 +1998,15 @@ body .mini-tabs-position-bottom .mini-tabs-plain .mini-tabs-scrollCt
 .mini-tabs-leftButton, .mini-tabs-rightButton
 {
     border:solid 1px #adadad;
-    background:#EBEBEE url(images/tabs/allow_left.gif) no-repeat -1px 0 ;    
-    width:17px;height:15px;    
+    background:#EBEBEE url(images/tabs/allow_left.gif) no-repeat 50% 50% ;    
+    width:16px;height:15px;    
     cursor:pointer;
     outline:none;
     display:inline-block;margin-right:2px;
 }
 .mini-tabs-rightButton
 {
-    background:#EBEBEE url(images/tabs/allow_right.gif) no-repeat -1px 0 ;
+    background:#EBEBEE url(images/tabs/allow_right.gif) no-repeat 50% 50% ;   
 }
 a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
 {
@@ -1807,7 +2154,7 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
 {
     cursor:w-resize;
     position:absolute;
-    width:5px;
+    width:6px;
     height:100%;
     top:0;
     left:0;
@@ -1853,16 +2200,15 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
     border-right:0;
 }
 
-
 .mini-layout-region-header
 {
     font-weight:bold;    
-    line-height:22px;
-    background:url(images/layout/header.png) repeat-x 0 0;    
+    line-height:26px;
+    background:#edf1f5 url(images/layout/header.png) repeat-x 0 0;    
     border-bottom:solid 1px #a7abb0;
     cursor:default;    
     overflow:hidden; 
-    height:22px;
+    height:26px;
     padding-left:6px;
 }
 .mini-layout-region-title
@@ -1891,8 +2237,9 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
     border:solid 1px #A8A8A8;
     cursor:default;
     overflow:hidden; 
-    height:22px;
-    width:22px;
+    height:24px;
+    width:24px;
+    line-height:24px;
     padding-left:6px;
     position:absolute;
     z-index:100;
@@ -1922,9 +2269,11 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
 }
 
 
-.mini-layout-region-header .mini-tools
+
+.mini-layout-region-header .mini-tools,
+.mini-layout-proxy .mini-tools
 {
-    
+    right:8px;
 }
 .mini-layout-region-west .mini-layout-region-header .mini-tools-collapse
 {
@@ -2023,12 +2372,8 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
     line-height:20px;
     transform-origin:10px 10px;
     transform:rotate(90deg);
-    -ms-transform:rotate(90deg); 
-    -moz-transform:rotate(90deg); 
-    -webkit-transform:rotate(90deg); 
-    -o-transform:rotate(90deg); 
-    background-color:#e9edf1;
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+    
+    
     
 }
 .mini-menu
@@ -2072,9 +2417,11 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
     height:auto;
     width:auto;
     position:relative;
+    cursor:default;
     
     border:0;
     padding:1px;  
+    
 }
 
 .mini-menuitem-hover
@@ -2133,21 +2480,32 @@ a:hover.mini-tabs-leftButton,a:hover.mini-tabs-rightButton
 .mini-menuitem-icon, .mini-menuitem-allow
 {
     width:16px;
-    height:16px;
+    height:16px;    
+    line-height:16px;
     overflow:hidden;
     position:absolute;
     left:3px;
     top:2px;
     display:none;    
+    
+
+    
+    +height:18px;
+    +top:0px;
+    
+    
     _left:-25px;
-    _top:-1px;
-    
-    
-    
+    _top:-3px;
+    _height:18px;        
 }
-.mini-menuitem .mini-menuitem-icon{
-    
+.mini-menu-horizontal .mini-menuitem .mini-menuitem-icon
+{ 
+    _position:relative;_left:0;_top:-2px;
+    +position:relative;+left:0;+top:-2px;    
+}
+.mini-menuitem .mini-menuitem-icon{    
     background-position:50% 50%;
+    background-repeat:no-repeat;
 }
 .mini-menuitem-allow
 {
@@ -2211,6 +2569,10 @@ body .mini-menuitem-icontop .mini-menuitem-text
 {
     padding-left:6px;
     padding-right:6px;
+    padding-bottom:2px;
+    *padding-top:2px;
+    *padding-bottom:0px;
+    overflow:hidden;
 }
 .mini-menu-horizontal .mini-menuitem-icon, 
 .mini-menu-horizontal .mini-menuitem-text,
@@ -2226,17 +2588,20 @@ body .mini-menuitem-icontop .mini-menuitem-text
 }
 .mini-menu-horizontal .mini-menuitem-allow
 {
-    background:url(images/menu/hallow.gif) no-repeat 50% 0px;
-    width:5px;height:3px;overflow:hidden;
-    margin-top:9px;
-    margin-right:2px;
-    margin-left:2px;
+    background:url(images/menu/hallow.gif) no-repeat 50% 50%;
+    +background-position:50% 20%;
+    width:10px;height:8px;overflow:hidden;
+    margin-top:7px;
+    
 }
 .mini-menu-horizontal .mini-menuitem-text
 {
     padding:0;
     padding-left:3px;
     padding-right:3px;
+    +padding-top:0px;    
+    +padding-bottom:3px;
+    +line-height:18px;
     
 }
 .mini-separator
@@ -2324,7 +2689,7 @@ body .mini-calendar td
 }
 .mini-calendar-daysheader td
 {
-    padding:3px;
+    padding:4px;
     border-bottom:solid 1px #CFCFCF;
     font-size:9pt;
     font-family:Tahoma, Verdana, 宋体;      
@@ -2344,9 +2709,9 @@ body .mini-calendar td
 {
     text-align:center;
     vertical-align:middle;
-    padding:2px;
-    padding-left:3px;
-    padding-right:3px;
+    padding:3px;
+    padding-left:4px;
+    padding-right:4px;
     font-size:9pt;
     font-family:Tahoma, Verdana, 宋体;      
     cursor:default;
@@ -2394,6 +2759,7 @@ body .mini-calendar td
     font-weight:400;
     font-size:12px;
     cursor:pointer;
+    position:relative;
 }
 .mini-calendar-prev, .mini-calendar-next
 {
@@ -2420,13 +2786,13 @@ body .mini-calendar td
 }
 .mini-calendar-monthPrev
 {
-    background:url(images/calendar/months.gif) no-repeat 0 50%;    
+    background:url(images/calendar/months.gif) no-repeat 0 0;    
 }
 .mini-calendar-monthNext
 {
     margin:0;
     margin-left:8px;
-    background:url(images/calendar/months.gif) no-repeat right 50%;    
+    background:url(images/calendar/months.gif) no-repeat right 0;    
 }
 
 .mini-calendar-footer
@@ -2540,7 +2906,7 @@ a:hover.mini-calendar-menu-month
     margin-top:5px;
     margin-left:5px;
     margin-right:5px;
-    padding-left:18px;
+    padding-left:15px;
     padding-right:15px;
     position:relative;
     height:50px;
@@ -2554,11 +2920,12 @@ a:hover.mini-calendar-menu-month
     float:left;
     text-align:center;
     width:32px;height:21px;
-    margin-bottom:3px;
+    margin-bottom:2px;
     line-height:20px;    
     color:#000000;
     text-decoration:none;
     border:solid 1px white;
+    padding:1px;
 }
 a:hover.mini-calendar-menu-year
 {
@@ -2571,7 +2938,7 @@ a:hover.mini-calendar-menu-year
 {
     position:absolute;
     left:0;top:15px;
-    width:18px;
+    width:14px;
     height:15px;
     cursor:pointer;
     background:url(images/calendar/months.gif) no-repeat 0 50%;   
@@ -2589,7 +2956,6 @@ a:hover.mini-calendar-menu-year
 }
 .mini-listbox
 {                
-    background:white;
     overflow:hidden;
     position:relative;  
 }
@@ -2603,10 +2969,12 @@ a:hover.mini-calendar-menu-year
 {
     white-space:nowrap;text-overflow:ellipsis;word-break:keep-all;
     overflow:hidden;    
-    line-height:22px;
+    line-height:18px;    
     cursor:default;
     padding-left:4px;
     padding-right:2px;
+    padding-top:3px;
+    padding-bottom:3px;
     font-size:9pt;
     font-family:Tahoma, Verdana, 宋体;       
     text-align:left; 
@@ -2634,7 +3002,10 @@ a:hover.mini-calendar-menu-year
 }
 .mini-listbox-header td
 {
-    border-right:solid 1px #A5ACB5;    ;
+    border-right:solid 1px #A5ACB5;
+    padding-top:4px;
+    padding-bottom:4px;
+    line-height:18px;
 }
 
 .mini-listbox-view
@@ -2706,13 +3077,15 @@ a:hover.mini-calendar-menu-year
     display:inline-block;
     *display:inline;
     zoom:1;
-    margin-right:8px;
+    margin-right:10px;
+    cursor:default;
 }
 .mini-checkboxlist table label
 {
-    padding-left:2px;
-    line-height:16px;
+    padding-left:4px;
+    line-height:18px;
     display:inline-block;
+    vertical-align:middle;
 }
 .mini-checkboxlist input,
 .mini-radiobuttonlist input
@@ -2739,12 +3112,12 @@ a:hover.mini-calendar-menu-year
     display:inline-block;
     *display:inline;
     zoom:1;
-    margin-right:8px;
+    margin-right:10px;
 }
 .mini-radiobuttonlist table label
 {
-    padding-left:2px;
-    line-height:14px;
+    padding-left:4px;
+    line-height:18px;
     display:inline-block;
     font-size:9pt;
     font-family:Tahoma, Verdana, 宋体;      
@@ -2764,6 +3137,35 @@ a:hover.mini-calendar-menu-year
     margin:0;
     padding:0;
     
+}
+
+
+.mini-list-icon
+{    
+    margin-right:2px;
+    vertical-align:middle;
+    width:13px;height:13px;    
+    display:inline-block;    
+    background:url(images/icons/checkbox.gif) no-repeat 0 0;
+}
+
+.mini-radiobuttonlist-item .mini-list-icon
+{
+    background:url(images/icons/radio.gif) no-repeat 0 0;
+}
+
+.mini-checkboxlist-item-selected .mini-list-icon,
+.mini-radiobuttonlist-item-selected .mini-list-icon
+{
+    background-position:0 -13px;
+}
+
+
+.mini-disabled .mini-checkboxlist-item{ 
+    color: gray;
+    cursor: default;
+    opacity: .7;
+    filter: alpha(opacity=70);
 }
 
 
@@ -2924,7 +3326,6 @@ a:hover.mini-calendar-menu-year
     height:22px;
     width:150px;
     position:relative;
-    border:1px solid #a5acb5;
 }
 .mini-progressbar-border
 {
@@ -2982,7 +3383,7 @@ a:hover.mini-calendar-menu-year
     z-index:100;
 }
 
-.mini-grid-rows
+.mini-grid .mini-grid-rows
 {
     overflow:hidden;width:100%;padding:0;z-index:0;
 } 
@@ -3048,8 +3449,8 @@ a:hover.mini-calendar-menu-year
     font-family:Tahoma, Verdana, 宋体;
     line-height:18px;    
     padding:0px;
-    padding-top:2px;
-    padding-bottom:2px;
+    padding-top:3px;
+    padding-bottom:3px;
     width:100%;
     position:relative;
     overflow:hidden;
@@ -3089,9 +3490,11 @@ body .mini-grid-headerCell-nowrap
 .mini-grid-headerCell-inner
 {
     word-break:break-all;
-    padding-top:0;
-    padding-bottom:0;
-    line-height:22px; 
+    
+    padding-top:3px;
+    padding-bottom:5px;
+    padding-top:4px\9;
+    padding-bottom:4px\9;
     overflow:hidden;
 }
 .mini-grid .mini-grid-bottomCell
@@ -3390,6 +3793,17 @@ body .mini-grid-row-hover
     padding-right:18px;
 }
 
+.mini-grid-allowsort										 
+{
+    background:url("images/grid/sorticon.gif") no-repeat 50% 50%;
+    display: inline-block;
+    height: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+    overflow: hidden;
+    width: 9px;
+}
+
 
 .mini-grid-rowEdit
 {
@@ -3499,6 +3913,37 @@ body .mini-grid-row-hover
     filter: alpha(opacity=0);
 }
 
+
+
+.mini-grid-checkbox,
+.mini-grid-radio
+{
+    width:13px;
+    height:13px;    
+    overflow:hidden;
+    display:block;
+    margin:auto;
+    vertical-align:middle;    
+}
+.mini-grid-checkbox{     
+
+    background:url(images/icons/checkbox.gif) no-repeat 0 0;
+}
+.mini-grid-checkbox-checked,
+.mini-grid-row-selected .mini-checkcolumn .mini-grid-checkbox
+{
+     background:url(images/icons/checkbox.gif) no-repeat 0 -13px;
+}
+.mini-grid-radio{     
+
+    background:url(images/icons/radio.gif) no-repeat 0 0;
+}
+.mini-grid-radio-checked,
+.mini-grid-row-selected .mini-checkcolumn .mini-grid-radio
+{
+     background:url(images/icons/radio.gif) no-repeat 0 -13px;
+}
+
 .mini-tree .mini-grid-viewport{
     background:none;
 }
@@ -3522,30 +3967,30 @@ body .mini-grid-row-hover
 {
     display:inline-block;
     width:18px;
-    height:23px;
+    height:24px;
 }
 .mini-tree-nodetitle
 {
     margin-top:0px;margin-right:2px;overflow:hidden;
     cursor:default;white-space:nowrap;      
-    height:22px;    line-height:16px;
+    height:24px;    line-height:16px;
 }
 
 .mini-tree .mini-tree-icon
 {
+    position:relative;
     display:inline-block;
-    width:18px;height:20px;overflow:hidden;    
+    width:18px;height:22px;overflow:hidden;line-height:20px;
     background-repeat:no-repeat;
     background-position:50% 50%;
-    vertical-align:middle;
-    
- -moz-user-select: none; 
--webkit-user-select: none;
--ms-user-select: none;
--khtml-user-select: none; 
-user-select: none;
-    
+    vertical-align:middle;    
+    -moz-user-select: none; 
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none; 
+    user-select: none;    
 }
+
 .mini-tree-nodetext
 {	
     height:18px;
@@ -3583,7 +4028,7 @@ user-select: none;
 {
     display:inline-block;
     width:18px;
-    height:22px;    
+    height:24px;    
     background:no-repeat 2px 0px;
     outline:none;
     cursor:pointer;
@@ -3779,7 +4224,7 @@ body .mini-tree-showArrows .mini-tree-node-ecicon
 }
 .mini-tree-nowrap .mini-grid-table
 {
-    table-layout:auto;    
+    table-layout:auto;
 }
 .mini-tree-nowrap .mini-tree-nodetitle
 {
@@ -3802,40 +4247,60 @@ body .mini-tree-showArrows .mini-tree-node-ecicon
     background-image:url(images/tree/radio_checked.gif);
 }
 
+.mini-tree-checkbox
+{
+    width:13px;
+    height:13px;    
+    overflow:hidden;
+    vertical-align:middle;
+    display:inline-block;   
+    *display:inline;
+    *zoom:1;
+    background:url(images/icons/checkbox.gif) no-repeat 0 0;
+    cursor:pointer;
+    margin-left:2px;
+    margin-right:1px;
+}
+.mini-tree-checkbox-checked
+{
+     background-position:0 -13px;
+}
+
+.mini-tree-checkbox-indeterminate
+{
+    background-position:0 -26px;
+}
 .mini-pager
 {   
-    width:auto;
-    height:28px;
+    width:auto;    
     overflow:hidden;  
     font-size:9pt;
     font-family: Tahoma, Verdana;
     position:relative;
-    
+    line-height:24px;
+    height:24px;
+    padding:3px 8px 3px 4px;
 }
 
 .mini-pager-left
 {
-    padding-top:3px;
-    padding-top:2px\9;
-    _padding:2px;
     
-    line-height:25px;
-    height:25px;
     overflow:hidden;
-    padding-left:2px;
+    
     float:left;
     position:relative;
-    top:-1px;        
+    padding-right:2px;
+    
     
 }
-:root .mini-pager-left {top:-1px\9; }  
 
 
 .mini-pager-right
 {
+        
+    
+    
     float:right;
-    line-height:28px;
-    padding-right:5px;
 }
 
 .mini-pager .mini-button
@@ -3845,9 +4310,7 @@ body .mini-tree-showArrows .mini-tree-node-ecicon
 
 .mini-pager .mini-button-iconOnly
 {
-    padding-top:0;
-    padding-bottom:0;
-    height:20px;
+    
 }
 
 body .mini-pager-size .mini-buttonedit .mini-buttonedit-border
@@ -3865,10 +4328,9 @@ body .mini-pager-num
 	+vertical-align:middle;
 	position:relative;
 	_left:0;_top:-1px;
-	height:14px;
-	
-
+	height:16px;
 }
+
 .mini-pager-pages
 {
     padding-left:5px;
@@ -3878,11 +4340,10 @@ body .mini-pager-num
 .mini-pager-size
 {
     display:inline-block;
-    height:20px;
-    padding-left:2px;
+    
+    
     vertical-align:middle;
-    position:relative;left:0;    
-    _top:-1px;
+    
     
     font-size: 0;   
     line-height:0px;	    
@@ -3890,7 +4351,7 @@ body .mini-pager-num
 .mini-pager-index
 {
     vertical-align:middle;
-    height:25px;
+    
     overflow:hidden;
     
 }
@@ -3944,7 +4405,7 @@ body .mini-pager-num
 .mini-htmlfile
 {
     position:relative;
-    width:180px;
+    
 }
 .mini-htmlfile-file
 {    
@@ -4006,7 +4467,7 @@ body .mini-pager-num
 }
 .mini-textboxlist
 {
-    width:125px;
+    width:150px;
     height:24px;
     
     display:inline-table;
@@ -4031,7 +4492,7 @@ body .mini-pager-num
     cursor:text;
     vertical-align:top;
 }
-body .mini-textboxlist-focus .mini-textboxlist-border
+.mini-textboxlist-focus .mini-textboxlist-border
 {
     border-color: #434756 #7D808D #AAACB9;
 }
@@ -4039,6 +4500,7 @@ body .mini-textboxlist-focus .mini-textboxlist-border
 .mini-textboxlist ul
 {
     zoom: 1; overflow: hidden; margin: 0; padding: 2px;padding-bottom:0;
+    padding-left:4px;
 }
 .mini-textboxlist li
 {
@@ -4057,12 +4519,15 @@ body .mini-textboxlist-focus .mini-textboxlist-border
     height: 16px;
     margin-top:2px;
     *+margin-top:0px; 
+    background:transparent;
 }
 
 
 .mini-textboxlist .mini-textboxlist-item
 {
-    position: relative; padding: 0 6px; -moz-border-radius: 9px; -webkit-border-radius: 9px; border-radius: 9px; border: 1px solid #CAD8F3; background: #DEE7F8; cursor: default;
+    position: relative; padding: 0 6px; 
+    -moz-border-radius: 9px; -webkit-border-radius: 9px; border-radius: 9px; 
+    border: 1px solid #CAD8F3; background: #DEE7F8; cursor: default;
     padding-right: 15px;
     height:16px;
     line-height: 16px;
@@ -4084,6 +4549,7 @@ body .mini-textboxlist-focus .mini-textboxlist-border
 {
     margin-left:2px;
     margin-top:2px;
+    position:static;
 }
 
 .mini-textboxlist-popup-loading
@@ -4113,7 +4579,7 @@ body .mini-textboxlist-focus .mini-textboxlist-border
 }
 
 
-.mini-required .mini-textboxlist-border,.mini-required .mini-textboxlist-input{
+.mini-required .mini-textboxlist-border{
     background: #ffffe6;
 }
 .mini-tips

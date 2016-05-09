@@ -125,7 +125,7 @@ if (mini.Calendar) {
 for (var id in mini) {
     var clazz = mini[id];
     if (clazz && clazz.prototype && clazz.prototype.isControl) {
-        clazz.prototype.requiredErrorText = "不能为空";
+        clazz.prototype.requiredErrorText = "Not null";
         clazz.prototype.loadingMsg = "Loading...";
     }
 

@@ -125,7 +125,7 @@ for (var id in mini) {
     var clazz = mini[id];
     if (clazz && clazz.prototype && clazz.prototype.isControl) {
         clazz.prototype.requiredErrorText = "不能为空";
-        clazz.prototype.loadingMsg = "Loading...";
+        clazz.prototype.loadingMsg = "加载中...";
     }
 
 }
