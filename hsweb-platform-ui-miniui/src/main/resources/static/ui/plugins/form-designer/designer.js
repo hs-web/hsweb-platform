@@ -132,6 +132,7 @@ function save(callback) {
     var otherAttr = {};
     var defAttr = ["name", "remark"];
     $(fieldData.main).each(function (i, e) {
+        if(e.key=='comment')form.remark= e.value;
         if (defAttr.indexOf(e.key) != -1) {
             form[e.key] = e.value;
         } else {
