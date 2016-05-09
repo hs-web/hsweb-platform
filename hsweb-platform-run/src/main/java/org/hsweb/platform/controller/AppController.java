@@ -4,7 +4,7 @@ import org.hsweb.platform.app.WebApplicationProcess;
 import org.hsweb.platform.core.Application;
 import org.hsweb.platform.core.ApplicationContainer;
 import org.hsweb.platform.core.web.WebApplication;
-import org.hsweb.web.exception.BusinessException;
+import org.hsweb.web.core.exception.BusinessException;
 import org.hsweb.web.service.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

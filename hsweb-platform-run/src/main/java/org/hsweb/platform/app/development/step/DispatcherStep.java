@@ -3,7 +3,7 @@ package org.hsweb.platform.app.development.step;
 import org.hsweb.platform.app.development.step.processer.DevelopmentStepProcessor;
 import org.hsweb.platform.core.ApplicationProcess;
 import org.hsweb.platform.core.Step;
-import org.hsweb.web.message.ResponseMessage;
+import org.hsweb.web.core.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
