@@ -2,9 +2,17 @@
  * Created by zhouhao on 16-5-6.
  */
 var nowEditorNode;
+var defaultGridData=[
+    { id: "M", text: "菜单可见",checked:true}
+    ,{ id: "R", text: "查询",checked:true}
+    ,{ id: "C", text: "新增",checked:true}
+    ,{ id: "U", text: "修改",checked:true}
+    ,{ id: "R", text: "删除",checked:false}
+];
 mini.parse();
-var grid = mini.get("datagrid");
+var grid = mini.get("m_option_table");
 var tree = mini.get("leftTree");
+grid.setData(defaultGridData);
 if (nowEditorId != "") {
     tree.selectNode({u_id: nowEditorId});
 }
@@ -20,6 +28,7 @@ function newModule() {
         tree.addNode(newNode, "add", node);
         tree.selectNode(newNode);
     }
+    grid.setData(defaultGridData);
 }
 function drawnode(e) {
     e.nodeHtml = "<i class='" + (e.node.icon) + " font-2x'>&nbsp;" + e.node.name + "(" + e.node.u_id + ")" + "</i> &nbsp;";

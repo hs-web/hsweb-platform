@@ -103,7 +103,8 @@
 
             <div id="m_option_table" class="mini-datagrid"
                  style="margin: auto;width:400px;height:150px;border: 0px;"
-                 showPager="false" allowCellEdit="true" allowCellSelect="true" allowAlternating="true" editNextOnEnterKey="true">
+                 showPager="false" allowCellEdit="true"
+                 allowCellSelect="true" allowAlternating="true" editNextOnEnterKey="true">
                 <div property="columns">
                     <div field="id" width="30" align="center" headerAlign="center">ID
                         <input property="editor" class="mini-textbox"/>
@@ -112,7 +113,7 @@
                         <input property="editor" class="mini-textarea"/>
                     </div>
                     <div field="checked" width="30" align="center" headerAlign="center">默认
-                        <input property="editor" class="mini-combobox" data="[{'id':true},{'id':false}]" textField="id"/>
+                        <input property="editor" class="mini-combobox" data="[{'id':true,text:'true'},{'id':false,text:'false'}]" valueField="id" textField="text"/>
                     </div>
                 </div>
             </div>

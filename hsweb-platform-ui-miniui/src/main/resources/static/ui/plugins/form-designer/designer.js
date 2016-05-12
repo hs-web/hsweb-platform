@@ -63,7 +63,7 @@ function deploy() {
                 save(function () {
                     Request.put("form/" + id + "/deploy", {}, function (e) {
                         if (e.success)logger.info("发布成功!");
-                        else logger.error(e.data);
+                        else logger.error(e.message);
                     })
                 });
             }
@@ -169,7 +169,7 @@ function save(callback) {
             if (callback)
                 callback();
         } else {
-            logger.error("保存失败:" + e.data);
+            logger.error("保存失败:" + e.message);
         }
     });
 }

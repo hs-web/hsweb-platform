@@ -36,10 +36,13 @@
             if(data.success){
                 $('#preview').html(data.data);
                 uParse('#preview',{
-                    rootPath : '/ui/plugins/ueditor',
+                    rootPath :Request.BASH_PATH+'ui/plugins/ueditor',
                     chartContainerHeight:5000
                 })
                 mini.parse();
+                $(".mini-radiobuttonlist td").css("border","0px");
+                $(".mini-checkboxlist td").css("border","0px");
+                $(".mini-radiobuttonlist").css("display ","inline");
             }
         });
     }

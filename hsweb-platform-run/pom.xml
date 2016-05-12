@@ -25,7 +25,8 @@
                 <environment.package>develop</environment.package>
 
                 <jdbc.type>oracle</jdbc.type>
-                <jdbc.url>jdbc:h2:mem:hsweb</jdbc.url>
+                <!--<jdbc.url>jdbc:h2:mem:hsweb</jdbc.url>-->
+                <jdbc.url>jdbc:h2:file:./h2db</jdbc.url>
                 <jdbc.username>sa</jdbc.username>
                 <jdbc.password></jdbc.password>
                 <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>

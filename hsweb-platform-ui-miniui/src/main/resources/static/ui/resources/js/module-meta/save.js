@@ -2,25 +2,23 @@
  * Created by zhouhao on 16-5-7.
  */
 uParse('#data-form', {
-    rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
+    rootPath: '<@global.basePath />ui/plugins/ueditor',
     chartContainerHeight: 500
 });
 mini.parse();
-var tree;
+var tree = mini.get('funcTree');
+
 var module_data = [];
 loadData();
 function loadData() {
-    tree = mini.get('funcTree');
-    Request.get("module", {paging: false, sortField: "sort_index"}, function (e) {
+    Request.get("module", {paging:false,sortField:"sort_index"}, function (e) {
         module_data = e;
         tree.loadList(e);
         if (id != "") {
             Request.get("role/" + id, {}, function (e) {
                 if (e.success) {
                     e.data.password = "$default";
-                    setTimeout(function () {
-                        setCheckedActions(e.data.modules)
-                    }, 10);
+                    setTimeout(function(){setCheckedActions(e.data.modules)},10);
                     new mini.Form('#data-form').setData(e.data);
                     mini.get('u_id').setEnabled(false);
                 }
@@ -45,7 +43,7 @@ function ondrawcell(e) {
             var id = "module-" + record.u_id + "-" + e.id;
             html += "<span class='module-span' >" +
                 "<input m-id='" + record.u_id + "' value='" + e.id + "' " + (e.checked == true ? 'checked' : '') + " id='" + id + "'   class='module-action action-" + record.u_id + "' type='checkbox' />" +
-                "<span onclick=\"chooseAction(this,'" + id + "')\">" + (e.text || '') + "(" + e.id + ")</span>" +
+                "<span onclick=\"chooseAction(this,'" + id + "')\">" + (e.text||'') + "(" + e.id + ")</span>" +
                 "</span>";
         });
         html += "</span>";
@@ -112,30 +110,3 @@ function getCheckedActions() {
     return newData;
 }
 
-function save() {
-    var api = "role/" + id;
-    var func = id == "" ? Request.post : Request.put;
-    var form = new mini.Form("#data-form");
-    form.validate();
-    if (form.isValid() == false) return;
-    //提交数据
-    var data = form.getData();
-    data.modules = getCheckedActions();
-    func(api, data, function (e) {
-        if (e.success) {
-            if (id == '') {
-                //新增
-                window.history.pushState(0, "", '?id=' + e.data);
-                id = e.data;
-                showTips("创建成功!");
-                $('#title').html("编辑角色");
-                mini.get('u_id').setEnabled(false);
-            } else {
-                //update
-                showTips("修改成功!");
-            }
-        } else {
-            showTips(e.message, "danger");
-        }
-    });
-}

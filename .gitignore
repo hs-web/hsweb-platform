@@ -9,7 +9,7 @@ bin/
 *.ipr
 *.iws
 *.iml
-
+*.db
 # Package Files #
 *.jar
 *.war

@@ -29,7 +29,7 @@ public class PageViewController implements ExpressionScopeBean {
     }
 
     @RequestMapping(value = "/admin/**/*.html", method = RequestMethod.GET)
-    @Authorize(expression = "#user.username=='admin'||#user.getModuleByUri(#pageViewController.getUri(#request))!=null")
+    @Authorize
     public ModelAndView view(HttpServletRequest request,
                              @RequestParam(required = false) Map<String, Object> param) {
         String path = getUri(request);

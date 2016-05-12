@@ -3,7 +3,7 @@
  */
 mini.parse();
 uParse('#data-form', {
-    rootPath: '<@global.basePath />ui/plugins/ueditor',
+    rootPath: Request.BASH_PATH+'ui/plugins/ueditor',
     chartContainerHeight: 500
 });
 var roleGrid = mini.get('roleGrid');

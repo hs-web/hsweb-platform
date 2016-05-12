@@ -131,6 +131,28 @@ Designer.getPropertiesEditors = function () {
                 {field: "describe", width: 50, headerAlign: "center", allowSort: false, header: "说明", editor: {type: "textbox"}}
             ];
             Designer.showTableTemplate(columns, data, "其他控件配置", callback);
+        }, "permissions": function (value, callback) {
+            var data = mini.decode(value['permissions']);
+            if (data.length == 0) {
+                data = [
+                    {type: "module", value: "", describe: "模块"}
+                ]
+            }
+            var columns = [
+                {
+                    field: "type", width: 50, headerAlign: "center", allowSort: false, header: "验证类型",
+                    editor: {
+                        type: "combobox",
+                        data: [{id: "role", text: "角色"}, {id: "module", text: "模块"}, {id: "expression", text: "表达式"}]
+                    }
+                },
+                {field: "value", width: 50, headerAlign: "center", allowSort: false, header: "值", editor: {type: "buttonedit",onbuttonclick:'Designer.permissionsButtonEdit'}},
+                {field: "describe", width: 50, headerAlign: "center", allowSort: false, header: "说明", editor: {type: "textbox"}}
+            ];
+            Designer.permissionsButtonEdit=function(e){
+                e.sender.setValue("test");
+            }
+            Designer.showTableTemplate(columns, data, "权限控制", callback);
         }
     }
     return editors;
