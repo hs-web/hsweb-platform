@@ -97,6 +97,7 @@
         </div>
         <div style="margin: auto;width:600px;">
             <br/>
+
             <h3 align="center">可选操作</h3>
             <a class="mini-button" iconCls="icon-add" onclick="mini.get('m_option_table').addRow({},0)" plain="true"></a>
             <a class="mini-button" iconCls="icon-remove" plain="true" onclick="mini.get('m_option_table').removeRow(mini.get('m_option_table').getSelected())"></a>
@@ -129,9 +130,9 @@
         chartContainerHeight: 500
     });
     var nowEditorId = "${param.editId!''}";
-    function onbuttonedit(e){
-        openWindow("utils/get-icon.html","选择图标","800","400",function(icon){
-            if(icon&&icon.indexOf("icon-")!=-1){
+    function onbuttonedit(e) {
+        openWindow(Request.BASH_PATH + "admin/utils/get-icon.html", "选择图标", "800", "400", function (icon) {
+            if (icon && icon.indexOf("icon-") != -1) {
                 e.sender.setValue(icon);
                 e.sender.setText(icon);
             }
