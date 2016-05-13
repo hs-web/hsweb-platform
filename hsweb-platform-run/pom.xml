@@ -109,7 +109,18 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -185,13 +196,13 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-redis</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-redis</artifactId>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
-            <!--<groupId>org.hsweb</groupId>-->
-            <!--<artifactId>hsweb-platform-workflow-modeler</artifactId>-->
+        <!--<groupId>org.hsweb</groupId>-->
+        <!--<artifactId>hsweb-platform-workflow-modeler</artifactId>-->
         <!--</dependency>-->
 
         <dependency>
