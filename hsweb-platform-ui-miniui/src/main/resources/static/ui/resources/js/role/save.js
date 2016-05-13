@@ -125,7 +125,9 @@ function save() {
         if (e.success) {
             if (id == '') {
                 //新增
-                window.history.pushState(0, "", '?id=' + e.data);
+                if (window.history.pushState)
+                    window.history.pushState(0, "", '?id=' + e.data);
+
                 id = e.data;
                 showTips("创建成功!");
                 $('#title').html("编辑角色");

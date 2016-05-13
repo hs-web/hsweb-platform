@@ -79,7 +79,9 @@
             <div field="name" width="120" align="center" headerAlign="center" allowSort="true">表单名称</div>
             <div field="remark" width="100" align="center" align="center" headerAlign="center">备注</div>
             <div field="create_date" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
-            <div field="version" align="center" width="100" headerAlign="center" allowSort="true">版本</div>
+            <div field="version" align="center" width="50" headerAlign="center" allowSort="true">版本</div>
+            <div field="revision" align="center" width="50" headerAlign="center" allowSort="true">修订版</div>
+            <div field="release" align="center" width="50" headerAlign="center" allowSort="true">发布版</div>
             <div field="using" renderer="renderStatus" align="center" width="100" headerAlign="center" allowSort="true">是否已发布</div>
             <#--<div field="customAttr.isLogin" renderer="renderLogin" align="center" width="100" headerAlign="center" allowSort="true">是否已登录</div>-->
             <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
@@ -93,7 +95,9 @@
                 <div field="name" width="120" align="center" headerAlign="center" allowSort="true">表单名称</div>
                 <div field="remark" width="100" align="center" align="center" headerAlign="center">备注</div>
                 <div field="create_date" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
-                <div field="version" align="center" width="100" headerAlign="center" allowSort="true">版本</div>
+                <div field="version" align="center" width="50" headerAlign="center" allowSort="true">版本</div>
+                <div field="revision" align="center" width="50" headerAlign="center" allowSort="true">修订版</div>
+                <div field="release" align="center" width="50" headerAlign="center" allowSort="true">发布版</div>
                 <div field="using" renderer="renderStatus" align="center" width="100" headerAlign="center" allowSort="true">是否已发布</div>
                 <#--<div field="customAttr.isLogin" renderer="renderLogin" align="center" width="100" headerAlign="center" allowSort="true">是否已登录</div>-->
                 <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>

@@ -6,32 +6,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>用户登录</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
     <style type="text/css">
-        body
-        {
-            width:100%;height:100%;margin:0;overflow:hidden;
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
         }
     </style>
-    <@global.importMiniui/>
+<@global.importMiniui/>
 </head>
-<body >
+<body>
 <div id="loginWindow" class="mini-window" title="用户登录" style="width:350px;height:165px;"
-     showModal="true" showCloseButton="false" >
+     showModal="true" showCloseButton="false">
 
     <div id="loginForm" style="padding:15px;padding-top:10px;">
-        <table >
+        <table>
             <tr>
                 <td style="width:60px;"><label for="username$text">帐号：</label></td>
                 <td>
-                    <input id="username" name="username"  class="mini-textbox" required="true" style="width:150px;"/>
+                    <input id="username" name="username" class="mini-textbox" required="true" style="width:150px;"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:60px;"><label for="pwd$text">密码：</label></td>
                 <td>
-                    <input id="password" name="password" class="mini-password"  required="true" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
+                    <input id="password" name="password" class="mini-password" required="true" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
                 </td>
             </tr>
             <tr>
@@ -54,13 +56,18 @@
         var form = new mini.Form("#loginWindow");
         form.validate();
         if (form.isValid() == false) return;
-        mini.loading("登录中...", "登录");
+        var box = mini.showMessageBox("登录中...", "登录");
         var data = form.getData();
-       Request.post("login?username="+data.username+"&password="+data.password,{},function(e){
-           loginWindow.hide();
-            if(e.success)window.location.href=back;
-           else mini.alert(e.message);
-       });
+        Request.post("login?username=" + data.username + "&password=" + data.password, {}, function (e) {
+            mini.hideMessageBox(box);
+            if (e.success) {
+                if (back == 'ajax')closeWindow("success");
+                else
+                    window.location.href = back;
+            }
+
+            else mini.alert(e.message);
+        });
     }
     function onResetClick(e) {
         var form = new mini.Form("#loginWindow");

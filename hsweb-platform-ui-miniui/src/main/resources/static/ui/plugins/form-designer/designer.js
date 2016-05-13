@@ -28,14 +28,59 @@ ue.addListener('focus', function () {
 ue.addListener('selectionchange', function () {
     var focusNode = ue.selection.getStart();
     var id = $(focusNode).attr("field-id");
+    var tag = $(focusNode).prop("tagName");
+    var tagIsInput = tag == "input" || tag == "INPUT";
+    var tagIsSelect = tag == "select" || tag == "SELECT";
+    var tagIsTextArea = tag == "textarea" || tag == "TEXTAREA";
+    var autocreate = tagIsInput || tagIsSelect||tagIsTextArea;
     if (id) {
         nowEditorTarget = id;
     } else {
-        nowEditorTarget = "main";
+        if (autocreate) {
+            var name = $(focusNode).attr("name");
+            if (name.indexOf(".") != -1)
+                name = name.split(".")[1];
+            name = name.replace(/([A-Z])/g, "_$1").toLowerCase();
+           var text =  $(focusNode).parent().prev().text().replace("*","").replace(":","").replace("：","");
+            $(focusNode).remove();
+            if (tagIsTextArea) {
+                insert("textarea");
+                var property = [];
+                property.push({key: "style", value: "width:90%"});
+                fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
+            } else if (tagIsInput) {
+                insert("textbox");
+                var property = [];
+                property.push({key: "style", value: "width:200px"});
+                fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
+            } else if (tagIsSelect) {
+                insert("combobox");
+                var childs = $($(focusNode).children()).select('option');
+                var data = [];
+                $(childs).each(function (i, e) {
+                    if ($(e).val()) {
+                        data.push({id: $(e).val(), text: $.trim($(e).text())});
+                    }
+                });
+                var dataJson = mini.encode(data).replace(/"([^"]*)"/g, "'$1'");
+                var conf = Designer.fields["combobox"];
+                var property = conf.defaultData;
+                $(property).each(function (i, e) {
+                    if (e.key == "data")e.value = dataJson;
+                });
+                property.push({key: "style", value: "width:200px"});
+                fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
+            }
+            if (name) {
+                fieldData[nowEditorTarget][0].value = name;
+                fieldData[nowEditorTarget][1].value = text;
+            }
+        } else {
+            nowEditorTarget = "main";
+        }
     }
     initProperties();
 });
-
 function showEditor(e) {
     var row = e.record;
     var data = list2Map(propertiesTable.getData());
@@ -98,7 +143,11 @@ function submitProperties(e) {
     fieldData[nowEditorTarget] = propertiesTable.getData();
 }
 function initProperties() {
-    propertiesTable.setData(fieldData[nowEditorTarget]);
+    var data = fieldData[nowEditorTarget];
+    if (!data) {
+        data = Designer.fields["textbox"].getDefaultProperties();
+    }
+    propertiesTable.setData(data);
 }
 function insert(id) {
     var conf = Designer.fields[id];
@@ -165,6 +214,7 @@ function save(callback) {
             logger.info("保存成功!");
             if (id == "") {
                 id = e.data;
+                if (window.history.pushState)
                 window.history.pushState(0, "", "?id=" + id);
             }
             if (callback)
@@ -244,7 +294,7 @@ function autoCreateModule() {
                             showTips("创建失败:" + e.message, "danger");
                         }
                     });
-                }else{
+                } else {
                     mini.alert("请先保存此表单!");
                 }
             }

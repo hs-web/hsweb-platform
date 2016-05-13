@@ -3,6 +3,7 @@
  */
 mini.parse();
 var grid = mini.get('grid');
+bindDefaultAction(grid);
 search();
 function create() {
     openWindow(Request.BASH_PATH+"admin/user/save.html", "新建用户", 700, 500, function (e) {

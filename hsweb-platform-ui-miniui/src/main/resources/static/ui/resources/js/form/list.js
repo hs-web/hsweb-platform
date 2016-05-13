@@ -5,7 +5,8 @@ mini.parse();
 var grid = mini.get('grid');
 var employee_grid = mini.get("employee_grid");
 var detailGrid_Form = document.getElementById("detailGrid_Form");
-
+bindDefaultAction(employee_grid);
+bindDefaultAction(grid);
 search();
 function create() {
     openWindow(Request.BASH_PATH + "admin/form/designer.html", "新建表单", "100%", "100%", function (e) {

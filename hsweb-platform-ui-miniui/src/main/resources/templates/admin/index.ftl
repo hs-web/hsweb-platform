@@ -15,22 +15,32 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-        }.font-2x {
-             font-size: 16px;;
-         }
+        }
+
+        .font-2x {
+            font-size: 16px;;
+        }
     </style>
 </head>
 <body>
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
     <div class="header" region="north" height="60" showSplit="false" showHeader="false">
-        <h1>hsweb-platform</h1>
+        <h1 style="margin:0;padding:15px;cursor:default;font-family:微软雅黑,黑体,宋体;color: black;">
+            <a href="http://github.com/hs-web">http://github.com/hs-web</a>
+        </h1>
+
+        <div style="position:absolute;top:10px;right:10px;">
+            <a class="mini-button" iconCls="icon-cross" onclick="exit()" plain="true">退出</a>
+        </div>
     </div>
     <div title="south" region="south" showSplit="false" showHeader="false" height="30">
-        <div style="line-height:28px;text-align:center;cursor:default">github/hs-web</div>
+        <div style="position:absolute;top:18px;right:10px;">
+            <a class="mini-button mini-button-iconTop" iconCls="icon-close" onclick="exit()" plain="true">注销</a>
+        </div>
     </div>
-    <div showHeader="false" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
+    <div showHeader="true" title="导航" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
         <div id="leftTree" class="mini-tree" url="<@global.api "userModule" />"
-             expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}"  showTreeIcon="true" iconField="icon"
+             expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
              onnodeclick="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0">
         </div>
     </div>
@@ -44,13 +54,15 @@
     </div>
 </div>
 </body>
+<@global.importRequest/>
 </html>
 <script>
     mini.parse();
     var tabs = mini.get('mainTabs');
     function nodeselect(e) {
-        if (e.node&& e.node.p_id!="-1") {
-            window.history.pushState(0, 0, "#m=" + e.node.u_id);
+        if (e.node && e.node.p_id != "-1") {
+            if (window.history.pushState)
+                window.history.pushState(0, 0, "#m=" + e.node.u_id);
             showTab(e.node);
             return;
         }
@@ -69,6 +81,19 @@
             tab.url = '../' + node.uri;
             tabs.addTab(tab);
         }
+        if (!mini.get("layout1").isExpandRegion("west"))
+            mini.get("layout1").collapseRegion("west");
         tabs.activeTab(tab);
+    }
+    function exit() {
+        mini.confirm("确定退出系统?", "确定？",
+                function (action) {
+                    if (action == "ok") {
+                        Request.post("exit", {}, function (e) {
+                            window.location.href = "/admin/index.html";
+                        });
+                    }
+                }
+        );
     }
 </script>

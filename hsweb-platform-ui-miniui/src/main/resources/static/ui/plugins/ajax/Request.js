@@ -118,7 +118,7 @@ var Request = {
     put: function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, false, true);
     },
-    delete: function (uri, data, callback) {
+    "delete": function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, false, false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {

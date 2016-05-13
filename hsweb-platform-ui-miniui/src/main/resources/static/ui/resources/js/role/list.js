@@ -4,7 +4,7 @@
 mini.parse();
 var grid = mini.get('grid');
 grid.load();
-
+bindDefaultAction(grid);
 function edit(id){
     openWindow(Request.BASH_PATH+"admin/role/save.html?id="+id,"编辑角色","80%","80%",function(e){
         grid.reload();

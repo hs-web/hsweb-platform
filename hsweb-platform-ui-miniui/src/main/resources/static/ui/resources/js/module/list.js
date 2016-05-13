@@ -35,7 +35,10 @@ function drawnode(e) {
 }
 function nodeselect(e) {
     if (!e.node) {
-        window.history.pushState(0, 0, "?editId=");
+        try{
+            window.history.pushState(0, 0, "?editId=");
+        }catch(e){}
+
         return;
     }
     nowEditorId = e.node.u_id;
@@ -49,6 +52,7 @@ function nodeselect(e) {
     } else {
         mini.get("u_id").setEnabled(true);
     }
+    if (window.history.pushState)
     window.history.pushState(0, 0, "?editId=" + nowEditorId);
 }
 function save() {
@@ -82,7 +86,7 @@ function remove() {
         mini.confirm("确定删除权限，删除后无法恢复？", "确定？",
             function (action) {
                 if (action == "ok") {
-                    Request.delete("module/" + nowEditorId, {}, function (e) {
+                    Request['delete']("module/" + nowEditorId, {}, function (e) {
                         if (e.success) {
                             showTips("删除成功!");
                             tree.removeNode(nowEditorNode);

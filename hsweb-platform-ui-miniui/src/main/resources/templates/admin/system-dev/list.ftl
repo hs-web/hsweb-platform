@@ -62,7 +62,6 @@
                 <div property="columns">
                     <div type="indexcolumn"></div>
                     <div field="key" width="120" align="center" headerAlign="center" allowSort="true">标识</div>
-                    <div field="role_id" width="120" align="center" headerAlign="center" allowSort="true">角色ID</div>
                     <div field="remark" width="100" align="center" headerAlign="center">备注</div>
                     <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
                 </div>

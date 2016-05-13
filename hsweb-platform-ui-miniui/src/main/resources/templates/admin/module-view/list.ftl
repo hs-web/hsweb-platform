@@ -34,7 +34,7 @@
         }
 
         .searchForm .title {
-            width: 80px;
+            width: 100px;
             text-align: right;
         }
 

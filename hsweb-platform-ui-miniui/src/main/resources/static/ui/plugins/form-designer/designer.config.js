@@ -4,6 +4,7 @@
 var Designer = {};
 Designer.createDefault = function (type, clazz, html, defaultData) {
     return {
+        defaultData:defaultData,
         html: html,
         propertiesEditable: function (name) {
             var cf = Designer.fields[type].getPropertiesTemplate()[name];
@@ -219,7 +220,7 @@ Designer.fields = {
             return "<input field-id='" + id + "' />";
         }, [
             {key: "value", value: "", describe: "默认值"}
-            , {key: "data", value: "", describe: "可选数据项（js对象，属性以' '包装）"}
+            , {key: "data", value: "", describe: "可选数据项"}
             , {key: "url", value: "", describe: "可选数据项来自url"}
             , {key: "valueField", value: "", describe: "值字段(默认id)"}
             , {key: "textField", value: "", describe: "文本显示字段(默认text)"}

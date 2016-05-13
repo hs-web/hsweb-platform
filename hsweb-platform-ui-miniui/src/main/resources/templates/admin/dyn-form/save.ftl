@@ -59,6 +59,7 @@ ${html!''}
             if (e.success) {
                 if (id == "") {
                     id = e.data;
+                    if (window.history.pushState)
                     window.history.pushState(0, "", "?id=" + id);
                 }
                 showTips("保存成功!");

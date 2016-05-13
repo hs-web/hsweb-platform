@@ -186,9 +186,6 @@
                 </div>
             </div>
         </div>
-        <div title="页面配置">
-            3
-        </div>
     </div>
     <div style="height: 10%;text-align: center">
         <a class="mini-button" iconCls="icon-save" plain="true" onclick="save()">保存 </a>
@@ -225,10 +222,6 @@
     mini.parse();
     var query_plan_grid = mini.get('query_plan_grid');
     var query_table_grid = mini.get('query_table_grid');
-
-    function commonSetting(e) {
-
-    }
 
     function removeQueryPlanRow(id) {
         query_plan_grid.findRow(function (row) {
@@ -387,6 +380,7 @@
             if (e.success) {
                 if (id == '') {
                     //新增
+                    if (window.history.pushState)
                     window.history.pushState(0, "", '?id=' + e.data);
                     id = e.data;
                     showTips("创建成功!");
