@@ -126,13 +126,12 @@ function randomChar(len) {
     }
     return pwd;
 }
-
-function save(callback) {
+function getFormData() {
     var form = {};
     var otherAttr = {};
     var defAttr = ["name", "remark"];
     $(fieldData.main).each(function (i, e) {
-        if(e.key=='comment')form.remark= e.value;
+        if (e.key == 'comment')form.remark = e.value;
         if (defAttr.indexOf(e.key) != -1) {
             form[e.key] = e.value;
         } else {
@@ -140,8 +139,11 @@ function save(callback) {
         }
     });
     form.config = mini.encode(otherAttr);
-
     form.html = ue.getContent();
+    return form;
+}
+function save(callback) {
+    var form = getFormData();
     var tmp = $(form.html);
     for (var e in fieldData) {
         if (e == "main")continue;
@@ -157,7 +159,6 @@ function save(callback) {
         func = Request.post;
     } else {
         func = Request.put;
-
     }
     func(api, form, function (e) {
         if (e.success) {
@@ -228,4 +229,24 @@ function initShortcut() {
             delete  nowPress[e.originalEvent.code];
         });
     }
+}
+
+function autoCreateModule() {
+    mini.confirm("创建前请确定已发布此表单?", "确定？",
+        function (action) {
+            if (action == "ok") {
+                if (id != "") {
+                    Request.post("module-view/create", id, function (e) {
+                        if (e.success) {
+                            openWindow(Request.BASH_PATH + "admin/system-dev/save.html?id=" + e.data, "模块配置", "80%", "80%", function (e1) {
+                            });
+                        } else {
+                            showTips("创建失败:" + e.message, "danger");
+                        }
+                    });
+                }else{
+                    mini.alert("请先保存此表单!");
+                }
+            }
+        });
 }
