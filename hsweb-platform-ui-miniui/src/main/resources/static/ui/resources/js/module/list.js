@@ -7,7 +7,7 @@ var defaultGridData=[
     ,{ id: "R", text: "查询",checked:true}
     ,{ id: "C", text: "新增",checked:true}
     ,{ id: "U", text: "修改",checked:true}
-    ,{ id: "R", text: "删除",checked:false}
+    ,{ id: "D", text: "删除",checked:false}
 ];
 mini.parse();
 var grid = mini.get("m_option_table");
@@ -31,7 +31,7 @@ function newModule() {
     grid.setData(defaultGridData);
 }
 function drawnode(e) {
-    e.nodeHtml = "<i class='" + (e.node.icon) + " font-2x'>&nbsp;" + e.node.name + "(" + e.node.u_id + ")" + "</i> &nbsp;";
+    e.nodeHtml =  e.node.name + "(" + e.node.u_id + ")" + "</i> &nbsp;";
 }
 function nodeselect(e) {
     if (!e.node) {
@@ -40,6 +40,7 @@ function nodeselect(e) {
     }
     nowEditorId = e.node.u_id;
     nowEditorNode = e.node;
+
     new mini.Form("#formContainer").setData(e.node);
     mini.get("m_option_table").setData(mini.decode(e.node.m_option));
     $("#tableTitle").html(e.node.name);
