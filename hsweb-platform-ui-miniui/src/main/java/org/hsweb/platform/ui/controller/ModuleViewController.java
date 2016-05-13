@@ -9,13 +9,12 @@ import org.hsweb.web.bean.po.module.ModuleMeta;
 import org.hsweb.web.bean.po.user.User;
 import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.exception.NotFoundException;
+import org.hsweb.web.core.message.ResponseMessage;
 import org.hsweb.web.core.utils.WebUtil;
 import org.hsweb.web.service.module.ModuleMetaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.webbuilder.utils.common.StringUtils;
 
@@ -63,6 +62,13 @@ public class ModuleViewController {
         modelAndView.addObject("meta", moduleMeta);
         modelAndView.addObject("queryPlanConfig", queryPlanHtml);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage autoCreate(@RequestBody String formId) throws Exception {
+        String id = moduleMetaParserService.autoCreateModule(formId);
+        return ResponseMessage.ok(id);
     }
 
 }

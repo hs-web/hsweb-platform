@@ -1,8 +1,17 @@
 package org.hsweb.platform.ui.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.form.Form;
+import org.hsweb.web.bean.po.module.Module;
+import org.hsweb.web.bean.po.module.ModuleMeta;
+import org.hsweb.web.core.exception.BusinessException;
+import org.hsweb.web.core.exception.NotFoundException;
 import org.hsweb.web.service.form.FormService;
+import org.hsweb.web.service.module.ModuleMetaService;
+import org.hsweb.web.service.module.ModuleService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,6 +20,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webbuilder.utils.common.StringUtils;
 
 import javax.annotation.Resource;
@@ -20,10 +30,15 @@ import java.util.*;
  * Created by zhouhao on 16-5-11.
  */
 @Service
+@Transactional(rollbackFor = Throwable.class)
 public class ModuleMetaParserService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private FormService formService;
+    @Resource
+    private ModuleService moduleService;
+    @Resource
+    private ModuleMetaService moduleMetaService;
 
     public String getQueryFormHtml(String formName, List<Map<String, Object>> config) throws Exception {
         String html;
@@ -51,7 +66,7 @@ public class ModuleMetaParserService {
             try {
                 customAttrMap = JSON.parseObject(customAttr);
             } catch (Exception e) {
-                logger.warn("解析自定义属性json失败",e);
+                logger.warn("解析自定义属性json失败", e);
                 customAttrMap = new HashMap<>();
             }
             if (title == null) title = "";
@@ -59,7 +74,7 @@ public class ModuleMetaParserService {
             if (!StringUtils.isNullOrEmpty(customHtml)) {
                 Element custom = Parser.parse(customHtml, target.baseUri()).body().children().first();
                 custom.val("");
-                customAttrMap.forEach((attr, value) -> custom.attr(attr,String.valueOf(value)));
+                customAttrMap.forEach((attr, value) -> custom.attr(attr, String.valueOf(value)));
                 custom.attr("id", id).attr("field", field).attr("name", id);
                 data.put("html", custom.toString());
             } else {
@@ -67,7 +82,7 @@ public class ModuleMetaParserService {
                 if (!elements.isEmpty()) {
                     Element first = elements.first();
                     first.val("");
-                    customAttrMap.forEach((attr, value) -> first.attr(attr,String.valueOf(value)));
+                    customAttrMap.forEach((attr, value) -> first.attr(attr, String.valueOf(value)));
                     String tmp = first
                             .attr("id", id).attr("field", field).attr("name", id).removeAttr("field-id").toString();
                     data.put("html", tmp);
@@ -76,5 +91,35 @@ public class ModuleMetaParserService {
             object.add(data);
         });
         return JSON.toJSONString(object);
+    }
+
+    public String autoCreateModule(String formId) throws Exception {
+        Form form = formService.selectByPk(formId);
+        if (form == null) throw new NotFoundException("表单不存在");
+        String moduleName = StringUtils.isNullOrEmpty(form.getRemark()) ? "新建模块(" + form.getName() + ")" : form.getRemark();
+        Module module = moduleService.selectByPk(form.getName());
+        if (module != null) throw new BusinessException("模块已存在!");
+        module = new Module();
+        module.setU_id(form.getName());
+        module.setStatus(1);
+        module.setM_option("[{\"id\":\"M\",\"text\":\"菜单可见\",\"checked\":true},{\"id\":\"import\",\"text\":\"导入excel\",\"checked\":true},{\"id\":\"export\",\"text\":\"导出excel\",\"checked\":true},{\"id\":\"R\",\"text\":\"查询\",\"checked\":true},{\"id\":\"C\",\"text\":\"新增\",\"checked\":true},{\"id\":\"U\",\"text\":\"修改\",\"checked\":true},{\"id\":\"D\",\"text\":\"删除\",\"checked\":false}]");
+        module.setName(moduleName);
+        module.setP_id("default");
+        module.setUri("module-view/" + form.getName() + "/list.html");
+        moduleService.insert(module);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("table_api", "dyn-form/" + form.getName());
+        jsonObject.put("create_page", "dyn-form/" + form.getName() + "/save.html");
+        jsonObject.put("save_page", "dyn-form/" + form.getName() + "/save.html?id={u_id}");
+        jsonObject.put("info_page", "dyn-form/" + form.getName() + "/info.html?id={u_id}");
+        jsonObject.put("queryPlanConfig",new JSONArray());
+        jsonObject.put("queryTableConfig",new JSONArray());
+        jsonObject.put("dynForm", form.getName());
+        ModuleMeta moduleMeta = new ModuleMeta();
+        moduleMeta.setStatus(1);
+        moduleMeta.setKey(module.getU_id());
+        moduleMeta.setModule_id(module.getU_id());
+        moduleMeta.setMeta(jsonObject.toJSONString());
+        return moduleMetaService.insert(moduleMeta);
     }
 }
