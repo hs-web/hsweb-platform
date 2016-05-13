@@ -110,16 +110,16 @@ var Request = {
         return query;
     },
     get: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "GET", callback, false, false);
+        Request.doAjax(Request.BASH_PATH + uri, data, "GET", callback, true, false);
     },
     post: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, false, true);
+        Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, true);
     },
     put: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, false, true);
+        Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, true);
     },
     "delete": function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, false, false);
+        Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {
         if (requestBody == true) {

@@ -45,7 +45,9 @@ function save() {
         userRoles.push({role_id: e.u_id});
     });
     data.userRoles=userRoles;
+    var box = mini.loading("提交中...", "");
     func(api, data, function (e) {
+        mini.hideMessageBox(box);
         if (e.success) {
             if (id == '') {
                 //新增

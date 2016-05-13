@@ -121,7 +121,9 @@ function save() {
     //提交数据
     var data = form.getData();
     data.modules = getCheckedActions();
+    var box = mini.loading("提交中...", "");
     func(api, data, function (e) {
+        mini.hideMessageBox(box);
         if (e.success) {
             if (id == '') {
                 //新增

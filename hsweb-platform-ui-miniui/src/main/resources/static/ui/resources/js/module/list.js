@@ -67,7 +67,9 @@ function save() {
     var data = form.getData();
     data.m_option = mini.encode(new_m_option);
     var func = nowEditorId == "" ? Request.post : Request.put;
+    var box = mini.loading("提交中...", "");
     func("module/" + nowEditorId, data, function (e) {
+        mini.hideMessageBox(box);
         if (e.success) {
             if (nowEditorId == "")nowEditorId = e.data;
             mini.get("leftTree").updateNode(nowEditorNode, data);

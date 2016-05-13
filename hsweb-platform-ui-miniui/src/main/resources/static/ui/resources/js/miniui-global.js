@@ -19,7 +19,7 @@ function openWindow(url, title, width, height, ondestroy) {
         title: title,
         width: width,
         height: height,
-        maskOnLoad:false,
+        maskOnLoad: false,
         ondestroy: ondestroy
     });
 }
