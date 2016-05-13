@@ -32,7 +32,8 @@
     </div>
     <div showHeader="false" region="west" width="250" maxWidth="500" minWidth="200">
         <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sortField=sort_index" />"
-             expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="false"
+             expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="true"
+             iconField="icon"
              onnodeselect="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0"
              allowDrag="true" allowLeafDropIn="true" allowDrop="true" contextMenu="#treeMenu" ondrop="ondrop"
                 >
@@ -73,7 +74,7 @@
                 <tr>
                     <td width="50" valign="middle" style="word-break: break-all;" align="right"><a href="http://fontawesome.io/icons/" target="_blank">图标</a></td>
                     <td width="129" valign="middle" style="word-break: break-all;" align="left">
-                        <input style="width:100%" name="icon" id="icon" class="mini-textbox"/>
+                        <input style="width:100%" name="icon" textName="icon" id="icon" onbuttonclick="onbuttonedit" class="mini-buttonedit"/>
                     </td>
                     <td width="50" valign="middle" style="word-break: break-all;" align="right">父级权限ID</td>
                     <td width="129" valign="middle" align="left"><input enabled="flase" name="p_id" id="p_id" class="mini-textbox"/>&nbsp;*拖拽左侧菜单调整结构</td>
@@ -94,15 +95,14 @@
                 </tbody>
             </table>
         </div>
-        <div style="margin: auto;width:300px;">
+        <div style="margin: auto;width:600px;">
             <br/>
-
             <h3 align="center">可选操作</h3>
             <a class="mini-button" iconCls="icon-add" onclick="mini.get('m_option_table').addRow({},0)" plain="true"></a>
             <a class="mini-button" iconCls="icon-remove" plain="true" onclick="mini.get('m_option_table').removeRow(mini.get('m_option_table').getSelected())"></a>
 
             <div id="m_option_table" class="mini-datagrid"
-                 style="margin: auto;width:400px;height:150px;border: 0px;"
+                 style="margin: auto;width:100%;height:300px;border: 0px;"
                  showPager="false" allowCellEdit="true"
                  allowCellSelect="true" allowAlternating="true" editNextOnEnterKey="true">
                 <div property="columns">
@@ -129,5 +129,13 @@
         chartContainerHeight: 500
     });
     var nowEditorId = "${param.editId!''}";
+    function onbuttonedit(e){
+        openWindow("utils/get-icon.html","选择图标","800","400",function(icon){
+            if(icon&&icon.indexOf("icon-")!=-1){
+                e.sender.setValue(icon);
+                e.sender.setText(icon);
+            }
+        });
+    }
 </script>
 <@global.resources "js/module/list.js"/>

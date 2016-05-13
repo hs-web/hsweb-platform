@@ -73,6 +73,7 @@
                     <li iconCls="icon-new">新建表单</li>
                     <li class="separator"></li>
                     <li iconCls="icon-add">创建新版本</li>
+                    <li iconCls="icon-application-add" onclick="autoCreateModule()">自动生成系统模块</li>
                 </ul>
             </li>
             <li class="separator"></li>
@@ -128,7 +129,6 @@
         // window.open('/admin/form/view.html?id='+id);
         openWindow('/admin/form/view.html?id=' + id, "预览表单", "80%", "80%");
     }
-
 
 </script>
 <@global.importRequest />

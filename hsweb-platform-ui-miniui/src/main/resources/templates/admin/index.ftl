@@ -30,7 +30,7 @@
     </div>
     <div showHeader="false" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
         <div id="leftTree" class="mini-tree" url="<@global.api "userModule" />"
-             expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="false"
+             expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}"  showTreeIcon="true" iconField="icon"
              onnodeclick="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0">
         </div>
     </div>
