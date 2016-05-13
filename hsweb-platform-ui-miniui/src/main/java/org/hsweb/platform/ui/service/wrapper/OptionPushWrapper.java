@@ -101,8 +101,4 @@ public class OptionPushWrapper extends HashMapWrapper {
         this.table = table;
         super.init(dataBase, table);
     }
-
-    public static void main(String[] args) {
-        System.out.println(JSON.parse("[{'id':'0',text:'男'},{'id':'1',text:'女'}]"));
-    }
 }
