@@ -98,15 +98,16 @@ public class ModuleMetaParserService {
         if (form == null) throw new NotFoundException("表单不存在");
         String moduleName = StringUtils.isNullOrEmpty(form.getRemark()) ? "新建模块(" + form.getName() + ")" : form.getRemark();
         Module module = moduleService.selectByPk(form.getName());
-        if (module != null) throw new BusinessException("模块已存在!");
-        module = new Module();
-        module.setU_id(form.getName());
-        module.setStatus(1);
-        module.setM_option("[{\"id\":\"M\",\"text\":\"菜单可见\",\"checked\":true},{\"id\":\"import\",\"text\":\"导入excel\",\"checked\":true},{\"id\":\"export\",\"text\":\"导出excel\",\"checked\":true},{\"id\":\"R\",\"text\":\"查询\",\"checked\":true},{\"id\":\"C\",\"text\":\"新增\",\"checked\":true},{\"id\":\"U\",\"text\":\"修改\",\"checked\":true},{\"id\":\"D\",\"text\":\"删除\",\"checked\":false}]");
-        module.setName(moduleName);
-        module.setP_id("default");
-        module.setUri("module-view/" + form.getName() + "/list.html");
-        moduleService.insert(module);
+        if (module == null) {
+            module = new Module();
+            module.setU_id(form.getName());
+            module.setStatus(1);
+            module.setM_option("[{\"id\":\"M\",\"text\":\"菜单可见\",\"checked\":true},{\"id\":\"import\",\"text\":\"导入excel\",\"checked\":true},{\"id\":\"export\",\"text\":\"导出excel\",\"checked\":true},{\"id\":\"R\",\"text\":\"查询\",\"checked\":true},{\"id\":\"C\",\"text\":\"新增\",\"checked\":true},{\"id\":\"U\",\"text\":\"修改\",\"checked\":true},{\"id\":\"D\",\"text\":\"删除\",\"checked\":false}]");
+            module.setName(moduleName);
+            module.setP_id("default");
+            module.setUri("module-view/" + form.getName() + "/list.html");
+            moduleService.insert(module);
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("table_api", "dyn-form/" + form.getName());
         jsonObject.put("create_page", "dyn-form/" + form.getName() + "/save.html");
