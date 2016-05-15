@@ -72,13 +72,13 @@
 </div>
 <div class="mini-fit">
     <div id="grid" class="mini-datagrid" style="width:100%;height:100%;"
-         url="<@global.api 'form/~latest'/>" ajaxOptions="{type:'GET',dataType:'json'}" idField="id"
+         url="<@global.api 'form/~latest'/>" ajaxOptions="{type:'GET',dataType:'json'}" idField="uId"
          sizeList="[10,20,50,200]" pageSize="20" onshowrowdetail="onShowRowDetail">
         <div property="columns">
             <div type="expandcolumn" >#</div>
             <div field="name" width="120" align="center" headerAlign="center" allowSort="true">表单名称</div>
             <div field="remark" width="100" align="center" align="center" headerAlign="center">备注</div>
-            <div field="create_date" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
+            <div field="createDate" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
             <div field="version" align="center" width="50" headerAlign="center" allowSort="true">版本</div>
             <div field="revision" align="center" width="50" headerAlign="center" allowSort="true">修订版</div>
             <div field="release" align="center" width="50" headerAlign="center" allowSort="true">发布版</div>
@@ -94,7 +94,7 @@
                 <div type="indexcolumn"></div>
                 <div field="name" width="120" align="center" headerAlign="center" allowSort="true">表单名称</div>
                 <div field="remark" width="100" align="center" align="center" headerAlign="center">备注</div>
-                <div field="create_date" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
+                <div field="createDate" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
                 <div field="version" align="center" width="50" headerAlign="center" allowSort="true">版本</div>
                 <div field="revision" align="center" width="50" headerAlign="center" allowSort="true">修订版</div>
                 <div field="release" align="center" width="50" headerAlign="center" allowSort="true">发布版</div>

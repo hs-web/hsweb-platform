@@ -31,10 +31,10 @@
         </div>
     </div>
     <div showHeader="false" region="west" width="250" maxWidth="500" minWidth="200">
-        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sortField=sort_index" />"
+        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sortField=sortIndex" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="true"
              iconField="icon"
-             onnodeselect="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0"
+             onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0"
              allowDrag="true" allowLeafDropIn="true" allowDrop="true" contextMenu="#treeMenu" ondrop="ondrop"
                 >
         </div>
@@ -58,7 +58,7 @@
                 <tr>
                     <td width="50" valign="middle" style="word-break: break-all;" align="right">权限ID</td>
                     <td width="129" valign="middle" style="word-break: break-all;" align="left">
-                        <input style="width:100%" name="u_id" id="u_id" class="mini-textbox" required="true"/>
+                        <input style="width:100%" name="id" id="id" class="mini-textbox" required="true"/>
                     </td>
                     <td width="50" valign="middle" style="word-break: break-all;" align="right">权限名称</td>
                     <td width="129" valign="middle" style="word-break: break-all;" align="left">
@@ -77,13 +77,15 @@
                         <input style="width:100%" name="icon" textName="icon" id="icon" onbuttonclick="onbuttonedit" class="mini-buttonedit"/>
                     </td>
                     <td width="50" valign="middle" style="word-break: break-all;" align="right">父级权限ID</td>
-                    <td width="129" valign="middle" align="left"><input enabled="flase" name="p_id" id="p_id" class="mini-textbox"/>&nbsp;*拖拽左侧菜单调整结构</td>
+                    <td width="129" valign="middle" align="left"><input enabled="flase" name="parentId" id="parentId" class="mini-textbox"/>&nbsp;*拖拽左侧菜单调整结构</td>
                 </tr>
                 <tr>
                     <td width="50" valign="middle" style="word-break: break-all;" align="right">备注<br></td>
-                    <td valign="middle" rowspan="1" colspan="1" width="50" align="left"><input style="width:100%" name="remark" id="remark" class="mini-textarea"/></td>
+                    <td valign="middle" rowspan="1" colspan="1" width="50" align="left">
+                        <input style="width:100%" name="remark" id="remark" class="mini-textarea"/></td>
                     <td rowspan="1" valign="middle" align="right" width="50" style="word-break: break-all;">排序</td>
-                    <td rowspan="1" valign="middle" align="left" width="128"><input name="sort_index" enabled="flase" id="sort_index" class="mini-textbox"/>&nbsp;*拖拽左侧菜单即可排序</td>
+                    <td rowspan="1" valign="middle" align="left" width="128">
+                        <input name="sortIndex" enabled="flase" id="sortIndex" class="mini-textbox"/>&nbsp;*拖拽左侧菜单即可排序</td>
                 </tr>
                 <tr>
                     <td colspan="4" align="center">

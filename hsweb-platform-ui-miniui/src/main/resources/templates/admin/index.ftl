@@ -41,7 +41,7 @@
     <div showHeader="true" title="导航" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
         <div id="leftTree" class="mini-tree" url="<@global.api "userModule" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
-             onnodeclick="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0">
+             onnodeclick="nodeselect" idField="uId" parentField="pId" textField="name" borderStyle="border:0">
         </div>
     </div>
     <div title="center" region="center" bodyStyle="overflow:hidden;">
@@ -60,9 +60,9 @@
     mini.parse();
     var tabs = mini.get('mainTabs');
     function nodeselect(e) {
-        if (e.node && e.node.p_id != "-1") {
+        if (e.node && e.node.id != "-1") {
             if (window.history.pushState)
-                window.history.pushState(0, 0, "#m=" + e.node.u_id);
+                window.history.pushState(0, 0, "#m=" + e.node.id);
             showTab(e.node);
             return;
         }
@@ -71,14 +71,14 @@
         e.nodeHtml = "<i class='" + (e.node.icon) + " font-2x'>&nbsp;" + e.node.name + "</i> &nbsp;";
     }
     function showTab(node) {
-        var id = "tab$" + node.u_id;
+        var id = "tab$" + node.id;
         var tab = tabs.getTab(id);
         if (!tab) {
             tab = {};
             tab.name = id;
             tab.title = node.name;
             tab.showCloseButton = true;
-            tab.url = '../' + node.uri;
+            tab.url = Request.BASH_PATH + node.uri;
             tabs.addTab(tab);
         }
         if (!mini.get("layout1").isExpandRegion("west"))

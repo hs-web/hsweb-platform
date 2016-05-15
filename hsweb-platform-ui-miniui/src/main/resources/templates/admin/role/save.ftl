@@ -34,7 +34,7 @@
         <tr>
             <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" align="right" width="210">角色标识</td>
             <td valign="middle" colspan="3" style="word-break: break-all; border-color: rgb(221, 221, 221);" width="433" align="left">
-                <input style="width:100%" required="true" name="u_id" id="u_id" class="mini-textbox"></td>
+                <input style="width:100%" required="true" name="id" id="id" class="mini-textbox"></td>
         </tr>
         <tr>
             <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" align="right" width="210">角色名</td>
@@ -62,15 +62,15 @@
 
 <div id="funcTree" class="mini-treegrid" style="width:80%;height:300px;margin: auto"
      ajaxOptions="{type:'GET'}"
-     treeColumn="u_id" idField="u_id" parentField="p_id" resultAsTree="false"
+     treeColumn="id" idField="id" parentField="parentId" resultAsTree="false"
      expandOnLoad="true" showTreeIcon="true"
      allowSelect="false" allowCellSelect="false" enableHotTrack="false"
      ondrawcell="ondrawcell" allowCellWrap="true">
     <div property="columns">
         <div type="indexcolumn"></div>
-        <div name="u_id" field="u_id" width="120">ID</div>
+        <div name="id" field="id" width="120">ID</div>
         <div name="name" field="name" width="80">模块名称</div>
-        <div field="m_option" width="80%">权限</div>
+        <div field="optional" width="80%">权限</div>
     </div>
 </div>
 <div style="width: 100%;height: 20px;text-align: center">

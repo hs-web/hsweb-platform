@@ -61,7 +61,7 @@
      allowCellSelect="true" multiSelect="true" >
     <div property="columns">
         <div type="checkcolumn"></div>
-        <div name="u_id" field="u_id" width="60">ID</div>
+        <div name="id" field="id" width="60">ID</div>
         <div name="name" field="name" width="120">角色名称</div>
         <div name="remark" field="remark" width="120">备注</div>
     </div>

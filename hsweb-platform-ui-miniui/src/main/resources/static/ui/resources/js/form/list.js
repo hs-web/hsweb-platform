@@ -51,7 +51,7 @@ function onShowRowDetail(e) {
     var td = grid.getRowDetailCellEl(row);
     td.appendChild(detailGrid_Form);
     detailGrid_Form.style.display = "block";
-    var param=Request.encodeParam({name:row.name,'u_id$NOT':row.u_id});
+    var param=Request.encodeParam({name:row.name,'id$NOT':row.id});
     param.paging=false;
     param.excludes = "config,meta,html";
     param.sortFiled="version";
@@ -125,7 +125,7 @@ function createActionButton(text, action, icon) {
 function rendererAction(e) {
     var grid = e.sender;
     var record = e.record;
-    var uid = record.u_id;
+    var uid = record.id;
     var actionList = [];
     if (accessCreate) {
         var removeHtml = createActionButton("创建新版本", 'newVersion(\'' + uid + '\')', "icon-add");

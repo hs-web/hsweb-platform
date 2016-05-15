@@ -50,5 +50,7 @@
         <setting name="aggressiveLazyLoading" value="false"/>
         <setting name="proxyFactory" value="CGLIB"/>
     </settings>
-
+    <typeHandlers>
+        <typeHandler handler="org.hsweb.web.mybatis.handler.JsonArrayHandler" javaType="java.util.List" jdbcType="CLOB"/>
+    </typeHandlers>
 </configuration>

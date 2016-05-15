@@ -56,7 +56,7 @@
         var form = new mini.Form("#loginWindow");
         form.validate();
         if (form.isValid() == false) return;
-        var box = mini.showMessageBox("登录中...", "登录");
+        var box = mini.loading("登录中...", "登录");
         var data = form.getData();
         Request.post("login?username=" + data.username + "&password=" + data.password, {}, function (e) {
             mini.hideMessageBox(box);
