@@ -22,7 +22,7 @@ function loadData() {
                 $(userRoles).each(function(i,e){
                     var rows=[];
                     roleGrid.findRow(function(row){
-                        if(row.u_id== e.role_id)rows.push(row);
+                        if(row.id== e.roleId)rows.push(row);
                     });
                     roleGrid.selects(rows);
                 });
@@ -42,7 +42,7 @@ function save() {
     var userRoles=[];
     var selected=roleGrid.getSelecteds();
     $(selected).each(function(i,e){
-        userRoles.push({role_id: e.u_id});
+        userRoles.push({roleId: e.id});
     });
     data.userRoles=userRoles;
     var box = mini.loading("提交中...", "");

@@ -17,12 +17,11 @@ function loadData() {
         if (id != "") {
             Request.get("role/" + id, {}, function (e) {
                 if (e.success) {
-                    e.data.password = "$default";
                     setTimeout(function () {
                         setCheckedActions(e.data.modules)
                     }, 10);
                     new mini.Form('#data-form').setData(e.data);
-                    mini.get('u_id').setEnabled(false);
+                    mini.get('id').setEnabled(false);
                 }
             });
         }
@@ -35,16 +34,16 @@ function ondrawcell(e) {
         record = e.record,
         column = e.column,
         field = e.field,
-        id = record[tree.getIdField()],
-        funs = mini.decode(record.m_option);
+        id = record['id'],
+        funs = mini.decode(record.optional);
 
     function createCheckboxs(funs) {
         if (!funs || funs.length == 0) return "";
-        var html = "<button style='border:solid 1px #aaa;' onclick=\"allClick(this,'" + record.u_id + "')\" class='module-span'>全选</button>&nbsp;&nbsp;<span>";
+        var html = "<button style='border:solid 1px #aaa;' onclick=\"allClick(this,'" + record.id + "')\" class='module-span'>全选</button>&nbsp;&nbsp;<span>";
         $(funs).each(function (i, e) {
-            var id = "module-" + record.u_id + "-" + e.id;
+            var id = "module-" + record.id + "-" + e.id;
             html += "<span class='module-span' >" +
-                "<input m-id='" + record.u_id + "' value='" + e.id + "' " + (e.checked == true ? 'checked' : '') + " id='" + id + "'   class='module-action action-" + record.u_id + "' type='checkbox' />" +
+                "<input m-id='" + record.id + "' value='" + e.id + "' " + (e.checked == true ? 'checked' : '') + " id='" + id + "'   class='module-action action-" + record.id + "' type='checkbox' />" +
                 "<span onclick=\"chooseAction(this,'" + id + "')\">" + (e.text || '') + "(" + e.id + ")</span>" +
                 "</span>";
         });
@@ -52,7 +51,7 @@ function ondrawcell(e) {
         return html;
     }
 
-    if (field == 'm_option') {
+    if (field == 'optional') {
         e.cellHtml = createCheckboxs(funs);
     }
 }
@@ -75,10 +74,11 @@ function chooseAction(e, id) {
 }
 
 function setCheckedActions(actions) {
+
     $('.module-action').prop("checked", false);
     var actionsMap = {};
     $(actions).each(function (i, e) {
-        actionsMap[e.module_id] = e.actions;
+        actionsMap[e.moduleId] = e.actions;
     });
     $('.module-action').each(function (i, e) {
         var moduleId = $(e).attr("m-id");
@@ -107,7 +107,7 @@ function getCheckedActions() {
     });
     var newData = [];
     for (var f in actions) {
-        newData.push({module_id: f, o_level: mini.encode(actions[f])});
+        newData.push({moduleId: f, actions: actions[f]});
     }
     return newData;
 }
@@ -133,7 +133,7 @@ function save() {
                 id = e.data;
                 showTips("创建成功!");
                 $('#title').html("编辑角色");
-                mini.get('u_id').setEnabled(false);
+                mini.get('id').setEnabled(false);
             } else {
                 //update
                 showTips("修改成功!");

@@ -59,7 +59,7 @@ function search() {
 function rendererAction(e) {
     var grid = e.sender;
     var record = e.record;
-    var uid = record.u_id;
+    var uid = record.id;
     var actionList = [];
     if (accessUpdate) {
         var editHtml = '<span class="fa fa-edit action-edit" onclick="edit(\'' + uid + '\')">编辑</span>';
