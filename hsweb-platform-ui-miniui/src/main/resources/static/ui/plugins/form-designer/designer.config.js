@@ -181,7 +181,7 @@ Designer.getPropertiesEditors = function () {
             Designer.columnsButtonEdit = function (e) {
                 var row = mini.get("tmp_table").getSelected();
                 var val = e.sender.value;
-                if(!val||val=='')val=mini.encode({key:'value'});
+                if (!val || val == '')val = mini.encode({key: 'value'});
                 openScriptEditor("json", val, function (script) {
                     if (script == "cancel" || script == "close") {
                         return;
@@ -519,22 +519,8 @@ Designer.fields = {
                 }, "class": {
                     describe: "class",
                     value: "mini-textbox",
-                }, "can-query": {
-                    describe: "查询条件",
-                    value: true
                 },
-                "export-excel": {
-                    describe: "可导出为excel",
-                    value: true
-                },
-                "import-excel": {
-                    describe: "可从excel导入",
-                    value: true
-                }
-                , "validator-list": {
-                    describe: "验证器",
-                    value: "[]"
-                }, "domProperty": {
+                "domProperty": {
                     describe: "其他控件配置",
                     value: "[]"
                 }

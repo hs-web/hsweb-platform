@@ -20,7 +20,7 @@
     "pid": "commons"
   },
   {
-    "id": "pasword",
+    "id": "password",
     "text": "密码输入",
     "pid": "commons"
   },

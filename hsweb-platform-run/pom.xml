@@ -23,18 +23,11 @@
             <id>dev</id>
             <properties>
                 <environment.package>develop</environment.package>
-
                 <jdbc.type>oracle</jdbc.type>
-                <!--<jdbc.url>jdbc:h2:mem:hsweb</jdbc.url>-->
                 <jdbc.url>jdbc:h2:file:./data/h2db</jdbc.url>
                 <jdbc.username>sa</jdbc.username>
                 <jdbc.password></jdbc.password>
                 <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-                <!--<jdbc.type>mysql</jdbc.type>-->
-                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>-->
-                <!--<jdbc.username>root</jdbc.username>-->
-                <!--<jdbc.password>19920622</jdbc.password>-->
-                <!--<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>-->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -80,9 +73,7 @@
             </resource>
             <resource>
                 <directory>src/main/environment/${environment.package}</directory>
-                <filtering>
-                    true
-                </filtering>
+                <filtering>true</filtering>
             </resource>
         </resources>
 
