@@ -84,7 +84,7 @@
         //如果自定义，最好给p标签如下的行高，要不输入中文时，会有跳动感
         //,initialStyle:'p{line-height:1em}'//编辑器层级的基数,可以用来改变字体等
 
-        //,iframeCssUrl: URL + '/themes/iframe.css' //给编辑器内部引入一个css文件
+       // ,iframeCssUrl: URL + '/static/ui/plugins/miniui/themes/default/miniui.css' //给编辑器内部引入一个css文件
 
         //indentValue
         //首行缩进距离,默认是2em
@@ -95,8 +95,8 @@
 
         //,readonly : false //编辑器初始化结束后,编辑区域是否是只读的，默认是false
 
-        //,autoClearEmptyNode : true //getContent时，是否删除空的inlineElement节点（包括嵌套的情况）
-
+        ,autoClearEmptyNode : false //getContent时，是否删除空的inlineElement节点（包括嵌套的情况）
+        ,allowDivTransToP: false
         //启用自动保存
         //,enableAutoSave: true
         //自动保存间隔时间， 单位ms
@@ -259,7 +259,7 @@
 
         //wordCount
         ,wordCount:false          //是否开启字数统计
-        //,maximumWords:10000       //允许的最大字符数
+        ,maximumWords:10000000      //允许的最大字符数
         //字数统计提示，{#count}代表当前字数，{#leave}代表还可以输入多少字符数,留空支持多语言自动切换，否则按此配置显示
         //,wordCountMsg:''   //当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符
         //超出字数限制提示  留空支持多语言自动切换，否则按此配置显示
@@ -318,7 +318,7 @@
         //    clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体
         //    removeEmptyNode: false,         // 去掉空节点
         //    //可以去掉的标签
-        //    removeTagNames: {标签名字:1},
+        //    removeTagNames: {},
         //    indent: false,                  // 行首缩进
         //    indentValue : '2em',            //行首缩进的大小
         //    bdc2sb: false,
@@ -329,7 +329,7 @@
         //表格是否可以拖拽
         //,tableDragable: true
 
-        //,disabledTableInTable:true  //禁止表格嵌套
+        ,disabledTableInTable:false  //禁止表格嵌套
 
         //sourceEditor
         //源码的查看方式,codemirror 是代码高亮，textarea是文本框,默认是codemirror

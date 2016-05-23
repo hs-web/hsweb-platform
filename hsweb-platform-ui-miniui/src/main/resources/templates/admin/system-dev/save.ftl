@@ -52,11 +52,13 @@
                         <td valign="top" style="border-color: rgb(221, 221, 221);" width="375"><input style="width:100%" value="${param.module_id!''}" name="key" id="key" class="mini-textbox" required="true"/></td>
                         <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" width="262" align="right">关联角色<br></td>
                         <td valign="top" style="border-color: rgb(221, 221, 221);" width="541">
-                            <input url="<@global.api "role?paging=false"/>" valuefield="u_id" textfield="name" multiselect="true" valuefromselect="true" clearonload="true" style="width:100%" name="role_id" id="role_id" class="mini-combobox"></td>
+                            <input url="<@global.api "role?paging=false"/>" valuefield="id" textfield="name" multiselect="true" valuefromselect="true" clearonload="true" style="width:100%" name="roleId" id="roleId" class="mini-combobox"></td>
                     </tr>
                     <tr>
                         <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;" width="292" align="right">备注</td>
-                        <td valign="top" style="border-color: rgb(221, 221, 221); word-break: break-all;" rowspan="1" colspan="2"><input style="width:100%" name="remark" id="remark" class="mini-textarea"></td>
+                        <td valign="top" style="border-color: rgb(221, 221, 221); word-break: break-all;" rowspan="1" colspan="2">
+                            <input style="width:100%" name="remark" id="remark" class="mini-textarea">
+                        </td>
                         <td valign="top" style="border-color: rgb(221, 221, 221); word-break: break-all;" width="541"><br></td>
                     </tr>
                     </tbody>
@@ -74,7 +76,9 @@
                     </tr>
                     <tr>
                         <td valign="middle" style="border-color: rgb(221, 221, 221);" width="150" align="right">表格数据API</td>
-                        <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3"><input style="width:100%" name="table_api" id="table_api" class="mini-textbox"></td>
+                        <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3">
+                            <input style="width:100%" name="table_api" id="table_api" class="mini-textbox">
+                        </td>
                     </tr>
                     <tr>
                         <td valign="middle" style="border-color: rgb(221, 221, 221);" width="150" align="right">新增页面</td>
@@ -102,7 +106,7 @@
                         <th align="center" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="2">查询方案</th>
                     </tr>
                     <tr>
-                        <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" width="150" align="right">使用动态表单</td>
+                        <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" width="150" align="right">动态表单</td>
                         <td valign="top" style="border-color: rgb(221, 221, 221);" width="375">
                             <input style="width:100%" name="dynForm" id="dynForm" showNullItem="true"
                                    idField="name" valueField="name" textField="name" class="mini-combobox" onvaluechanged="dynFormChanged"
@@ -116,7 +120,7 @@
                 <h1 align="center">查询条件配置</h1>
                 <a class="mini-button" iconCls="icon-add" plain="true" onclick="addQueryField()">添加字段</a>
                 <span class="formFieldList">
-                    <input id="formFieldList" multiselect="true" valuefromselect="true"
+                    <input id="formFieldList" allowInput="true" pinyinField="name" valuefromselect="true"
                            clearonload="true" style="width:200px" name="formFieldList" class="mini-combobox"/>
                 </span>
             </div>
@@ -136,9 +140,9 @@
                     <div field="queryType" width="60" align="center" headerAlign="center">查询类型
                         <input property="editor" class="mini-combobox" data="queryType"/>
                     </div>
-                    <div field="terms" width="100" align="center" headerAlign="center">条件嵌套
-                        <input property="editor" class="mini-buttonedit"/>
-                    </div>
+                <#--<div field="terms" width="100" align="center" headerAlign="center">条件嵌套-->
+                <#--<input property="editor" class="mini-buttonedit"/>-->
+                <#--</div>-->
                     <div field="customAttr" autoEscape="true" width="100" align="center" headerAlign="center">自定义控件属性(JSON)
                         <input property="editor" class="mini-textarea"/>
                     </div>
@@ -148,12 +152,11 @@
                     <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
                 </div>
             </div>
-
             <div style="width: 80%;margin: auto;">
                 <h1 align="center">表格配置</h1>
                 <a class="mini-button" iconCls="icon-add" plain="true" onclick="addQueryTableField()">添加字段</a>
                 <span class="tableFieldList">
-                    <input id="tableFieldList" multiselect="true" valuefromselect="true"
+                    <input id="tableFieldList" allowInput="true" pinyinField="name" valuefromselect="true"
                            clearonload="true" style="width:200px" name="tableFieldList" class="mini-combobox"/>
                 </span>
             </div>
@@ -180,6 +183,33 @@
                         <input property="editor" class="mini-combobox" textField="id" data="[{id:true},{id:false}]"/>
                     </div>
                     <div field="renderer" width="100" align="center" headerAlign="center">渲染事件
+                        <input property="editor" class="mini-buttonedit"/>
+                    </div>
+                    <div name="action" width="100" renderer="rendererQueryTableAction" align="center" headerAlign="center">操作</div>
+                </div>
+            </div>
+        </div>
+        <div title="页面配置">
+            <div style="width: 80%;margin: auto;">
+                <h1 align="center">菜单栏选项</h1>
+            </div>
+            <div id="toolbar_grid" class="mini-datagrid" style="width: 80%;height:50%;margin: auto;"
+                 idField="id" allowCellEdit="true" allowCellSelect="true" showPager="false">
+                <div property="columns">
+                    <div type="indexcolumn" align="center" headerAlign="center">#</div>
+                    <div field="header" width="60" align="center" headerAlign="center">标题
+                        <input property="editor" class="mini-textbox"/>
+                    </div>
+                    <div field="moduleAction" width="60" align="center" headerAlign="center">权限action
+                        <input property="editor" class="mini-textbox"/>
+                    </div>
+                    <div field="childMenu" width="60" align="center" headerAlign="center">子菜单
+                        <input property="editor" class="mini-textbox"/>
+                    </div>
+                    <div field="iconCls" width="60" align="center" headerAlign="center">图标
+                        <input property="editor" class="mini-buttonedit"/>
+                    </div>
+                    <div field="onclick" width="60" align="center" headerAlign="center">事件
                         <input property="editor" class="mini-buttonedit"/>
                     </div>
                     <div name="action" width="100" renderer="rendererQueryTableAction" align="center" headerAlign="center">操作</div>
@@ -268,7 +298,7 @@
         var html = "";
         html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_plan_grid,'" + e.record.id + "')\"></i>&nbsp;&nbsp;";
         html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_plan_grid,'" + e.record.id + "')\"></i>&nbsp;&nbsp;";
-        return html+"<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeQueryPlanRow('" + e.record.id + "')\"></i>";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeQueryPlanRow('" + e.record.id + "')\"></i>";
     }
 
     function addQueryField() {
@@ -342,7 +372,7 @@
                     var meta = mini.decode(e.data.meta);
                     data.save_page = meta.save_page;
                     data.info_page = meta.info_page;
-                    data.create_page=meta.create_page;
+                    data.create_page = meta.create_page;
                     data.table_api = meta.table_api;
                     data.dynForm = meta.dynForm;
                     dynFormChanged({selected: {name: data.dynForm}});
@@ -365,7 +395,8 @@
         newData.key = data.key;
         newData.module_id = newData.key;
         newData.remark = data.remark;
-        newData.role_id = data.role_id;
+        if (data.roleId != '')data.roleId = "," + data.roleId + ",";
+        newData.roleId = data.roleId;
         var meta = {};
         meta.queryPlanConfig = query_plan_grid.getData();
         meta.queryTableConfig = query_table_grid.getData();
@@ -381,7 +412,7 @@
                 if (id == '') {
                     //新增
                     if (window.history.pushState)
-                    window.history.pushState(0, "", '?id=' + e.data);
+                        window.history.pushState(0, "", '?id=' + e.data);
                     id = e.data;
                     showTips("创建成功!");
                 } else {

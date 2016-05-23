@@ -4,7 +4,7 @@
 var Designer = {};
 Designer.createDefault = function (type, clazz, html, defaultData) {
     return {
-        defaultData:defaultData,
+        defaultData: defaultData,
         html: html,
         propertiesEditable: function (name) {
             var cf = Designer.fields[type].getPropertiesTemplate()[name];
@@ -51,14 +51,26 @@ Designer.getPropertiesTemplate = function () {
             value: "string"
         }, dataType: {
             describe: "数据库类型",
-            value: "varchar2(32)"
+            value: "varchar2(128)"
         }, _meta: {
             describe: "控件类型",
             value: "textbox",
-        }, class: {
+        }, "class": {
             describe: "class",
             value: "mini-textbox",
-        }, "validator-list": {
+        }, "can-query": {
+            describe: "查询条件",
+            value: true
+        },
+        "export-excel": {
+            describe: "可导出为excel",
+            value: true
+        },
+        "import-excel": {
+            describe: "可从excel导入",
+            value: true
+        }
+        , "validator-list": {
             describe: "验证器",
             value: "[]"
         }, "domProperty": {
@@ -101,6 +113,141 @@ Designer.showTableTemplate = function (columns, data, title, callback) {
 }
 Designer.getPropertiesEditors = function () {
     var editors = {
+        "repeat-validator": function (value, callback) {
+            //value->行的值
+            //callback->编辑回调
+            var data = mini.decode(value['repeat-validator']);
+            var columns = [
+                {
+                    field: "key", width: 50, headerAlign: "center", allowSort: false, header: "验证方式",
+                    editor: {type: "combobox", data: [{id: "fields", text: "fields"}, {id: "script", text: "script"}]}
+                },
+                {
+                    field: "value", width: 120, headerAlign: "center", allowSort: false, header: "配置",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.repeatValidatorButtonEdit"}
+                }
+            ];
+            Designer.repeatValidatorButtonEdit = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                if (row.key == "fields") {
+                    openChooseFieldWindow(mini.decode(e.sender.value));
+                    Designer.actionTmp = function () {
+                        var data = mini.get('chooseFieldGrid').getData();
+                        if (data.length > 0)row.value = mini.encode(data);
+                        mini.get("tmp_table").updateRow(row);
+                        mini.get('chooseFieldWindow').hide();
+                    }
+                }
+                if (row.key == "script") {
+                    openScriptEditor("text/x-groovy", e.sender.value, function (script) {
+                        if (script == "cancel" || script == "close") {
+                            return;
+                        }
+                        e.sender.setText(script);
+                        e.sender.setValue(script);
+                        mini.get("tmp_table").updateRow(row);
+                    });
+                }
+            }
+            Designer.showTableTemplate(columns, data, "重复数据验证方式", callback);
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "value") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            })
+        },
+        "columns": function (value, callback) {
+            var data = mini.decode(value['columns']);
+            var columns = [
+                {
+                    field: "field", width: 50, headerAlign: "center", allowSort: false, header: "字段",
+                    editor: {type: "textbox"}
+                },
+                {
+                    field: "header", width: 50, headerAlign: "center", allowSort: false, header: "表头",
+                    editor: {type: "textbox"}
+                },
+                {
+                    field: "width", width: 50, headerAlign: "center", allowSort: false, header: "宽度",
+                    editor: {type: "textbox"}
+                },
+                {
+                    field: "property", width: 100, headerAlign: "center", allowSort: false, header: "其他自定义属性(JSON)",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.columnsButtonEdit"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "配置表格", callback);
+            Designer.columnsButtonEdit = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if(!val||val=='')val=mini.encode({key:'value'});
+                openScriptEditor("json", val, function (script) {
+                    if (script == "cancel" || script == "close") {
+                        return;
+                    }
+                    e.sender.setText(script);
+                    e.sender.setValue(script);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            }
+        },
+        "trigger": function (value, callback) {
+            //value->行的值
+            //callback->编辑回调
+            var data = mini.decode(value['trigger']);
+            var columns = [
+                {
+                    field: "key", width: 50, headerAlign: "center", allowSort: false, header: "名称",
+                    editor: {
+                        type: "combobox", allowInput: true, textField: "id", data: [
+                            {id: "select.wrapper.instance"},
+                            {id: "select.wrapper"},
+                            {id: "select.wrapper.done"},
+                            {id: "select.before"},
+                            {id: "select.done"},
+                            {id: "export.import.before"},
+                            {id: "export.import.each"},
+                            {id: "insert.before"},
+                            {id: "insert.done"},
+                            {id: "update.before"},
+                            {id: "update.done"},
+                            {id: "delete.before"},
+                            {id: "delete.done"}
+                        ]
+                    }
+                },
+                {
+                    field: "value", width: 120, headerAlign: "center", allowSort: false, header: "执行脚本",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.triggerButtonEdit"}
+                }
+            ];
+            Designer.triggerButtonEdit = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if (!val || val == "") {
+                    val = "//groovy 脚本，内置对象 param,table,database 等\n";
+                    val += "import org.hsweb.web.core.utils.WebUtil;\n";
+                    val += "import java.utils.*;\n";
+                    val += "def user=WebUtil.getLoginUser();\n\n";
+                }
+                openScriptEditor("text/x-groovy", val, function (script) {
+                    if (script == "cancel" || script == "close") {
+                        return;
+                    }
+                    e.sender.setText(script);
+                    e.sender.setValue(script);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            }
+            Designer.showTableTemplate(columns, data, "触发器配置", callback);
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "value") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            })
+        },
         "validator-list": function (value, callback) {
             //value->行的值
             //callback->编辑回调
@@ -144,14 +291,20 @@ Designer.getPropertiesEditors = function () {
                     field: "type", width: 50, headerAlign: "center", allowSort: false, header: "验证类型",
                     editor: {
                         type: "combobox",
-                        data: [{id: "role", text: "角色"}, {id: "module", text: "模块"}, {id: "expression", text: "表达式"}]
+                        data: [
+                            {id: "role", text: "role"},
+                            {id: "module", text: "module"},
+                            {id: "expression", text: "expression"}]
                     }
                 },
-                {field: "value", width: 50, headerAlign: "center", allowSort: false, header: "值", editor: {type: "buttonedit",onbuttonclick:'Designer.permissionsButtonEdit'}},
+                {
+                    field: "value", width: 50, headerAlign: "center", allowSort: false, header: "值",
+                    editor: {type: "buttonedit", textName: 'value', onbuttonclick: 'Designer.permissionsButtonEdit'}
+                },
                 {field: "describe", width: 50, headerAlign: "center", allowSort: false, header: "说明", editor: {type: "textbox"}}
             ];
-            Designer.permissionsButtonEdit=function(e){
-                e.sender.setValue("test");
+            Designer.permissionsButtonEdit = function (e) {
+
             }
             Designer.showTableTemplate(columns, data, "权限控制", callback);
         }
@@ -181,6 +334,9 @@ Designer.fields = {
                 }, trigger: {
                     describe: "触发器",
                     value: "[]"
+                }, "repeat-validator": {
+                    describe: "重复数据验证规则",
+                    value: "[]"
                 }, permissions: {
                     describe: "权限配置",
                     value: "[]"
@@ -209,13 +365,16 @@ Designer.fields = {
     textbox: Designer.createDefault("textbox", "mini-textbox", function (id) {
         return "<input field-id='" + id + "' />";
     }),
+    password: Designer.createDefault("password", "mini-password", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
     hidden: Designer.createDefault("hidden", 'mini-hidden', function (id) {
         return "<input field-id='" + id + "' />";
     }),
     datepicker: Designer.createDefault("datepicker", 'mini-datepicker', function (id) {
         return "<input field-id='" + id + "' />";
-    })
-    , combobox: Designer.createDefault("combobox", 'mini-combobox',
+    }),
+    combobox: Designer.createDefault("combobox", 'mini-combobox',
         function (id) {
             return "<input field-id='" + id + "' />";
         }, [
@@ -231,8 +390,8 @@ Designer.fields = {
             , {key: "nullItemText", value: "", describe: "空项文本"}
             , {key: "valueFromSelect", value: "", describe: "必须从选择项录入"}
             , {key: "clearOnLoad", value: "true", describe: "自动清空未在列表中的value"}
-        ])
-    , checkboxlist: Designer.createDefault("checkboxlist", 'mini-checkboxlist',
+        ]),
+    checkboxlist: Designer.createDefault("checkboxlist", 'mini-checkboxlist',
         function (id) {
             return "<input field-id='" + id + "' />";
         }, [
@@ -243,8 +402,8 @@ Designer.fields = {
             , {key: "textField", value: "", describe: "文本显示字段(默认text)"}
             , {key: "repeatItems", value: "5", describe: "自动换行数量"}
             , {key: "repeatLayout", value: "table", describe: "布局方式"}
-        ])
-    , radiobuttonlist: Designer.createDefault("radiobuttonlist", 'mini-radiobuttonlist',
+        ]),
+    radiobuttonlist: Designer.createDefault("radiobuttonlist", 'mini-radiobuttonlist',
         function (id) {
             return "<input field-id='" + id + "' />";
         }, [
@@ -256,5 +415,154 @@ Designer.fields = {
             , {key: "repeatItems", value: "5", describe: "自动换行数量"}
             , {key: "repeatLayout", value: "table", describe: "布局方式"}
             , {key: "repeatDirection", value: "vertical", describe: "方向"}
-        ])
+        ]),
+    spinner: Designer.createDefault("spinner", "mini-spinner", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    timespinner: Designer.createDefault("timespinner", "mini-timespinner", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    treeselect: Designer.createDefault("treeselect", 'mini-treeselect',
+        function (id) {
+            return "<input field-id='" + id + "' />";
+        }, [
+            {key: "value", value: "", describe: "默认值"}
+            , {key: "data", value: "", describe: "可选数据项"}
+            , {key: "url", value: "", describe: "可选数据项来自url"}
+            , {key: "valueField", value: "", describe: "值字段(默认id)"}
+            , {key: "textField", value: "", describe: "文本显示字段(默认text)"}
+            , {key: "pinyinField", value: "", describe: "拼音字段"}
+            , {key: "dataField", value: "", describe: "数据列表字段"}
+            , {key: "multiSelect", value: "false", describe: "多选"}
+            , {key: "showNullItem", value: "false", describe: "显示空项"}
+            , {key: "nullItemText", value: "", describe: "空项文本"}
+            , {key: "valueFromSelect", value: "", describe: "必须从选择项录入"}
+            , {key: "clearOnLoad", value: "true", describe: "自动清空未在列表中的value"}
+        ]),
+    buttonedit: Designer.createDefault("buttonedit", "mini-buttonedit", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    autocomplete: Designer.createDefault("autocomplete", "mini-autocomplete", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    monthpicker: Designer.createDefault("monthpicker", "mini-monthpicker", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    file: Designer.createDefault("file", "file-upload", function (id) {
+        return "<input field-id='" + id + "' />";
+    }),
+    table: {
+        html: function (id) {
+            return "<input field-id='" + id + "' />";
+        },
+        getPropertiesTemplate: function () {
+            var template = {
+                name: {
+                    describe: "名称"
+                }, comment: {
+                    describe: "字段描述"
+                }, javaType: {
+                    describe: "java类型",
+                    value: "string"
+                }, dataType: {
+                    describe: "数据库类型",
+                    value: "CLOB"
+                }, _meta: {
+                    describe: "控件类型",
+                    value: "grid",
+                }, "class": {
+                    describe: "class",
+                    value: "data-grid",
+                }
+                , "columns": {
+                    describe: "列配置",
+                    value: "[]"
+                }, "domProperty": {
+                    describe: "其他控件配置",
+                    value: "[]"
+                }
+            };
+            return template;
+        },
+        getDefaultProperties: function () {
+            var list = [];
+            var tmp = Designer.fields['table'].getPropertiesTemplate();
+            tmp._meta.value = 'table';
+            tmp['class'].value = "data-grid";
+            for (var f in tmp) {
+                list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
+            }
+            return list;
+        },
+        getPropertiesEditor: function () {
+            var editors = Designer.getPropertiesEditors();
+            editors.domPropertyProxy = editors.domProperty;
+            editors.domProperty = function (value, callback) {
+                editors.domPropertyProxy(value, callback);
+                var data = mini.decode(value['domProperty']);
+                if (data.length == 0) {
+                    mini.get("tmp_table").setData(data);
+                }
+            };
+            return editors;
+        }
+    },
+    button: {
+        html: function (id) {
+            return "<button field-id='" + id + "' >操作</button>";
+        },
+        getPropertiesTemplate: function () {
+            var template = {
+                _meta: {
+                    describe: "控件类型",
+                    value: "textbox",
+                }, "class": {
+                    describe: "class",
+                    value: "mini-textbox",
+                }, "can-query": {
+                    describe: "查询条件",
+                    value: true
+                },
+                "export-excel": {
+                    describe: "可导出为excel",
+                    value: true
+                },
+                "import-excel": {
+                    describe: "可从excel导入",
+                    value: true
+                }
+                , "validator-list": {
+                    describe: "验证器",
+                    value: "[]"
+                }, "domProperty": {
+                    describe: "其他控件配置",
+                    value: "[]"
+                }
+            };
+            return template;
+        },
+        getDefaultProperties: function () {
+            var list = [];
+            var tmp = Designer.fields['button'].getPropertiesTemplate();
+            tmp._meta.value = 'button';
+            tmp['class'].value = "mini-button";
+            for (var f in tmp) {
+                list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
+            }
+            return list;
+        },
+        //属性编辑器，当双击行时，如果编辑器存在，则使用对于的编辑器进行编辑。
+        getPropertiesEditor: function () {
+            var editors = Designer.getPropertiesEditors();
+            editors.domPropertyProxy = editors.domProperty;
+            editors.domProperty = function (value, callback) {
+                editors.domPropertyProxy(value, callback);
+                var data = mini.decode(value['domProperty']);
+                if (data.length == 0) {
+                    mini.get("tmp_table").setData(data);
+                }
+            };
+            return editors;
+        }
+    }
 };

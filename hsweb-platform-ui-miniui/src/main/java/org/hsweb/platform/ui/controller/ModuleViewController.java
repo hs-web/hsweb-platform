@@ -41,15 +41,15 @@ public class ModuleViewController {
     public ModelAndView listPage(@PathVariable("key") String key, String metaId) throws Exception {
         User user = WebUtil.getLoginUser();
         List<String> roleId = user.getUserRoles().stream()
-                .map(userRole -> userRole.getRole_id())
+                .map(userRole -> userRole.getRoleId())
                 .collect(Collectors.toList());
         ModuleMeta moduleMeta;
         if (StringUtils.isNullOrEmpty(metaId)) {
             QueryParam param = new QueryParam();
             param.nest().and("key", key).or("module_id", key);
             Term term = param.nest();
-            roleId.forEach(id -> term.or("role_id$LIKE", "%," + id + ",%"));
-            term.or("role_id$ISNULL", true).or("role_id$EMPTY", true);
+            roleId.forEach(id -> term.or("roleId$LIKE", "%," + id + ",%"));
+            term.or("roleId$ISNULL", true).or("roleId$EMPTY", true);
             moduleMeta = moduleMetaService.selectSingle(param);
         } else {
             moduleMeta = moduleMetaService.selectByPk(metaId);

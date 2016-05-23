@@ -43,7 +43,6 @@ function nodeselect(e) {
     }
     nowEditorId = e.node.id;
     nowEditorNode = e.node;
-
     new mini.Form("#formContainer").setData(e.node);
     mini.get("m_option_table").setData(mini.decode(e.node.optional));
     $("#tableTitle").html(e.node.name);

@@ -68,7 +68,6 @@
             <div field="phone" width="100" align="center" align="center" headerAlign="center">联系电话</div>
             <div field="createDate" width="100" align="center" headerAlign="center" dateFormat="yyyy-MM-dd" allowSort="true">创建日期</div>
             <div field="status" renderer="renderStatus" align="center" width="100" headerAlign="center" allowSort="true">状态</div>
-        <#--<div field="customAttr.isLogin" renderer="renderLogin" align="center" width="100" headerAlign="center" allowSort="true">是否已登录</div>-->
             <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
         </div>
     </div>

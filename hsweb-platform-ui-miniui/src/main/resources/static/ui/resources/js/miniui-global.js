@@ -23,6 +23,21 @@ function openWindow(url, title, width, height, ondestroy) {
         ondestroy: ondestroy
     });
 }
+function openScriptEditor(mode, script, ondestroy) {
+    mini.open({
+        url: Request.BASH_PATH + "admin/utils/scriptEditor.html",
+        showMaxButton: true,
+        title: "脚本编辑器",
+        width: "80%",
+        height: "80%",
+        maskOnLoad: false,
+        onload: function () {
+            var iframe = this.getIFrameEl();
+            iframe.contentWindow.init(mode, script);
+        },
+        ondestroy: ondestroy
+    });
+}
 function closeWindow(action) {
     if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
     else window.close();
@@ -33,10 +48,7 @@ function bindDefaultAction(grid) {
     grid.on("loaderror", function (e) {
         var res = mini.decode(e.xhr.responseText);
         if (res.code == 401) {
-            openWindow(Request.BASH_PATH + "admin/login.html?uri=ajax", "请登录", "600", "400", function (e1) {
-                if ("success" == e1)
-                    grid.reload();
-            });
+            doLogin(grid.reload);
         }
         if (res.code == 403) {
             showTips("权限不够", "danger");
@@ -47,5 +59,12 @@ function bindDefaultAction(grid) {
                 window.console.log(res.message);
             }
         }
+    });
+}
+
+function doLogin(cbk){
+    openWindow(Request.BASH_PATH + "admin/login.html?uri=ajax", "请登录", "600", "400", function (e1) {
+        if ("success" == e1)
+            cbk();
     });
 }

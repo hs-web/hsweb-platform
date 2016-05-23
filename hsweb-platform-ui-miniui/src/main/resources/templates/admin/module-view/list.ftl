@@ -58,21 +58,28 @@
                 <span class="separator"></span>
             </#if>
             <#if authorize.module(meta.key,"import")>
-                <a class="mini-button" iconCls="icon-upload" plain="true">导入</a>
+                <a class="mini-button" iconCls="icon-upload" plain="true" onclick="importExcel()">导入excel</a>
             </#if>
             <#if authorize.module(meta.key,"export")>
-                <a class="mini-button" iconCls="icon-download" plain="true">导出excel</a>
+                <a class="mini-menubutton" iconCls="icon-download" plain="true" menu="#excelMenu">导出excel</a>
                 <span class="separator"></span>
             </#if>
-
                 <a class="mini-button" iconCls="icon-reload" plain="true" onclick="grid.reload()">刷新</a>
-                <a class="mini-button" iconCls="icon-search" plain="true" onclick="search()">搜索</a>
+                <a class="mini-menubutton" iconCls="icon-search" plain="true" menu="#searchMenu" onclick="search()">查询</a>
             </td>
         </tr>
     </table>
     <div style="width: 700px;margin: auto;" id="searchForm">
     </div>
 </div>
+<ul id="excelMenu" class="mini-menu" style="display:none;">
+    <li iconCls="icon-download">导出本页数据</li>
+    <li iconCls="icon-download">导出本页完整数据</li>
+    <li iconCls="icon-download">自定义导出列</li>
+</ul>
+<ul id="searchMenu" class="mini-menu" style="display:none;">
+    <li iconCls="icon-application-view-list">自定义查询条件</li>
+</ul>
 <div class="mini-fit">
     <div id="grid" class="mini-datagrid" style="width:100%;height:100%;" ajaxOptions="{type:'GET'}" idField="id"
          sizeList="[10,20,50,200]" pageSize="20">
@@ -119,6 +126,7 @@
     initSearchForm();
     mini.parse();
     var grid = mini.get('grid');
+    bindDefaultAction(grid);
     grid.setUrl(Request.BASH_PATH + meta.table_api);
     grid.setColumns(queryTableConfig);
     search();
@@ -160,5 +168,34 @@
                 grid.reload()
             });
         }
+    }
+    function importExcel(e) {
+        openWindow(Request.BASH_PATH + "admin/utils/fileUpload.html?accept=excel", "导入excel", "600", "500", function (e) {
+            if (e != 'close' && e != 'cancel' && e.length > 0) {
+                grid.loading("上传数据中...");
+                var ids = [];
+                var mapData = {};
+                $(e).each(function (i, e) {
+                    ids.push(e.id);
+                    mapData[e.id] = e;
+                });
+                Request.patch("dyn-form/" + meta.dynForm + "/import/" + ids, {}, function (e1) {
+                    grid.reload();
+                    if (e1.success) {
+                        var ms = e1.data;
+                        showImportResult(ms, e);
+                    }
+                });
+            }
+        });
+    }
+    function showImportResult(data, fileInfo) {
+        var html = "";
+        $(fileInfo).each(function (i, e) {
+            var msg = data[e.id];
+            html += "导入" + e.name + ",总计:" + msg.total + "条,成功:"
+            + msg.success + ",失败:" + (msg.total - msg.success) + "<br/>";
+        });
+        mini.alert(html);
     }
 </script>

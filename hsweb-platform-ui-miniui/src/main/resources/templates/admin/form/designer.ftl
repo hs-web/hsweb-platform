@@ -111,8 +111,23 @@
             <div id="editorWindowFrame" class="mini-fit" style="height:100px;align:center;">
 
             </div>
-            <div property="footer" style="text-align:right;padding:5px;padding-right:15px;">
+            <div property="footer" style="text-align:right;padding: 5px 15px 5px 5px;">
                 <input type='button' value='保存' onclick="Designer.saveEditor()" style='vertical-align:middle;'/>
+            </div>
+        </div>
+        <div id="chooseFieldWindow" showFooter="true" title="选择字段" class="mini-window" showModel="false" style="width: 500px;height: 400px;">
+            <a class="mini-button" onclick="addChooseField()" iconCls="icon-add">添加</a>
+            <input id="chooseFieldCombobox" style="width: 250px;" class="mini-combobox" allowInput="true"
+                   pinyinField="text" valueField="filedId" valuefromselect="true"/>
+            <div id="chooseFieldGrid"  showPager="false" class="mini-datagrid" style="width: 100%;height: 300px">
+                <div property="columns">
+                    <div field="name" width="50" headerAlign="center" allowSort="false">字段</div>
+                    <div field="comment" width="50" headerAlign="center" allowSort="false">字段描述</div>
+                    <div field="action" renderer="renderChooseFieldAction" width="50" headerAlign="center" allowSort="false">操作</div>
+                </div>
+            </div>
+            <div property="footer" style="text-align:right;padding: 5px 15px 5px 5px;">
+                <input type='button' value='确定' onclick="Designer.actionTmp()" style='vertical-align:middle;'/>
             </div>
         </div>
     </div>
@@ -129,7 +144,29 @@
         // window.open('/admin/form/view.html?id='+id);
         openWindow('/admin/form/view.html?id=' + id, "预览表单", "80%", "80%");
     }
-
+    function addChooseField(){
+        var fieldId=mini.get('chooseFieldCombobox').getValue();
+        if(fieldId&&fieldId!=""){
+            var data = fieldData[fieldId];
+            data=list2Map(data);
+            mini.get('chooseFieldGrid').addRow({name:data.name,comment:data.comment});
+        }
+    }
+    function openChooseFieldWindow(data) {
+        var list = [];
+        for (var f in fieldData) {
+            if (f != 'main') {
+                var finfo = fieldData[f];
+                var info = list2Map(finfo);
+                info.text=info.name+"("+info.comment+")";
+                info.filedId=f;
+                list.push(info);
+            }
+        }
+        mini.get('chooseFieldCombobox').setData(list);
+        mini.get('chooseFieldGrid').setData(data);
+        mini.get('chooseFieldWindow').showAtPos();
+    }
 </script>
 <@global.importRequest />
 <@global.importPlugin "form-designer/designer.config.js","form-designer/designer.js"/>

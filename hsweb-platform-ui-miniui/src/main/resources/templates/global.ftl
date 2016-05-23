@@ -34,7 +34,7 @@
 <#--jquery-cdn-->
 <#macro importJquery>
 <#--http://code.jquery.com/jquery-1.12.3.min.js-->
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<@importPlugin "jquery/1.11.1/jquery.min.js"/>
 </#macro>
 <#--miniui-->
 <#macro importMiniui themes...>

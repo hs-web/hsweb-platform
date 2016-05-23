@@ -41,7 +41,7 @@
     <div showHeader="true" title="导航" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
         <div id="leftTree" class="mini-tree" url="<@global.api "userModule" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
-             onnodeclick="nodeselect" idField="uId" parentField="pId" textField="name" borderStyle="border:0">
+             onnodeclick="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0">
         </div>
     </div>
     <div title="center" region="center" bodyStyle="overflow:hidden;">

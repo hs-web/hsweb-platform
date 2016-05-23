@@ -35,8 +35,7 @@
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="true"
              iconField="icon"
              onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0"
-             allowDrag="true" allowLeafDropIn="true" allowDrop="true" contextMenu="#treeMenu" ondrop="ondrop"
-                >
+             allowDrag="true" allowLeafDropIn="true" allowDrop="true" contextMenu="#treeMenu" ondrop="ondrop">
         </div>
 
         <ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">

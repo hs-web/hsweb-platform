@@ -32,7 +32,7 @@ ue.addListener('selectionchange', function () {
     var tagIsInput = tag == "input" || tag == "INPUT";
     var tagIsSelect = tag == "select" || tag == "SELECT";
     var tagIsTextArea = tag == "textarea" || tag == "TEXTAREA";
-    var autocreate = tagIsInput || tagIsSelect||tagIsTextArea;
+    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea;
     if (id) {
         nowEditorTarget = id;
     } else {
@@ -41,7 +41,7 @@ ue.addListener('selectionchange', function () {
             if (name.indexOf(".") != -1)
                 name = name.split(".")[1];
             name = name.replace(/([A-Z])/g, "_$1").toLowerCase();
-           var text =  $(focusNode).parent().prev().text().replace("*","").replace(":","").replace("：","");
+            var text = $(focusNode).parent().prev().text().replace("*", "").replace(":", "").replace("：", "");
             $(focusNode).remove();
             if (tagIsTextArea) {
                 insert("textarea");
@@ -144,10 +144,27 @@ function submitProperties(e) {
 }
 function initProperties() {
     var data = fieldData[nowEditorTarget];
+    var defaultData = {};
+    var newData = [];
     if (!data) {
         data = Designer.fields["textbox"].getDefaultProperties();
     }
-    propertiesTable.setData(data);
+    var map = list2Map(data);
+    var meta = map["_meta"];
+    var conf = Designer.fields[meta];
+    if(!conf){
+        return;
+    }
+    $(conf.getDefaultProperties()).each(function (i, e) {
+        if (map[e.key]) {
+            e.value = map[e.key];
+            newData.push(e);
+        } else {
+            newData.push(e);
+        }
+    });
+    propertiesTable.setData(newData);
+
 }
 function insert(id) {
     var conf = Designer.fields[id];
@@ -215,7 +232,7 @@ function save(callback) {
             if (id == "") {
                 id = e.data;
                 if (window.history.pushState)
-                window.history.pushState(0, "", "?id=" + id);
+                    window.history.pushState(0, "", "?id=" + id);
             }
             if (callback)
                 callback();
@@ -299,4 +316,16 @@ function autoCreateModule() {
                 }
             }
         });
+}
+function removeChooseFieldRow(e) {
+    var grid = mini.get('chooseFieldGrid');
+    grid.findRow(function (row) {
+        if (row&&row.name == e) {
+            grid.removeRow(row);
+            return true;
+        }
+    });
+}
+function renderChooseFieldAction(e) {
+    return "<a href=\"javascript:removeChooseFieldRow('" + e.record.name + "')\">移除</a>";
 }

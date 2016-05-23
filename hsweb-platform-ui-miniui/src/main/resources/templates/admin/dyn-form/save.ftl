@@ -53,6 +53,11 @@ ${html!''}
         if (form.isValid() == false) return;
         //提交数据
         var data = form.getData();
+        for(var f in data){
+            if(typeof (data[f])=='object'){
+                data[f]=mini.get(f).getFormValue();
+            }
+        }
         var box = mini.loading("提交中...", "");
         func(api, data, function (e) {
             mini.hideMessageBox(box);

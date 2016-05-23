@@ -3,16 +3,16 @@
  */
 var Request = {
     BASH_PATH: "",
-    encodeParam:function(data){
+    encodeParam: function (data) {
         var queryParam = {};
-        var index=0;
+        var index = 0;
         for (var f in data) {
-            if(data[f]=="")continue;
+            if (data[f] == "")continue;
             if (f.indexOf('$LIKE') != -1 && data[f].indexOf('%') == -1)data[f] = "%" + data[f] + "%";
             if (f.indexOf('$START') != -1)data[f] = "%" + data[f];
-            if (f.indexOf('$END') != -1)data[f] =  data[f]+"%";
-            queryParam["terms["+(index)+"].field"]=f;
-            queryParam["terms["+(index)+"].value"]=data[f];
+            if (f.indexOf('$END') != -1)data[f] = data[f] + "%";
+            queryParam["terms[" + (index) + "].field"] = f;
+            queryParam["terms[" + (index) + "].value"] = data[f];
             index++;
         }
         return queryParam;
@@ -38,10 +38,10 @@ var Request = {
             return query;
         };
         query.orNest = function (k, v) {
-            return query.nest(k,v,true);
+            return query.nest(k, v, true);
         };
-        query.nest = function (k, v,isOr) {
-            var nest = {field: k, value: v,type:isOr?'or':'and'};
+        query.nest = function (k, v, isOr) {
+            var nest = {field: k, value: v, type: isOr ? 'or' : 'and'};
             var func = {};
             nest.terms = [];
             func.and = function (k, v) {
@@ -101,9 +101,9 @@ var Request = {
         }
 
         query.exec = function (callback) {
-            var tmp=buildParam( query.terms);
-            for(var f in tmp){
-                query.param[f]=tmp[f];
+            var tmp = buildParam(query.terms);
+            for (var f in tmp) {
+                query.param[f] = tmp[f];
             }
             return Request.get(api, query.param, callback);
         };
@@ -117,6 +117,9 @@ var Request = {
     },
     put: function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, true);
+    },
+    patch: function (uri, data, callback) {
+        Request.doAjax(Request.BASH_PATH + uri, data, "PATCH", callback, true, true);
     },
     "delete": function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
@@ -133,10 +136,18 @@ var Request = {
             async: syc == true,
             success: callback,
             error: function (e) {
-                if (e.responseJSON)
-                    callback(e.responseJSON);
-                else
-                    callback({code: e.status, data: e.statusText, success: false});
+                var msg = {};
+                if (e.responseJSON) {
+                    msg = e.responseJSON;
+                } else {
+                    msg = {code: e.status, data: e.statusText, success: false};
+                }
+                if (msg.code == 401) {
+                    doLogin(function () {
+                        Request.doAjax(url, data, method, callback, syc, requestBody);
+                    });
+                } else
+                    callback(msg);
             },
             dataType: 'json'
         };

@@ -48,7 +48,6 @@ public class ModuleMetaParserService {
             html = "";
         }
         List<Map<String, Object>> object = new LinkedList<>();
-
         Document document = Jsoup.parse(html);
         Document target = Jsoup.parse("");
         config.forEach(map -> {
@@ -100,11 +99,11 @@ public class ModuleMetaParserService {
         Module module = moduleService.selectByPk(form.getName());
         if (module == null) {
             module = new Module();
-            module.setU_id(form.getName());
+            module.setId(form.getName());
             module.setStatus(1);
-            module.setM_option("[{\"id\":\"M\",\"text\":\"菜单可见\",\"checked\":true},{\"id\":\"import\",\"text\":\"导入excel\",\"checked\":true},{\"id\":\"export\",\"text\":\"导出excel\",\"checked\":true},{\"id\":\"R\",\"text\":\"查询\",\"checked\":true},{\"id\":\"C\",\"text\":\"新增\",\"checked\":true},{\"id\":\"U\",\"text\":\"修改\",\"checked\":true},{\"id\":\"D\",\"text\":\"删除\",\"checked\":false}]");
+            module.setOptional("[{\"id\":\"M\",\"text\":\"菜单可见\",\"checked\":true},{\"id\":\"import\",\"text\":\"导入excel\",\"checked\":true},{\"id\":\"export\",\"text\":\"导出excel\",\"checked\":true},{\"id\":\"R\",\"text\":\"查询\",\"checked\":true},{\"id\":\"C\",\"text\":\"新增\",\"checked\":true},{\"id\":\"U\",\"text\":\"修改\",\"checked\":true},{\"id\":\"D\",\"text\":\"删除\",\"checked\":false}]");
             module.setName(moduleName);
-            module.setP_id("default");
+            module.setParentId("default");
             module.setUri("module-view/" + form.getName() + "/list.html");
             moduleService.insert(module);
         }
@@ -118,8 +117,8 @@ public class ModuleMetaParserService {
         jsonObject.put("dynForm", form.getName());
         ModuleMeta moduleMeta = new ModuleMeta();
         moduleMeta.setStatus(1);
-        moduleMeta.setKey(module.getU_id());
-        moduleMeta.setModule_id(module.getU_id());
+        moduleMeta.setKey(module.getId());
+        moduleMeta.setModuleId(module.getId());
         moduleMeta.setMeta(jsonObject.toJSONString());
         return moduleMetaService.insert(moduleMeta);
     }

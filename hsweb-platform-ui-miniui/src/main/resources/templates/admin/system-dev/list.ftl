@@ -34,7 +34,7 @@
     <div showHeader="false" region="west" width="150" maxWidth="300" minWidth="100">
         <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sortField=sort_index&excludes=m_option" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
-             onnodeselect="nodeselect" idField="u_id" parentField="p_id" textField="name" borderStyle="border:0">
+             onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0">
         </div>
     </div>
     <div title="center" region="center" bodyStyle="overflow:hidden;">
@@ -57,7 +57,7 @@
         </div>
         <div class="mini-fit">
             <div id="grid" class="mini-datagrid" style="width:100%;height:100%;"
-                 url="<@global.api 'module-meta'/>" sortField="u_id" ajaxOptions="{type:'GET'}" idField="u_id"
+                 url="<@global.api 'module-meta'/>" sortField="id" ajaxOptions="{type:'GET'}" idField="id"
                  sizeList="[10,20,50,200]" pageSize="20">
                 <div property="columns">
                     <div type="indexcolumn"></div>
@@ -80,7 +80,7 @@
     var nowSelectedModuleId = "";
     function nodeselect(e) {
         if (e.node) {
-            nowSelectedModuleId = e.node.u_id;
+            nowSelectedModuleId = e.node.id;
             search();
         }
     }
