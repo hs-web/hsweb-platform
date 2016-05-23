@@ -11,6 +11,7 @@
     <logger name="org.apache.tomcat" level="ERROR" />
     <logger name="org.eclipse" level="ERROR" />
     <logger name="org.hsweb" level="DEBUG" />
+    <logger name="freemarker.cache" level="ERROR" />
     <logger name="jndi" level="ERROR" />
     <root level="DEBUG">
         <appender-ref ref="Console"/>

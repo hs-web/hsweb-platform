@@ -3,7 +3,11 @@ logging:
     config: classpath:config/logback.xml
 server:
     port: 8088
-
+multipart:
+    enabled: true
+    maxFileSize: 50Mb
+    maxRequestSize: 100Mb
+    location: ./upload
 #启用登录
 login:
     enable: true
