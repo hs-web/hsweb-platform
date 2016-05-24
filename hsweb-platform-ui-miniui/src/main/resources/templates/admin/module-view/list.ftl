@@ -65,7 +65,7 @@
                 <span class="separator"></span>
             </#if>
                 <a class="mini-button" iconCls="icon-reload" plain="true" onclick="grid.reload()">刷新</a>
-                <a class="mini-menubutton" iconCls="icon-search" plain="true" menu="#searchMenu" onclick="search()">查询</a>
+                <a class='mini-menubutton' iconCls='icon-search' plain='true' menu='#searchMenu' onclick='search()'>查询</a>
             </td>
         </tr>
     </table>
@@ -106,21 +106,22 @@
         var html = "<table  class='searchForm'><tr>";
         var index = 0;
         var newLineIndex = 3;
+        var lineNumber=1;
         $(searchFormConfig).each(function (i, e) {
             if (e.field) {
                 if (index != 0 && index % newLineIndex == 0) {
+                    lineNumber++;
                     html += "</tr><tr>";
                 }
                 index++;
                 html += "<td class='title'>";
-                html += e.title + ":";
+                html += e.title+":";
                 html += "</td>";
                 html += "<td class='html'>";
                 html += e.html;
                 html += "</td>";
             }
         });
-        html += "</tr></table>";
         $("#searchForm").html(html);
     }
     initSearchForm();
@@ -169,32 +170,30 @@
             });
         }
     }
-    function importExcel(e) {
-        openWindow(Request.BASH_PATH + "admin/utils/fileUpload.html?accept=excel", "导入excel", "600", "500", function (e) {
-            if (e != 'close' && e != 'cancel' && e.length > 0) {
-                grid.loading("上传数据中...");
-                var ids = [];
-                var mapData = {};
-                $(e).each(function (i, e) {
-                    ids.push(e.id);
-                    mapData[e.id] = e;
-                });
-                Request.patch("dyn-form/" + meta.dynForm + "/import/" + ids, {}, function (e1) {
-                    grid.reload();
-                    if (e1.success) {
-                        var ms = e1.data;
-                        showImportResult(ms, e);
-                    }
-                });
-            }
-        });
+    function importExcel() {
+        openFileUploader("excel", "", function (e) {
+            grid.loading("上传数据中...");
+            var ids = [];
+            var mapData = {};
+            $(e).each(function (i, e) {
+                ids.push(e.id);
+                mapData[e.id] = e;
+            });
+            Request.patch("dyn-form/" + meta.dynForm + "/import/" + ids, {}, function (e1) {
+                grid.reload();
+                if (e1.success) {
+                    var ms = e1.data;
+                    showImportResult(ms, e);
+                }
+            });
+        })
     }
     function showImportResult(data, fileInfo) {
         var html = "";
         $(fileInfo).each(function (i, e) {
             var msg = data[e.id];
             html += "导入" + e.name + ",总计:" + msg.total + "条,成功:"
-            + msg.success + ",失败:" + (msg.total - msg.success) + "<br/>";
+                    + msg.success + ",失败:" + (msg.total - msg.success) + "<br/>";
         });
         mini.alert(html);
     }

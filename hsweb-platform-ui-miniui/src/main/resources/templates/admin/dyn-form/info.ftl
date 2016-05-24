@@ -28,7 +28,6 @@
 </head>
 <body>
 <div id="formContent">
-${html!''}
 </div>
 <div style="margin: 30px auto auto;width: 100px">
     <a class="mini-button" iconCls="icon-undo" plain="true" onclick="window.closeWindow(id)">返回</a>
@@ -36,40 +35,35 @@ ${html!''}
 </body>
 </html>
 <@global.importRequest/>
+<@global.importPlugin  "form-designer/form.parser.js"/>
 <script type="text/javascript">
     var formName = "${name}";
     var id = "${id!''}";
-    uParse('#formContent', {
-        rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
-        chartContainerHeight: 500
-    });
-    mini.parse();
+    var formParser = new FormParser({name: formName, target: "#formContent",readOnly:true});
+    formParser.onload = function () {
+        mini.parse();
+        uParse('#formContent', {
+            rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
+            chartContainerHeight: 5000
+        });
+        $(".mini-radiobuttonlist td").css("border", "0px");
+        $(".mini-checkboxlist td").css("border", "0px");
+        $(".mini-radiobuttonlist").css("display ", "inline");
+    };
     load();
     function load() {
         if (id != "") {
             var api = "dyn-form/" + formName + "/" + id;
             Request.get(api, {}, function (e) {
                 if (e.success) {
-                    var form = new mini.Form("#formContent");
-                    form.setData(e.data);
+                    formParser.load(e.data);
                 } else {
                     mini.alert(e.message);
                 }
             });
+        }else{
+            formParser.load();
         }
-        $(".mini-radiobuttonlist td").css("border", "0px");
-        $(".mini-checkboxlist td").css("border", "0px");
-        $(".mini-radiobuttonlist").css("display ", "inline");
-        labelModel();
     }
 
-    function labelModel() {
-        var fields = new mini.Form('#formContent').getFields();
-        for (var i = 0, l = fields.length; i < l; i++) {
-            var c = fields[i];
-            if (c.setReadOnly) c.setReadOnly(true);     //只读
-            if (c.setIsValid) c.setIsValid(true);      //去除错误提示
-            if (c.addCls) c.addCls("asLabel");          //增加asLabel外观
-        }
-    }
 </script>

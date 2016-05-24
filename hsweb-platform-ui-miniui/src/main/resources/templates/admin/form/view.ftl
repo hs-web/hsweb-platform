@@ -29,6 +29,7 @@
     var name = "${param.name!''}";
     var formParser = new FormParser({name: name, id: id, target: "#preview"});
     formParser.onload=function(){
+        mini.parse();
         uParse('#preview', {
             rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
             chartContainerHeight: 5000

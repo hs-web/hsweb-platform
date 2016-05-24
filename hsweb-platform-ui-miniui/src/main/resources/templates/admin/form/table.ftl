@@ -68,6 +68,10 @@
     };
     var meta;
     var data;
+    var readOnly = false;
+    window.setReadOnly = function () {
+        readOnly = true;
+    }
     window.getData = function () {
         var newData=[];
         var data= grid.getData();
@@ -88,7 +92,7 @@
     window.init = function (m, d) {
         meta = mini.clone(m);
         data = d;
-        if (meta.canAddRow + "" == 'true') {
+        if (meta.canAddRow + "" == 'true' && !readOnly) {
             $('#addButton').show();
         } else {
             grid.setHeight("100%");
@@ -122,8 +126,10 @@
                 }
                 delete column['property'];
             }
+            if(readOnly) delete column["editor"];
             newData.push(column);
         });
+        if(!readOnly)
         newData.push({header: "操作", width: 20, renderer: renderAction, headerAlign: "center", align: "center"});
         return newData;
     }

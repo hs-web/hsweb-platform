@@ -68,21 +68,27 @@
     };
     var meta;
     var data;
+    var readOnly = false;
+    window.setReadOnly = function () {
+        readOnly = true;
+    }
     var defaultColumns = [
         {field: "name", header: "文件名", editor: {type: "textbox"}}
     ];
     grid.set({
         columns: defaultColumns
     });
-    document.oncontextmenu=function(){return false;};
+    document.oncontextmenu = function () {
+        return false;
+    };
     window.getData = function () {
-        var newData=[];
-        var data= grid.getData();
-        $(data).each(function(i,e){
-            var d={};
-            for(var f in e){
-                if(f!="_id"&&f!="_uid"){
-                    d[f]=e[f];
+        var newData = [];
+        var data = grid.getData();
+        $(data).each(function (i, e) {
+            var d = {};
+            for (var f in e) {
+                if (f != "_id" && f != "_uid") {
+                    d[f] = e[f];
                 }
             }
             newData.push(d);
@@ -95,7 +101,7 @@
     window.init = function (m, d) {
         meta = mini.clone(m);
         data = d;
-        if (meta.canAddRow + "" == 'true') {
+        if (meta.canAddRow + "" == 'true' && !readOnly) {
             $('#addButton').show();
         } else {
             grid.setHeight("100%");
@@ -129,10 +135,12 @@
                 }
                 delete column['property'];
             }
+            if(readOnly)delete column["editor"];
             newData.push(column);
         });
         newData.push({header: "状态", width: 20, renderer: renderStatus, headerAlign: "center", align: "center"});
-        newData.push({header: "操作", width: 20, renderer: renderAction, headerAlign: "center", align: "center"});
+        if (!readOnly)
+            newData.push({header: "操作", width: 20, renderer: renderAction, headerAlign: "center", align: "center"});
         return newData;
     }
     function createActionButton(text, action, icon) {
@@ -140,11 +148,11 @@
                 '<i class="action-icon ' + icon + '"></i>' + "" //text
                 + '</span>&nbsp;';
     }
-    function renderStatus(e){
+    function renderStatus(e) {
         var row = e.record;
-        if(row&&row.fileList&&row.fileList.length>0){
-            return "已上传,文件数量:"+row.fileList.length;
-        }else{
+        if (row && row.fileList && row.fileList.length > 0) {
+            return "已上传,文件数量:" + row.fileList.length;
+        } else {
             return "未上传";
         }
     }
@@ -168,8 +176,8 @@
                         grid.updateRow(row);
                     }
                 }
-            }else{
-                grid.addRow({fileList:e});
+            } else {
+                grid.addRow({fileList: e});
             }
         });
     }

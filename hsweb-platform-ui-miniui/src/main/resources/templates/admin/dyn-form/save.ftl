@@ -9,7 +9,6 @@
 </head>
 <body>
 <div id="formContent">
-${html!''}
 </div>
 <div style="margin: 30px auto auto;width: 150px">
     <a class="mini-button" iconCls="icon-save" plain="true" onclick="save()">保存</a>
@@ -19,43 +18,46 @@ ${html!''}
 </body>
 </html>
 <@global.importRequest/>
+<@global.importPlugin  "form-designer/form.parser.js"/>
 <script type="text/javascript">
     var formName = "${name}";
     var id = "${id!''}";
-    uParse('#formContent', {
-        rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
-        chartContainerHeight: 500
-    });
-    mini.parse();
+    var formParser = new FormParser({name: formName, target: "#formContent"});
+    formParser.onload = function () {
+        mini.parse();
+        uParse('#formContent', {
+            rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
+            chartContainerHeight: 5000
+        });
+        $(".mini-radiobuttonlist td").css("border", "0px");
+        $(".mini-checkboxlist td").css("border", "0px");
+        $(".mini-radiobuttonlist").css("display ", "inline");
+    };
     load();
     function load() {
         if (id != "") {
             var api = "dyn-form/" + formName + "/" + id;
             Request.get(api, {}, function (e) {
                 if (e.success) {
-                    var form = new mini.Form("#formContent");
-                    form.setData(e.data);
+                    formParser.load(e.data);
                 } else {
                     mini.alert(e.message);
                 }
             });
+        }else{
+            formParser.load();
         }
-        $(".mini-radiobuttonlist td").css("border", "0px");
-        $(".mini-checkboxlist td").css("border", "0px");
-        $(".mini-radiobuttonlist").css("display ", "inline");
     }
 
     function save() {
         var api = "dyn-form/" + formName + "/" + id;
         var func = id == "" ? Request.post : Request.put;
-        var form = new mini.Form("#formContent");
-        form.validate();
-        if (form.isValid() == false) return;
         //提交数据
-        var data = form.getData();
-        for(var f in data){
-            if(typeof (data[f])=='object'){
-                data[f]=mini.get(f).getFormValue();
+        var data = formParser.getData();
+        if (!data)return;
+        for (var f in data) {
+            if (typeof (data[f]) == 'object') {
+                data[f] = mini.get(f).getFormValue();
             }
         }
         var box = mini.loading("提交中...", "");
@@ -65,13 +67,13 @@ ${html!''}
                 if (id == "") {
                     id = e.data;
                     if (window.history.pushState)
-                    window.history.pushState(0, "", "?id=" + id);
+                        window.history.pushState(0, "", "?id=" + id);
                 }
                 showTips("保存成功!");
             } else if (e.code == 400) {
                 try {
                     var validMessage = mini.decode(e.message);
-                    $(validMessage).each(function(i,e){
+                    $(validMessage).each(function (i, e) {
                         mini.get(e.field).setIsValid(false);
                         mini.get(e.field).setErrorText(e.message);
                     });
