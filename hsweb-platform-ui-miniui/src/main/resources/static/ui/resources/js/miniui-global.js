@@ -23,6 +23,14 @@ function openWindow(url, title, width, height, ondestroy) {
         ondestroy: ondestroy
     });
 }
+function openFileUploader(accept, title, onupload) {
+    if (!accept)accept = "";
+    openWindow(Request.BASH_PATH + "admin/utils/fileUpload.html?accept=" + accept, title, "600", "500", function (e) {
+        if (e != 'close' && e != 'cancel') {
+            onupload(e);
+        }
+    });
+}
 function openScriptEditor(mode, script, ondestroy) {
     mini.open({
         url: Request.BASH_PATH + "admin/utils/scriptEditor.html",
@@ -62,7 +70,7 @@ function bindDefaultAction(grid) {
     });
 }
 
-function doLogin(cbk){
+function doLogin(cbk) {
     openWindow(Request.BASH_PATH + "admin/login.html?uri=ajax", "请登录", "600", "400", function (e1) {
         if ("success" == e1)
             cbk();
