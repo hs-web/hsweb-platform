@@ -22,29 +22,20 @@
 </html>
 <@global.importPlugin  "ueditor/ueditor.parse.js"/>
 <@global.importRequest />
+<@global.importPlugin  "form-designer/form.parser.js"/>
 <script type="text/javascript">
     window.UEDITOR_HOME_URL = location.protocol + '//' + document.domain + (location.port ? (":" + location.port) : "") + "/ui/plugins/ueditor/";
     var id = "${param.id!''}";
     var name = "${param.name!''}";
-    function init() {
-        var type = "view", val = id;
-        if (id == "") {
-            val = name;
-            type = "html";
-        }
-        Request.get("form/" + val + "/" + type, {}, function (data) {
-            if (data.success) {
-                $('#preview').html(data.data);
-                mini.parse();
-                uParse('#preview', {
-                    rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
-                    chartContainerHeight: 5000
-                });
-                $(".mini-radiobuttonlist td").css("border", "0px");
-                $(".mini-checkboxlist td").css("border", "0px");
-                $(".mini-radiobuttonlist").css("display ", "inline");
-            }
+    var formParser = new FormParser({name: name, id: id, target: "#preview"});
+    formParser.onload=function(){
+        uParse('#preview', {
+            rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
+            chartContainerHeight: 5000
         });
+    }
+    function init() {
+        formParser.load();
     }
     init();
 </script>
