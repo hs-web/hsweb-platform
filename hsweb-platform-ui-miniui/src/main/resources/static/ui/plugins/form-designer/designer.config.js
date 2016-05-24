@@ -157,6 +157,35 @@ Designer.getPropertiesEditors = function () {
                 }
             })
         },
+        "defaultTableData":function (value, callback) {
+            var data = mini.decode(value['defaultTableData']);
+            var columns = [
+                {
+                    field: "data", width: 100, headerAlign: "center", allowSort: false, header: "默认数据(JSON)",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.defaultTableDataEdit"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "编辑默认数据", callback);
+            Designer.defaultTableDataEdit = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if (!val || val == '')val ='{\n"property":"value"\n}';
+                openScriptEditor("application/ld+json", val, function (json) {
+                    if (json == "cancel" || json == "close") {
+                        return;
+                    }
+                    e.sender.setText(json);
+                    e.sender.setValue(json);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            };
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "data") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
+        },
         "columns": function (value, callback) {
             var data = mini.decode(value['columns']);
             var columns = [
@@ -182,7 +211,7 @@ Designer.getPropertiesEditors = function () {
                 var row = mini.get("tmp_table").getSelected();
                 var val = e.sender.value;
                 if (!val || val == '')val = mini.encode({key: 'value'});
-                openScriptEditor("json", val, function (script) {
+                openScriptEditor("application/ld+json", val, function (script) {
                     if (script == "cancel" || script == "close") {
                         return;
                     }
@@ -190,7 +219,13 @@ Designer.getPropertiesEditors = function () {
                     e.sender.setValue(script);
                     mini.get("tmp_table").updateRow(row);
                 });
-            }
+            };
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "property") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
         },
         "trigger": function (value, callback) {
             //value->行的值
@@ -246,7 +281,7 @@ Designer.getPropertiesEditors = function () {
                     e.editor.setValue(e.value);
                     e.editor.setText(e.value);
                 }
-            })
+            });
         },
         "validator-list": function (value, callback) {
             //value->行的值
@@ -448,12 +483,15 @@ Designer.fields = {
     monthpicker: Designer.createDefault("monthpicker", "mini-monthpicker", function (id) {
         return "<input field-id='" + id + "' />";
     }),
-    file: Designer.createDefault("file", "file-upload", function (id) {
-        return "<input field-id='" + id + "' />";
-    }),
     table: {
         html: function (id) {
             return "<input field-id='" + id + "' />";
+        },
+        propertiesEditable: function (name) {
+            var cf = Designer.fields['table'].getPropertiesTemplate()[name];
+            if (!cf)return true;
+            if (cf['editable'] == false)return false;
+            return cf['editable'] || true;
         },
         getPropertiesTemplate: function () {
             var template = {
@@ -466,17 +504,28 @@ Designer.fields = {
                     value: "string"
                 }, dataType: {
                     describe: "数据库类型",
-                    value: "CLOB"
+                    value: "clob"
                 }, _meta: {
                     describe: "控件类型",
                     value: "grid",
                 }, "class": {
                     describe: "class",
                     value: "data-grid",
-                }
-                , "columns": {
+                }, "columns": {
                     describe: "列配置",
                     value: "[]"
+                }, "defaultTableData": {
+                    describe: "默认数据",
+                    value: "[]"
+                }, "canAddRow": {
+                    describe: "允许新增行",
+                    value: "true"
+                }, "canRemoveRow": {
+                    describe: "允许删除行",
+                    value: "true"
+                }, "customPage": {
+                    describe: "表格页",
+                    value: "admin/form/table.html"
                 }, "domProperty": {
                     describe: "其他控件配置",
                     value: "[]"
@@ -510,6 +559,12 @@ Designer.fields = {
     button: {
         html: function (id) {
             return "<button field-id='" + id + "' >操作</button>";
+        },
+        propertiesEditable: function (name) {
+            var cf = Designer.fields['button'].getPropertiesTemplate()[name];
+            if (!cf)return true;
+            if (cf['editable'] == false)return false;
+            return cf['editable'] || true;
         },
         getPropertiesTemplate: function () {
             var template = {
