@@ -14,6 +14,9 @@
 
 <#--资源文件-->
 <#macro importRequest()>
+<!--[if lt IE 9]>
+    <@importPlugin "ajax/json2.js" />
+<![endif]-->
     <@importPlugin "ajax/Request.js" />
 <script type="text/javascript">Request.BASH_PATH = "<@basePath/>";</script>
 </#macro>
