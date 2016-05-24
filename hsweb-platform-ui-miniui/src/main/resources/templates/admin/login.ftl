@@ -58,16 +58,15 @@
         if (form.isValid() == false) return;
         var box = mini.loading("登录中...", "登录");
         var data = form.getData();
-        Request.post("login?username=" + data.username + "&password=" + data.password, {}, function (e) {
+        Request.post("login", {username: data.username, password: data.password}, function (e) {
             mini.hideMessageBox(box);
             if (e.success) {
                 if (back == 'ajax')closeWindow("success");
                 else
                     window.location.href = back;
             }
-
             else mini.alert(e.message);
-        });
+        },false);
     }
     function onResetClick(e) {
         var form = new mini.Form("#loginWindow");
