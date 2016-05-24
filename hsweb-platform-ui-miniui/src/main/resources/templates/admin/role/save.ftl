@@ -16,7 +16,6 @@
             width: 100%;
             height: 95%;
         }
-
         .module-span {
             font-size: 12px;;
         }
@@ -53,14 +52,13 @@
         <tr>
             <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" align="right" width="210">权限配置</td>
             <td valign="top" rowspan="1" colspan="3" style="border-color: rgb(221, 221, 221);">
-
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<div id="funcTree" class="mini-treegrid" style="width:80%;height:300px;margin: auto"
+<div id="funcTree" class="mini-treegrid" style="width:80%;height:60%;margin: auto"
      ajaxOptions="{type:'GET'}"
      treeColumn="id" idField="id" parentField="parentId" resultAsTree="false"
      expandOnLoad="true" showTreeIcon="true"
