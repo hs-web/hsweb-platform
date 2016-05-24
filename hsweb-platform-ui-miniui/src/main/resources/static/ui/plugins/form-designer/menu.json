@@ -85,13 +85,13 @@
     "pid": "-1"
   },
   {
-    "id": "file",
-    "text": "文件上传",
+    "id": "table",
+    "text": "表格",
     "pid": "senior"
   },
   {
-    "id": "table",
-    "text": "表格",
+    "id": "tabs",
+    "text": "选项卡",
     "pid": "senior"
   }
 ]
