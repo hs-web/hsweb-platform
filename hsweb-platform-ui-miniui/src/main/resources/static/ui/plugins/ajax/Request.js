@@ -112,8 +112,8 @@ var Request = {
     get: function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "GET", callback, true, false);
     },
-    post: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, true);
+    post: function (uri, data, callback,requestBody) {
+        Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, requestBody==true);
     },
     put: function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, true);

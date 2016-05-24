@@ -75,7 +75,7 @@ function save() {
             tree.selectNode(data);
             showTips("保存成功");
         } else {
-            mini.alert(e.data);
+            mini.alert(e.message);
         }
     });
 }
