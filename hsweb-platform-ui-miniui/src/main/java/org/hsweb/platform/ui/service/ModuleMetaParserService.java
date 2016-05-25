@@ -15,6 +15,7 @@ import org.hsweb.web.service.module.ModuleService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -50,6 +51,7 @@ public class ModuleMetaParserService {
         List<Map<String, Object>> object = new LinkedList<>();
         Document document = Jsoup.parse(html);
         Document target = Jsoup.parse("");
+        Map<String, Node> cache = new HashMap<>();
         config.forEach(map -> {
             Map<String, Object> data = new LinkedHashMap<>();
             map.forEach((k, v) -> {
@@ -77,14 +79,21 @@ public class ModuleMetaParserService {
                 custom.attr("id", id).attr("field", field).attr("name", id);
                 data.put("html", custom.toString());
             } else {
-                Elements elements = document.select("#" + field);
-                if (!elements.isEmpty()) {
-                    Element first = elements.first();
-                    first.val("");
-                    customAttrMap.forEach((attr, value) -> first.attr(attr, String.valueOf(value)));
-                    String tmp = first
-                            .attr("id", id).attr("field", field).attr("name", id).removeAttr("field-id").toString();
-                    data.put("html", tmp);
+                Node cached = cache.get(field);
+                if (cached != null) {
+                    cached.attr("id", id).attr("field", field).attr("name", id);
+                    data.put("html", cached.toString());
+                } else {
+                    Elements elements = document.select("#" + field);
+                    if (!elements.isEmpty()) {
+                        Element first = elements.first();
+                        first.val("");
+                        customAttrMap.forEach((attr, value) -> first.attr(attr, String.valueOf(value)));
+                        Node tmp = first
+                                .attr("id", id).attr("field", field).attr("name", id).removeAttr("field-id");
+                        data.put("html", tmp.toString());
+                        cache.put(field, tmp);
+                    }
                 }
             }
             object.add(data);
@@ -112,8 +121,8 @@ public class ModuleMetaParserService {
         jsonObject.put("create_page", "dyn-form/" + form.getName() + "/save.html");
         jsonObject.put("save_page", "dyn-form/" + form.getName() + "/save.html?id={u_id}");
         jsonObject.put("info_page", "dyn-form/" + form.getName() + "/info.html?id={u_id}");
-        jsonObject.put("queryPlanConfig",new JSONArray());
-        jsonObject.put("queryTableConfig",new JSONArray());
+        jsonObject.put("queryPlanConfig", new JSONArray());
+        jsonObject.put("queryTableConfig", new JSONArray());
         jsonObject.put("dynForm", form.getName());
         ModuleMeta moduleMeta = new ModuleMeta();
         moduleMeta.setStatus(1);
