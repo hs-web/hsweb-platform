@@ -12,6 +12,7 @@ import org.webbuilder.utils.common.StringUtils;
 import java.nio.charset.Charset;
 import java.sql.Clob;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,18 +51,58 @@ public class OptionPushWrapper extends HashMapWrapper {
         if (filed != null) {
             List<Map> config = filed.attrWrapper("domProperty").toList();
             if (config == null) return;
-            config.stream().forEach(map -> {
-                String key = String.valueOf(map.get("key"));
-                String valueField = (String) map.getOrDefault("valueField", "id");
-                String textField = (String) map.getOrDefault("textField", "text");
-                if ("data".equals(key)) {
-                    Object val = parseOptionFromData(valueField, textField, value, map.get("value"));
-                    super.putValue(instance, attr.concat(suffix), val);
-                } else if ("url".equals(key)) {
-
-                }
-            });
+            Map<String, String> cfgMap = list2map(config, "key", "value");
+            Object data = cfgMap.get("data");
+            Object url = cfgMap.get("url");
+            String valueField = cfgMap.getOrDefault("valueField", "id");
+            String textField = cfgMap.getOrDefault("textField", "text");
+            if (!StringUtils.isNullOrEmpty(data)) {
+                Object val = parseOptionFromData(valueField, textField, value, data);
+                super.putValue(instance, attr.concat(suffix), val);
+            } else if (!StringUtils.isNullOrEmpty(url)) {
+                Object val = parseOptionFromUrl(valueField, textField, value, String.valueOf(url));
+                super.putValue(instance, attr.concat(suffix), val);
+            }
         }
+    }
+
+    public Map<String, String> list2map(List<Map> list, String keyField, String valueField) {
+        Map<String, String> map = new HashMap<>();
+        list.stream().forEach((tmp) -> map.put(String.valueOf(tmp.get(keyField)), String.valueOf(tmp.get(valueField))));
+        return map;
+    }
+
+    public Object parseOptionFromUrl(String valueField, String textField, Object value, String url) {
+        if (url.startsWith("/")) url = url.substring(1);
+        String[] tmp = url.split("[?]");
+        String realUrl = tmp[0];
+        String param = tmp.length > 1 ? tmp[1] : null;
+        Map<String, String> map = null;
+        if (realUrl.startsWith("config")) {
+            String[] arr = realUrl.split("[/]");
+            try {
+                if (arr.length == 2) {
+                    String configName = arr[1];
+                    String config = configService.getContent(configName.split("[.]")[0]);
+                    if (config != null)
+                        map = list2map(JSON.parseArray(config, Map.class), valueField, textField);
+                } else if (arr.length == 3) {
+                    String conf = configService.get(arr[1], arr[2]);
+                    if (conf != null) {
+                        if (conf.trim().startsWith("{")) {
+                            map = JSON.parseObject(conf, Map.class);
+                        } else {
+                            map = list2map(JSON.parseArray(conf, Map.class), valueField, textField);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        if (map != null) {
+            return map.get(String.valueOf(value));
+        }
+        return null;
     }
 
     public Object parseOptionFromData(String valueField, String textField, Object value, Object data) {
