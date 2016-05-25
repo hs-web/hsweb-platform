@@ -34,7 +34,7 @@
         }
 
         .searchForm .title {
-            width: 100px;
+            width: 0px;
             text-align: right;
         }
 
@@ -64,12 +64,12 @@
                 <a class="mini-menubutton" iconCls="icon-download" plain="true" menu="#excelMenu">导出excel</a>
                 <span class="separator"></span>
             </#if>
-                <a class="mini-button" iconCls="icon-reload" plain="true" onclick="grid.reload()">刷新</a>
+                <a class="mini-button" iconCls="icon-reload" plain="true" onclick="search()">刷新</a>
                 <a class='mini-menubutton' iconCls='icon-search' plain='true' menu='#searchMenu' onclick='search()'>查询</a>
             </td>
         </tr>
     </table>
-    <div style="width: 700px;margin: auto;" id="searchForm">
+    <div style="margin: auto;max-width: 1000px" id="searchForm">
     </div>
 </div>
 <ul id="excelMenu" class="mini-menu" style="display:none;">
@@ -93,6 +93,35 @@
     var meta = ${meta.meta!''};
     var queryTableConfig = meta.queryTableConfig;
     var includes = ["u_id"];
+    var searchFormConfigMap = {};
+    $(searchFormConfig).each(function (i, e) {
+        searchFormConfigMap[e.id] = e;
+    });
+    var queryTypeMapper = {
+        "=": {value: "eq"},
+        ">=": {value: "gt"},
+        "<=": {value: "lt"},
+        "like": {
+            value: "like"
+        },
+        "like%": {
+            value: "like", helper: function (v) {
+                return v + "%";
+            }
+        }, "%like": {
+            value: "like", helper: function (v) {
+                return "%" + v;
+            }
+        }, "%like%": {
+            value: "like", helper: function (v) {
+                return "%" + v + "%";
+            }
+        }, "in": {
+            value: "in"
+        }, "notin": {
+            value: "notin"
+        }
+    }
     queryTableConfig.unshift({type: 'indexcolumn', header: "#", headerAlign: 'center'});
     $(queryTableConfig).each(function (i, e) {
         if (e.field)
@@ -101,38 +130,76 @@
             if (e[f] == 'true')e[f] = true;
             if (e[f] == 'false')e[f] = false;
         }
-    })
+    });
     function initSearchForm() {
         var html = "<table  class='searchForm'><tr>";
         var index = 0;
         var newLineIndex = 3;
-        var lineNumber=1;
+        var lineNumber = 1;
         $(searchFormConfig).each(function (i, e) {
             if (e.field) {
                 if (index != 0 && index % newLineIndex == 0) {
+//                    if (lineNumber == 1)
+//                        html += "<td class='searchTd'></td>";
                     lineNumber++;
                     html += "</tr><tr>";
                 }
                 index++;
+                var width = e.title.length * 16;
                 html += "<td class='title'>";
-                html += e.title+":";
+                html += e.title + ":";
                 html += "</td>";
                 html += "<td class='html'>";
                 html += e.html;
                 html += "</td>";
             }
         });
+        html += "<tr/><tr>";
+        html += "<td class='searchTd' colspan='6' align='center'></td>";
+        html += "</tr>"
         $("#searchForm").html(html);
+        $("<a class='mini-button' iconCls='icon-search' plain='true' onclick='search()'>查询</a>" +
+                "<a class='mini-button' iconCls='icon-arrow-rotate-clockwise' plain='true' onclick='new mini.Form(\"#searchForm\").reset();search()'>重置条件</a>").appendTo(".searchTd");
     }
     initSearchForm();
     mini.parse();
     var grid = mini.get('grid');
     bindDefaultAction(grid);
+    grid.on("load", function (data) {
+        mini.showTips({
+            content: "成功加载" + data.total + "条数据",
+            state: 'success',
+            x: 'right',
+            y: 'top',
+            timeout: 2000
+        });
+    });
     grid.setUrl(Request.BASH_PATH + meta.table_api);
     grid.setColumns(queryTableConfig);
     search();
     function search() {
         var param = {};
+        var formData = new mini.Form("#searchForm").getData();
+        var index = 0;
+        for (var f in formData) {
+            if (formData[f] == "")continue;
+            if (typeof (formData[f]) == 'object') {
+                formData[f] = mini.getbyName(f).getFormValue();
+            }
+            var conf = searchFormConfigMap[f];
+            if (conf) {
+                var queryType = queryTypeMapper[conf.queryType];
+                if (queryType) {
+                    param['terms[' + index + '].termType'] = queryType.value;
+                    if (queryType.helper) {
+                        formData[f] = queryType.helper(formData[f]);
+                    }
+                }
+                param['terms[' + index + '].field'] = conf.field;
+                param['terms[' + index + '].value'] = formData[f];
+                index++;
+            }
+        }
         param.includes = includes + "";
         grid.load(param);
     }
@@ -170,6 +237,8 @@
             });
         }
     }
+    var importErrorMsg;
+    var fileTmp;
     function importExcel() {
         openFileUploader("excel", "", function (e) {
             grid.loading("上传数据中...");
@@ -179,22 +248,59 @@
                 ids.push(e.id);
                 mapData[e.id] = e;
             });
+            fileTmp = mapData;
             Request.patch("dyn-form/" + meta.dynForm + "/import/" + ids, {}, function (e1) {
                 grid.reload();
                 if (e1.success) {
                     var ms = e1.data;
+                    importErrorMsg = ms;
                     showImportResult(ms, e);
+                } else {
+                    mini.alert("导入失败,请确定上传的excel格式正确！");
                 }
             });
         })
     }
+
     function showImportResult(data, fileInfo) {
         var html = "";
+        var error = false;
         $(fileInfo).each(function (i, e) {
             var msg = data[e.id];
             html += "导入" + e.name + ",总计:" + msg.total + "条,成功:"
                     + msg.success + ",失败:" + (msg.total - msg.success) + "<br/>";
+            if ((msg.total - msg.success) > 0) {
+                error = true;
+            }
         });
+        if (error)
+            html += "<a href='javascript:showImportErrorMsg()'>点击查看原因</a>";
+        mini.alert(html);
+    }
+    function showImportErrorMsg() {
+        var html = "";
+        for (var err in importErrorMsg) {
+            var fileName = fileTmp[err].name;
+            var errorMessage = importErrorMsg[err].errorMessage;
+            if (errorMessage && errorMessage.length > 0) {
+                html += "文件名:" + fileName + ":<br/>";
+                $(errorMessage).each(function (i, e) {
+                    if (i > 5)return;
+                    if (i >= 5) {
+                        html += ("省略显示" + (errorMessage.length - 5) + "条错误原因");
+                        return;
+                    }
+                    var message;
+                    if (e.message.indexOf("[") == 0) {
+                        var tmp = mini.decode(e.message);
+                        if (tmp.length > 0)message = tmp[0].message;
+                    } else {
+                        message = e.message;
+                    }
+                    html += "第" + e.index + "行，原因:" + message + "<br/>";
+                });
+            }
+        }
         mini.alert(html);
     }
 </script>
