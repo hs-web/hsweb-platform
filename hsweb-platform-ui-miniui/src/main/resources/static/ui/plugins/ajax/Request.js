@@ -113,7 +113,8 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "GET", callback, true, false);
     },
     post: function (uri, data, callback,requestBody) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, requestBody==true);
+        if(requestBody!=false)requestBody=true;
+        Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, requestBody);
     },
     put: function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, true);
@@ -125,6 +126,7 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {
+        console.log(requestBody);
         if (requestBody == true) {
             data = JSON.stringify(data);
         }
