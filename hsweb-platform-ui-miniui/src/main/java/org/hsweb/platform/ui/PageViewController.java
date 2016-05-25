@@ -1,6 +1,5 @@
 package org.hsweb.platform.ui;
 
-import org.hsweb.web.core.authorize.ExpressionScopeBean;
 import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.utils.WebUtil;
 import org.springframework.stereotype.Controller;
@@ -11,14 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 /**
  * Created by zhouhao on 16-4-8.
  */
 @Controller
-public class PageViewController implements ExpressionScopeBean {
+public class PageViewController {
 
     @RequestMapping(value = "/admin/login.html", method = RequestMethod.GET)
     public ModelAndView login(String uri) throws UnsupportedEncodingException {
