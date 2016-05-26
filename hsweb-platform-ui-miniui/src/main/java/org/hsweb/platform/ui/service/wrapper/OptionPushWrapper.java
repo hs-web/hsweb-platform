@@ -34,12 +34,9 @@ public class OptionPushWrapper extends HashMapWrapper {
         if (value instanceof Clob) {
             try {
                 Reader reader = ((Clob) value).getCharacterStream();
-                BufferedReader br = new BufferedReader(reader);
-                StringBuilder sb=new StringBuilder();
-                while (br.ready()){
-                    sb.append(br.readLine()).append("\n");
-                }
-                value = sb.toString();
+                char[] data = new char[(int) ((Clob) value).length()];
+                reader.read(data);
+                value = new String(data);
             } catch (Exception e) {
                 logger.error("clob2string error", e);
             }
