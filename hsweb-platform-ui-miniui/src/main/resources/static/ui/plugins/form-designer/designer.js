@@ -32,7 +32,10 @@ ue.addListener('selectionchange', function () {
     var tagIsInput = tag == "input" || tag == "INPUT";
     var tagIsSelect = tag == "select" || tag == "SELECT";
     var tagIsTextArea = tag == "textarea" || tag == "TEXTAREA";
-    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea;
+    var tagIsDate=$(focusNode).attr("onclick")=="WdatePicker()"
+        ||$(focusNode).parent().prev().text().indexOf("日期")!=-1
+        ||$(focusNode).parent().prev().text().indexOf("时间")!=-1;
+    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea||tagIsDate;
     if (id) {
         nowEditorTarget = id;
     } else {
@@ -48,7 +51,14 @@ ue.addListener('selectionchange', function () {
                 var property = [];
                 property.push({key: "style", value: "width:90%"});
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
-            } else if (tagIsInput) {
+            }else if (tagIsDate) {
+                insert("datepicker");
+                var property = [];
+                property.push({key: "style", value: "width:200px"});
+                fieldData[nowEditorTarget][2].value="date";
+                fieldData[nowEditorTarget][3].value="date";
+                fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
+            }  else if (tagIsInput) {
                 insert("textbox");
                 var property = [];
                 property.push({key: "style", value: "width:200px"});
