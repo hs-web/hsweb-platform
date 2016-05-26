@@ -1,5 +1,6 @@
 package org.hsweb.platform.ui.controller;
 
+import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.message.ResponseMessage;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/icon-list")
+@Authorize
 public class IconController {
 
     @RequestMapping
