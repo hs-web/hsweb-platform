@@ -57,7 +57,7 @@
         if (!data)return;
         for (var f in data) {
             if (typeof (data[f]) == 'object') {
-                data[f] = mini.get(f).getFormValue();
+                data[f] = mini.getbyName(f).getFormValue();
             }
         }
         var box = mini.loading("提交中...", "");
