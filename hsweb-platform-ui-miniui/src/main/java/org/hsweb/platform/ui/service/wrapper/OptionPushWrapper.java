@@ -111,12 +111,13 @@ public class OptionPushWrapper extends HashMapWrapper {
                 .map(map -> {
                     String stringValue = String.valueOf(map.get(valueField));
                     String targetStringValue = String.valueOf(value);
-                    if (stringValue.equals(targetStringValue)) return map.get(textField);
-                    if (targetStringValue.contains(",")) {
+                    Object tmp = null;
+                    if (stringValue.equals(targetStringValue)) tmp = map.get(textField);
+                    else if (targetStringValue.contains(",")) {
                         if (Arrays.asList(targetStringValue.split("[,]")).contains(stringValue))
-                            return map.get(textField);
+                            tmp = map.get(textField);
                     }
-                    return "";
+                    return tmp == null ? "" : tmp;
                 }).reduce((s1, s2) -> {
                     if (StringUtils.isNullOrEmpty(s1)) return s2;
                     if (StringUtils.isNullOrEmpty(s2)) return s1;
