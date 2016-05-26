@@ -126,7 +126,6 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {
-        console.log(requestBody);
         if (requestBody == true) {
             data = JSON.stringify(data);
         }
