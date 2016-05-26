@@ -9,6 +9,8 @@ import org.webbuilder.sql.*;
 import org.webbuilder.sql.support.executor.HashMapWrapper;
 import org.webbuilder.utils.common.StringUtils;
 
+import java.io.BufferedReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.sql.Clob;
 import java.util.Arrays;
@@ -31,7 +33,13 @@ public class OptionPushWrapper extends HashMapWrapper {
     public void wrapper(Map<String, Object> instance, int index, String attr, Object value) {
         if (value instanceof Clob) {
             try {
-                value = StreamUtils.copyToString(((Clob) value).getAsciiStream(), Charset.defaultCharset());
+                Reader reader = ((Clob) value).getCharacterStream();
+                BufferedReader br = new BufferedReader(reader);
+                StringBuilder sb=new StringBuilder();
+                while (br.ready()){
+                    sb.append(br.readLine()).append("\n");
+                }
+                value = sb.toString();
             } catch (Exception e) {
                 logger.error("clob2string error", e);
             }
