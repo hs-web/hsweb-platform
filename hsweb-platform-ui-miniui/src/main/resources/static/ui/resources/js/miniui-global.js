@@ -56,7 +56,9 @@ function bindDefaultAction(grid) {
     grid.on("loaderror", function (e) {
         var res = mini.decode(e.xhr.responseText);
         if (res.code == 401) {
-            doLogin(grid.reload);
+            doLogin(function () {
+                grid.reload()
+            });
         }
         if (res.code == 403) {
             showTips("权限不够", "danger");
@@ -71,8 +73,29 @@ function bindDefaultAction(grid) {
 }
 
 function doLogin(cbk) {
-    openWindow(Request.BASH_PATH + "admin/login.html?uri=ajax", "请登录", "600", "400", function (e1) {
+    openWindow(Request.BASH_PATH + "admin/login.html?uri=ajax", "登录超时,请重新登录!", "600", "400", function (e1) {
         if ("success" == e1)
             cbk();
     });
+}
+
+function removeRow(grid, _id) {
+    var row = grid.findRow(function (e) {
+        if (e._id == _id)return true;
+    });
+    grid.removeRow(row, true);
+}
+
+function moveUp(grid, _id) {
+    var arr = grid.findRows(function (row) {
+        if (row._id == _id)return true;
+    });
+    grid.moveUp(arr);
+}
+
+function moveDown(grid, _id) {
+    var arr = grid.findRows(function (row) {
+        if (row._id == _id)return true;
+    });
+    grid.moveDown(arr);
 }
