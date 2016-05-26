@@ -187,4 +187,8 @@
         });
         grid.removeRow(row, true);
     }
+    window.onblur = function (e) {
+        grid.commitEdit();
+        grid.accept();
+    }
 </script>
