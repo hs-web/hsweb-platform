@@ -78,7 +78,7 @@
         $(data).each(function(i,e){
             var d={};
             for(var f in e){
-                if(f!="_id"&&f!="_uid"){
+                if(f!="_id"&&f!="_uid"&&f!="_state"){
                     d[f]=e[f];
                 }
             }
