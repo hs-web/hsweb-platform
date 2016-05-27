@@ -11,6 +11,7 @@
     <logger name="org.apache.tomcat" level="ERROR" />
     <logger name="org.hsweb" level="DEBUG" />
     <logger name="org.activiti" level="ERROR" />
+    <logger name="org.apache.commons.beanutils.PropertyUtils" level="OFF" />
     <logger name="org.activiti.engine.impl" level="DEBUG" />
     <root level="ERROR">
         <appender-ref ref="Console"/>

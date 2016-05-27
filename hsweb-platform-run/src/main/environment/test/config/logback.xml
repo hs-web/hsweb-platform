@@ -12,6 +12,7 @@
     <logger name="org.eclipse" level="ERROR" />
     <logger name="org.hsweb" level="DEBUG" />
     <logger name="jndi" level="ERROR" />
+    <logger name="org.apache.commons.beanutils.PropertyUtils" level="OFF" />
     <root level="DEBUG">
         <appender-ref ref="Console"/>
     </root>

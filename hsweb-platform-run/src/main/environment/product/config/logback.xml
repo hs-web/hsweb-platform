@@ -17,7 +17,7 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} > %-5level %logger{35} - %m%n</pattern>
         </encoder>
     </appender>
-
+    <logger name="org.apache.commons.beanutils.PropertyUtils" level="OFF" />
     <root level="ERROR">
         <appender-ref ref="Console"/>
         <appender-ref ref="File"/>
