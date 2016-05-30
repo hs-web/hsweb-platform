@@ -34,7 +34,7 @@
         }
 
         .searchForm .title {
-            width: 0px;
+            min-width: 100px;
             text-align: right;
         }
 
@@ -81,7 +81,7 @@
     <li iconCls="icon-application-view-list">自定义查询条件</li>
 </ul>
 <div class="mini-fit">
-    <div id="grid" class="mini-datagrid" style="width:100%;height:100%;" ajaxOptions="{type:'GET'}" idField="id"
+    <div id="grid" class="mini-datagrid" style="width:100%;height:100%;" ajaxOptions="{type:'GET',dataType:'json'}" idField="id"
          sizeList="[10,20,50,200]" pageSize="20">
     </div>
 </div>
@@ -132,12 +132,14 @@
         }
     });
     function initSearchForm() {
-        var html = "<table  class='searchForm'><tr>";
+        var html = "<table class='searchForm'><tr>";
         var index = 0;
         var newLineIndex = 3;
         var lineNumber = 1;
+        var x=0;
         $(searchFormConfig).each(function (i, e) {
             if (e.field) {
+                x++;
                 if (index != 0 && index % newLineIndex == 0) {
 //                    if (lineNumber == 1)
 //                        html += "<td class='searchTd'></td>";
@@ -146,7 +148,7 @@
                 }
                 index++;
                 var width = e.title.length * 16;
-                html += "<td class='title'>";
+                html += "<td class='title font' >";
                 html += e.title + ":";
                 html += "</td>";
                 html += "<td class='html'>";
@@ -154,9 +156,14 @@
                 html += "</td>";
             }
         });
+        if(x>newLineIndex){
+            x=6;
+        }else{
+            x=x*2;
+        }
         html += "<tr/><tr>";
-        html += "<td class='searchTd' colspan='6' align='center'></td>";
-        html += "</tr>"
+        html += "<td class='searchTd' colspan='"+x+"' align='center'></td>";
+        html += "</tr></table>"
         $("#searchForm").html(html);
         $("<a class='mini-button' iconCls='icon-search' plain='true' onclick='search()'>查询</a>" +
                 "<a class='mini-button' iconCls='icon-arrow-rotate-clockwise' plain='true' onclick='new mini.Form(\"#searchForm\").reset();search()'>重置条件</a>").appendTo(".searchTd");

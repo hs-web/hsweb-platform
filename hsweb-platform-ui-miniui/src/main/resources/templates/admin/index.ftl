@@ -55,6 +55,8 @@
 </div>
 </body>
 <@global.importRequest/>
+<@global.importWebsocket/>
+<@global.importPlugin "socket/Socket.js"/>
 </html>
 <script>
     mini.parse();
@@ -96,4 +98,5 @@
                 }
         );
     }
+    Socket.open(function(socket){});
 </script>

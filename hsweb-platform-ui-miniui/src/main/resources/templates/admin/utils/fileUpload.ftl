@@ -129,7 +129,6 @@
     });
     uploader.on('uploadSuccess', function (file, message) {
         var row = getRow(file.id);
-        console.log(message);
         if (message && message.success && message.data.length > 0) {
             row.status = "上传成功!";
             row.resourceId = message.data[0].id;

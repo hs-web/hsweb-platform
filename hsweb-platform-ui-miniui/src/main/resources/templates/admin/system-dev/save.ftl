@@ -88,11 +88,15 @@
                     </tr>
                     <tr>
                         <td valign="middle" style="border-color: rgb(221, 221, 221);" width="150" align="right">编辑页面</td>
-                        <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3"><input style="width:100%" name="save_page" id="save_page" class="mini-textbox"></td>
+                        <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3">
+                            <input style="width:100%" name="save_page" id="save_page" class="mini-textbox">
+                        </td>
                     </tr>
                     <tr>
                         <td valign="middle" style="border-color: rgb(221, 221, 221);" width="150" align="right">详情页面</td>
-                        <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3"><input style="width:100%" name="info_page" id="info_page" class="mini-textbox"></td>
+                        <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3">
+                            <input style="width:100%" name="info_page" id="info_page" class="mini-textbox">
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -183,7 +187,7 @@
                         <input property="editor" class="mini-combobox" textField="id" data="[{id:true},{id:false}]"/>
                     </div>
                     <div field="renderer" width="100" align="center" headerAlign="center">渲染事件
-                        <input property="editor" class="mini-buttonedit"/>
+                        <input property="editor"  onbuttonclick="editScript"  class="mini-buttonedit"/>
                     </div>
                     <div name="action" width="100" renderer="rendererQueryTableAction" align="center" headerAlign="center">操作</div>
                 </div>
@@ -191,28 +195,26 @@
         </div>
         <div title="页面配置">
             <div style="width: 80%;margin: auto;">
-                <h1 align="center">菜单栏选项</h1>
+                <h1 align="center">表格操作栏</h1>
+                <a class="mini-button" iconCls="icon-add" plain="true" onclick="mini.get('action_grid').addRow({})">添加</a>
             </div>
-            <div id="toolbar_grid" class="mini-datagrid" style="width: 80%;height:50%;margin: auto;"
+            <div id="action_grid" class="mini-datagrid" style="width: 80%;height:50%;margin: auto;"
                  idField="id" allowCellEdit="true" allowCellSelect="true" showPager="false">
                 <div property="columns">
                     <div type="indexcolumn" align="center" headerAlign="center">#</div>
-                    <div field="header" width="60" align="center" headerAlign="center">标题
+                    <div field="title" width="60" align="center" headerAlign="center">标题
                         <input property="editor" class="mini-textbox"/>
                     </div>
                     <div field="moduleAction" width="60" align="center" headerAlign="center">权限action
                         <input property="editor" class="mini-textbox"/>
                     </div>
-                    <div field="childMenu" width="60" align="center" headerAlign="center">子菜单
-                        <input property="editor" class="mini-textbox"/>
-                    </div>
-                    <div field="iconCls" width="60" align="center" headerAlign="center">图标
-                        <input property="editor" class="mini-buttonedit"/>
+                    <div field="icon" width="60" renderer="renderIcon" align="center" headerAlign="center">图标
+                        <input property="editor" onbuttonclick="chooseIcon" class="mini-buttonedit"/>
                     </div>
                     <div field="onclick" width="60" align="center" headerAlign="center">事件
-                        <input property="editor" class="mini-buttonedit"/>
+                        <input property="editor" onbuttonclick="editScript" class="mini-buttonedit"/>
                     </div>
-                    <div name="action" width="100" renderer="rendererQueryTableAction" align="center" headerAlign="center">操作</div>
+                    <div name="action" width="100" renderer="rendererActionTableAction" align="center" headerAlign="center">操作</div>
                 </div>
             </div>
         </div>
@@ -252,7 +254,27 @@
     mini.parse();
     var query_plan_grid = mini.get('query_plan_grid');
     var query_table_grid = mini.get('query_table_grid');
+    var action_grid = mini.get('action_grid');
+    bindCellBeginButtonEdit(action_grid);
+    function editScript(e) {
+        var tmp = e.sender.value;
+        if (!tmp) {
+            tmp = "";
+        }
+        openScriptEditor("javascript", tmp, function (script) {
+            e.sender.setValue(script);
+            e.sender.setText(script);
+        });
+    }
 
+    function chooseIcon(e) {
+        openWindow(Request.BASH_PATH + "admin/utils/get-icon.html", "选择图标", "800", "400", function (icon) {
+            if (icon && icon.indexOf("icon-") != -1) {
+                e.sender.setValue(icon);
+                e.sender.setText(icon);
+            }
+        });
+    }
     function removeQueryPlanRow(id) {
         query_plan_grid.findRow(function (row) {
             if (!row)return;
@@ -273,32 +295,25 @@
         });
     }
 
-    function moveUp(grid, id) {
-        var arr = grid.findRows(function (row) {
-            if (row.id == id)return true;
-        });
-        grid.moveUp(arr);
-    }
-
-    function moveDown(grid, id) {
-        var arr = grid.findRows(function (row) {
-            if (row.id == id)return true;
-        });
-        grid.moveDown(arr);
+    function rendererActionTableAction(e) {
+        var html = "";
+        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(action_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
+        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(action_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(action_grid,'" + e.record._id + "')\"></i>";
     }
 
     function rendererQueryTableAction(e) {
         var html = "";
-        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_table_grid,'" + e.record.id + "')\"></i>&nbsp;&nbsp;";
-        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_table_grid,'" + e.record.id + "')\"></i>&nbsp;&nbsp;";
-        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeQueryTableRow('" + e.record.id + "')\"></i>";
+        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_table_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
+        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_table_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(query_table_grid,'" + e.record._id + "')\"></i>";
     }
 
     function rendererAction(e) {
         var html = "";
-        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_plan_grid,'" + e.record.id + "')\"></i>&nbsp;&nbsp;";
-        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_plan_grid,'" + e.record.id + "')\"></i>&nbsp;&nbsp;";
-        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeQueryPlanRow('" + e.record.id + "')\"></i>";
+        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_plan_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
+        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_plan_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(query_plan_grid,'" + e.record._id + "')\"></i>";
     }
 
     function addQueryField() {
@@ -379,6 +394,7 @@
                     new mini.Form("#content-body").setData(data);
                     query_plan_grid.setData(meta.queryPlanConfig);
                     query_table_grid.setData(meta.queryTableConfig);
+                    action_grid.setData(meta.actionConfig);
                 }
             });
         }
@@ -400,6 +416,7 @@
         var meta = {};
         meta.queryPlanConfig = query_plan_grid.getData();
         meta.queryTableConfig = query_table_grid.getData();
+        meta.actionConfig=action_grid.getData();
         $(meta.queryTableConfig).each(function (i, e) {
             e.width = parseInt(e.width);
         });

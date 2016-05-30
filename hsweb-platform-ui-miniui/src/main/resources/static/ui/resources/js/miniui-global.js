@@ -31,6 +31,7 @@ function openFileUploader(accept, title, onupload) {
         }
     });
 }
+
 function openScriptEditor(mode, script, ondestroy) {
     mini.open({
         url: Request.BASH_PATH + "admin/utils/scriptEditor.html",
@@ -43,13 +44,30 @@ function openScriptEditor(mode, script, ondestroy) {
             var iframe = this.getIFrameEl();
             iframe.contentWindow.init(mode, script);
         },
-        ondestroy: ondestroy
+        ondestroy: function (e) {
+            if (e == "close" || e == "cancel")return;
+            ondestroy(e);
+        }
     });
 }
 function closeWindow(action) {
     if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
     else window.close();
 }
+function bindCellBeginButtonEdit(grid) {
+    grid.on("cellbeginedit", function (e) {
+        if (e.editor.type == "buttonedit") {
+            e.editor.setValue(e.value);
+            e.editor.setText(e.value);
+        }
+    });
+}
+
+function renderIcon(e) {
+    return '<i style="width: 16px; height: 16px; display: inline-block; background-position: 50% 50%;line-height: 16px;" ' +
+        'class="mini-iconfont ' + e.value + '" style=""></i>';
+}
+
 function bindDefaultAction(grid) {
     grid.un("loaderror", function (e) {
     });

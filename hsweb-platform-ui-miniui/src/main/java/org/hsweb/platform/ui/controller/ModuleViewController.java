@@ -2,6 +2,7 @@ package org.hsweb.platform.ui.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.beanutils.BeanUtils;
 import org.hsweb.platform.ui.service.ModuleMetaParserService;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.common.Term;
