@@ -97,6 +97,7 @@
     }
     window.setData = function (d) {
         this.data = d;
+        if (d)
         initData();
     }
     window.init = function (m) {

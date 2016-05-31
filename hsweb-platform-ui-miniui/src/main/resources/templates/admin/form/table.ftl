@@ -86,9 +86,10 @@
         });
         return newData;
     }
-    window.setData = function (d) {
+    window.setData = function (d, formData) {
         this.data = d;
-        initData();
+        if (d)
+            initData();
     }
     window.init = function (m) {
         meta = mini.clone(m);
