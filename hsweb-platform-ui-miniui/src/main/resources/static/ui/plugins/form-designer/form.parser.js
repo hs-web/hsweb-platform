@@ -38,49 +38,56 @@ var FormParser = function (conf) {
         var form = new mini.Form(conf.target);
         form.setData(data);
         for (var hp in tmp.helper) {
-            tmp.helper[hp].setValue(mini.decode(data[hp]))
+            tmp.helper[hp].setValue(mini.decode(data[hp]),data)
         }
-    },
-        this.getData = function () {
-            var form = new mini.Form(conf.target);
-            form.validate();
-            if (form.isValid() == false) return;
-            var data = form.getData();
-            for (var hp in tmp.helper) {
-                data[hp] = mini.encode(tmp.helper[hp].getValue());
+    };
+    this.getData = function () {
+        var form = new mini.Form(conf.target);
+        form.validate();
+        if (form.isValid() == false) return;
+        var data = form.getData();
+        for (var hp in tmp.helper) {
+            data[hp] = mini.encode(tmp.helper[hp].getValue());
+        }
+        return data;
+    };
+    this.layout = function () {
+        var meta = tmp.data.meta;
+        var html = $(tmp.data.html);
+        function list2Map(list) {
+            var map = {};
+            $(list).each(function (index, o) {
+                map[o.key] = o.value;
+            });
+            return map;
+        }
+        for (var id in meta) {
+            var el = html.find("[field-id='" + id + "']");
+            var el_meta = list2Map(meta[id]);
+            var domProperty = list2Map(mini.decode(el_meta.domProperty));
+            el.addClass(el_meta['class']);
+            el.attr("name", el_meta.name);
+            for (var property in domProperty) {
+                el.attr(property, domProperty[property]);
             }
-            return data;
-        },
-        this.layout = function () {
-            var meta = tmp.data.meta;
-            var html = $(tmp.data.html);
-
-            function list2Map(list) {
-                var map = {};
-                $(list).each(function (index, o) {
-                    map[o.key] = o.value;
-                });
-                return map;
-            }
-
-            for (var id in meta) {
-                var el = html.find("[field-id='" + id + "']");
-                var el_meta = list2Map(meta[id]);
-                var domProperty = list2Map(mini.decode(el_meta.domProperty));
-                el.addClass(el_meta['class']);
-                el.attr("name", el_meta.name);
-                for (var property in domProperty) {
-                    el.attr(property, domProperty[property]);
-                }
-                tmp.parser(el_meta, el);
-            }
-            $(conf.target).html(html);
-        };
+            tmp.parser(el_meta, el);
+        }
+        $(conf.target).html(html);
+    };
     this.loadingFrame = {};
+    function list2Map(list) {
+        var map = {};
+        $(list).each(function (index, o) {
+            map[o.key] = o.value;
+        });
+        return map;
+    };
     this.parser = function (meta, html) {
-        if (meta["_meta"] == 'table' || meta["_meta"] == 'file') {
-            var tableViewUri = Request.BASH_PATH + meta.customPage;
-            var table = $("<iframe style='width: 100%;height:100%; border: 0px;' src='" + tableViewUri + "' ></iframe>");
+        if (meta["_meta"] == 'table' || meta["_meta"] == 'file'|| meta["_meta"] == 'tabs') {
+            var tableViewUri = Request.BASH_PATH +(meta["_meta"] == 'tabs'?'admin/form/tabs.html':meta.customPage);
+            var domProperty=list2Map(mini.decode(meta["domProperty"]));
+            var style=domProperty["style"]?domProperty["style"]+";border: 0px":"width: 100%;height:100%; border: 0px;";
+            var table = $("<iframe style='"+style+"' src='" + tableViewUri + "' ></iframe>");
             table.addClass("form-table");
             table.attr("form-name", meta["name"]);
             tmp.loadingFrame[meta["name"]] == true;
@@ -89,15 +96,15 @@ var FormParser = function (conf) {
                 if (conf.readOnly && win.setReadOnly) {
                     win.setReadOnly();
                 }
-                if (win.init)
-                    win.init(meta);
                 if (win.getData) {
                     tmp.helper[meta.name] = {};
                     tmp.helper[meta.name].getValue = win.getData;
                     tmp.helper[meta.name].setValue = win.setData;
-                    if (win.setData && tmp.formData[meta["name"]])
-                        win.setData(mini.decode(tmp.formData[meta["name"]]));
+                    if (win.setData && tmp.formData)
+                        win.setData(mini.decode(tmp.formData[meta["name"]]),tmp.formData);
                 }
+                if (win.init)
+                    win.init(meta);
             });
             $(html).parent().append(table);
             $(html).hide();

@@ -186,6 +186,20 @@ Designer.getPropertiesEditors = function () {
                 }
             });
         },
+        tabConfig: function (value, callback) {
+            var data = mini.decode(value['tabConfig']);
+            var columns = [
+                {
+                    field: "title", width: 50, headerAlign: "center", allowSort: false, header: "标题",
+                    editor: {type: "textbox"}
+                },
+                {
+                    field: "url", width: 100, headerAlign: "center", allowSort: false, header: "路径",
+                    editor: {type: "textbox"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "配置路径", callback);
+        },
         "columns": function (value, callback) {
             var data = mini.decode(value['columns']);
             var columns = [
@@ -538,6 +552,67 @@ Designer.fields = {
             var tmp = Designer.fields['table'].getPropertiesTemplate();
             tmp._meta.value = 'table';
             tmp['class'].value = "data-grid";
+            for (var f in tmp) {
+                list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
+            }
+            return list;
+        },
+        getPropertiesEditor: function () {
+            var editors = Designer.getPropertiesEditors();
+            editors.domPropertyProxy = editors.domProperty;
+            editors.domProperty = function (value, callback) {
+                editors.domPropertyProxy(value, callback);
+                var data = mini.decode(value['domProperty']);
+                if (data.length == 0) {
+                    mini.get("tmp_table").setData(data);
+                }
+            };
+            return editors;
+        }
+    },
+    tabs: {
+        html: function (id) {
+            return "<input field-id='" + id + "' />";
+        },
+        propertiesEditable: function (name) {
+            var cf = Designer.fields['tabs'].getPropertiesTemplate()[name];
+            if (!cf)return true;
+            if (cf['editable'] == false)return false;
+            return cf['editable'] || true;
+        },
+        getPropertiesTemplate: function () {
+            var template = {
+                name: {
+                    describe: "名称"
+                }, comment: {
+                    describe: "字段描述"
+                }, javaType: {
+                    describe: "java类型",
+                    value: "string"
+                }, dataType: {
+                    describe: "数据库类型",
+                    value: "clob"
+                }, _meta: {
+                    describe: "控件类型",
+                    value: "grid",
+                }, "class": {
+                    describe: "class",
+                    value: "data-grid",
+                }, "tabConfig": {
+                    describe: "选项卡配置",
+                    value: "[]"
+                },"domProperty": {
+                    describe: "其他控件配置",
+                    value: "[]"
+                }
+            };
+            return template;
+        },
+        getDefaultProperties: function () {
+            var list = [];
+            var tmp = Designer.fields['tabs'].getPropertiesTemplate();
+            tmp._meta.value = 'tabs';
+            tmp['class'].value = "data-tabs";
             for (var f in tmp) {
                 list.push({key: f, value: tmp[f].value, describe: tmp[f].describe});
             }
