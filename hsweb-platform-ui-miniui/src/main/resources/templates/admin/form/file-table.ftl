@@ -95,12 +95,12 @@
         });
         return newData;
     }
-    window.setData = function (data) {
-        grid.setData(data);
+    window.setData = function (d) {
+        this.data = d;
+        initData();
     }
-    window.init = function (m, d) {
+    window.init = function (m) {
         meta = mini.clone(m);
-        data = d;
         if (meta.canAddRow + "" == 'true' && !readOnly) {
             $('#addButton').show();
         } else {

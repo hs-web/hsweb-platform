@@ -73,25 +73,25 @@
         readOnly = true;
     }
     window.getData = function () {
-        var newData=[];
-        var data= grid.getData();
-        $(data).each(function(i,e){
-            var d={};
-            for(var f in e){
-                if(f!="_id"&&f!="_uid"&&f!="_state"){
-                    d[f]=e[f];
+        var newData = [];
+        var data = grid.getData();
+        $(data).each(function (i, e) {
+            var d = {};
+            for (var f in e) {
+                if (f != "_id" && f != "_uid" && f != "_state") {
+                    d[f] = e[f];
                 }
             }
             newData.push(d);
         });
         return newData;
     }
-    window.setData = function (data) {
-        grid.setData(data);
+    window.setData = function (d) {
+        this.data = d;
+        initData();
     }
-    window.init = function (m, d) {
+    window.init = function (m) {
         meta = mini.clone(m);
-        data = d;
         if (meta.canAddRow + "" == 'true' && !readOnly) {
             $('#addButton').show();
         } else {
@@ -126,11 +126,11 @@
                 }
                 delete column['property'];
             }
-            if(readOnly) delete column["editor"];
+            if (readOnly) delete column["editor"];
             newData.push(column);
         });
-        if(!readOnly)
-        newData.push({header: "操作", width: 20, renderer: renderAction, headerAlign: "center", align: "center"});
+        if (!readOnly)
+            newData.push({header: "操作", width: 20, renderer: renderAction, headerAlign: "center", align: "center"});
         return newData;
     }
     function createActionButton(text, action, icon) {
