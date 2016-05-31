@@ -58,9 +58,9 @@
                 type: "value",
                 name: "%",
                 position: "left",
-                boundaryGap: [0, '100%'],
+                max:100,
                 splitLine: {
-                    show: false
+                    show: true
                 }
             }
         ],
@@ -70,22 +70,22 @@
                 type: "line",
                 detail: {formatter: '{value}%'},
                 data: [],
-                smooth: false,
+                smooth: true,
                 areaStyle: {
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: 'rgb(255, 158, 68)'
+                            color: 'rgb(255, 12, 0)'
                         }, {
                             offset: 1,
-                            color: 'rgb(255, 70, 131)'
+                            color: 'rgb(112, 255, 0)'
                         }])
                     }
                 },
             }
         ]
     };
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 50; i++) {
         cpuOption.xAxis[0].data.push("");
         cpuOption.series[0].data.push(0);
     }
@@ -112,10 +112,10 @@
         toolbox: {},
         series: [
             {
-                name: '内存使用率',
+                name: '系统内存',
                 type: 'gauge',
                 detail: {formatter: '{value}%'},
-                data: [{value: 0, name: '系统内存使用率'}]
+                data: [{value: 0, name: '系统内存'}]
             }
         ]
     };
@@ -127,6 +127,9 @@
     systemMemChart.setOption(sysMem);
 
     Socket.open(function (socket) {
+        window.onunload = function (e) {
+            socket.sub("system-monitor", {type: "cancel"});
+        }
         socket.sub("system-monitor", {type: "cpu"}, "cpuRender");
         socket.sub("system-monitor", {type: "mem"}, "memRender");
         socket.on("cpuRender", function (obj) {
@@ -138,19 +141,31 @@
                 var cpuInfo = obj[i];
                 cb += cpuInfo.perc.combined;
             }
+            console.log(((cb / 4) * 100).toFixed(2) - 0);
             cpuOption.xAxis[0].data.push(date.getMinutes() + "-" + date.getSeconds());
-            cpuOption.series[0].data.push((cb / 4 * 100).toFixed(2) - 0);
+            cpuOption.series[0].data.push(((cb / 4) * 100).toFixed(2) - 0);
             cpuChart.setOption(cpuOption, true);
         });
         socket.on("memRender", function (obj) {
             var total = (obj['jvmTotal'] - obj['jvmFree']) / obj['jvmTotal'];
             total = total * 100;
             jvmMem.series[0].data[0].value = (total).toFixed(2) - 0;
+            jvmMem.series[0].data[0].name ="jvm内存("+ bytesToSize(obj['jvmTotal'])+")";
             jvmMemChart.setOption(jvmMem, true);
 
             total = parseFloat(obj['UsedPercent']);
             sysMem.series[0].data[0].value = (total).toFixed(2) - 0;
+            sysMem.series[0].data[0].name="系统内存("+ bytesToSize(parseInt(obj['Total']))+")";
             systemMemChart.setOption(sysMem, true);
         });
     });
+
+    function bytesToSize(bytes) {
+        if (bytes === 0) return '0 B';
+        if (bytes < 1024)return bytes + 'b';
+        var k = 1024, // or 1024
+                sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+    }
 </script>
