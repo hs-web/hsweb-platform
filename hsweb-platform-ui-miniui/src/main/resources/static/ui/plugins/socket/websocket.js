@@ -38,6 +38,7 @@ Socket.open = function (func) {
             if (func)func(Socket);
         };
         Socket.__proxy.onerror = function (msg) {
+            Socket.closed=true;
             console.log(msg);
         };
         Socket.__proxy.onclose = function (msg) {
@@ -74,6 +75,7 @@ Socket.open = function (func) {
 
 function getSocket(win) {
     if (win.__Socket) {
+        if(win.__Socket.closed)return null;
         return win.__Socket;
     } else {
         if (win.parent != win) {
