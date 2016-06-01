@@ -6,6 +6,11 @@
     <title></title>
 <@global.importMiniui/>
 <@global.importUeditorParser/>
+    <style type="text/css">
+        .form-table{
+            border: 0px;
+        }
+    </style>
 </head>
 <body>
 <div id="formContent">
@@ -44,7 +49,7 @@
                     mini.alert(e.message);
                 }
             });
-        }else{
+        } else {
             formParser.load();
         }
     }
@@ -74,12 +79,17 @@
                 try {
                     var validMessage = mini.decode(e.message);
                     $(validMessage).each(function (i, e) {
-                        mini.get(e.field).setIsValid(false);
-                        mini.get(e.field).setErrorText(e.message);
+                        mini.getbyName(e.field).setIsValid(false);
+                        mini.getbyName(e.field).setErrorText(e.message);
                     });
-                    mini.get(validMessage[0].field).focus();
+                    var field = mini.getbyName(validMessage[0].field);
+                    if (field)
+                        field.focus();
                     showTips("保存失败:" + validMessage[0].message + "....", "danger")
                 } catch (e) {
+                    if (window.console) {
+                        console.log(e);
+                    }
                     mini.alert("保存失败,请联系管理员!");
                 }
             } else {
