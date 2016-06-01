@@ -147,19 +147,29 @@
     function createActionButton(text, action, icon) {
         return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
                 '<i class="action-icon ' + icon + '"></i>' + "" //text
-                + '</span>&nbsp;';
+                + '</span>&nbsp;&nbsp;';
     }
     function renderStatus(e) {
         var row = e.record;
         if (row && row.fileList && row.fileList.length > 0) {
-            return "已上传,文件数量:" + row.fileList.length;
+            return "<a href='javascript:download(" + e.record._id + ")' title='点击下载'>已上传,文件数量:" + row.fileList.length+"</a>";
         } else {
             return "未上传";
         }
     }
+    function download(_id){
+        var row =getRow(grid,_id);
+        if(row){
+           downloadFile(row.fileList);
+        }
+    }
     function renderAction(e) {
+        var row = e.record;
         var html = "";
         html += createActionButton("上传文件", "uploadFile(" + e.record._id + ")", "icon-upload");
+//        if (row && row.fileList && row.fileList.length > 0) {
+//            html+= createActionButton("下载文件", "download(" + e.record._id + ")", "icon-download");
+//        }
         if (meta.canRemoveRow + "" == 'true') {
             html += createActionButton("删除本行", "removeRow(" + e.record._id + ")", "icon-remove");
         }
