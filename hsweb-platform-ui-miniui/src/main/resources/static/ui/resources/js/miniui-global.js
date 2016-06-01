@@ -97,6 +97,22 @@ function doLogin(cbk) {
     });
 }
 
+function downloadFile(fileList) {
+    $(fileList).each(function (i, file) {
+        var iframe = $("<iframe style='display: none'></iframe>");
+        iframe.attr("src", Request.BASH_PATH + "file/download/" + file.id + (file.name ?"/" + file.name : ""));
+       window.setTimeout(function(){
+           $(document.body).append(iframe);
+       },(i+1)*600);
+    });
+}
+
+function getRow(grid, _id) {
+    return grid.findRow(function (e) {
+        if (e._id == _id)return true;
+    });
+}
+
 function removeRow(grid, _id) {
     var row = grid.findRow(function (e) {
         if (e._id == _id)return true;
