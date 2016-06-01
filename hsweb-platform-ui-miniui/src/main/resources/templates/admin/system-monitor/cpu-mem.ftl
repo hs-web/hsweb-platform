@@ -141,7 +141,6 @@
                 var cpuInfo = obj[i];
                 cb += cpuInfo.perc.combined;
             }
-            console.log(((cb / 4) * 100).toFixed(2) - 0);
             cpuOption.xAxis[0].data.push(date.getMinutes() + "-" + date.getSeconds());
             cpuOption.series[0].data.push(((cb / 4) * 100).toFixed(2) - 0);
             cpuChart.setOption(cpuOption, true);
