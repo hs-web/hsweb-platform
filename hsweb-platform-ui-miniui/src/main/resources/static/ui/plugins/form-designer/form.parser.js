@@ -86,8 +86,8 @@ var FormParser = function (conf) {
         if (meta["_meta"] == 'table' || meta["_meta"] == 'file'|| meta["_meta"] == 'tabs') {
             var tableViewUri = Request.BASH_PATH +(meta["_meta"] == 'tabs'?'admin/form/tabs.html':meta.customPage);
             var domProperty=list2Map(mini.decode(meta["domProperty"]));
-            var style=domProperty["style"]?domProperty["style"]+";border: 0px":"width: 100%;height:100%; border: 0px;";
-            var table = $("<iframe style='"+style+"' src='" + tableViewUri + "' ></iframe>");
+            var style=domProperty["style"]?domProperty["style"]+";border: 0px none;":"width: 100%;height:100%; border: 0px none;";
+            var table = $("<iframe frameborder='0' style='"+style+"' src='" + tableViewUri + "' ></iframe>");
             table.addClass("form-table");
             table.attr("form-name", meta["name"]);
             tmp.loadingFrame[meta["name"]] == true;
