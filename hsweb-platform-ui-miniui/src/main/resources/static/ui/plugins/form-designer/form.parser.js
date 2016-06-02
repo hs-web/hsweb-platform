@@ -3,8 +3,8 @@
  */
 var FormParser = function (conf) {
     var tmp = this;
-    this.mode = "new";
     this.helper = {};
+
     this.load = function (formData) {
         if (formData)tmp.formData = formData;
         else tmp.formData = {};
@@ -38,13 +38,15 @@ var FormParser = function (conf) {
         var form = new mini.Form(conf.target);
         form.setData(data);
         for (var hp in tmp.helper) {
-            tmp.helper[hp].setValue(mini.decode(data[hp]),data)
+            tmp.helper[hp].setValue(mini.decode(data[hp]), data)
         }
     };
-    this.getData = function () {
+    this.getData = function (validate) {
         var form = new mini.Form(conf.target);
-        form.validate();
-        if (form.isValid() == false) return;
+        if (validate) {
+            form.validate();
+            if (form.isValid() == false) return;
+        }
         var data = form.getData();
         for (var hp in tmp.helper) {
             data[hp] = mini.encode(tmp.helper[hp].getValue());
@@ -61,6 +63,7 @@ var FormParser = function (conf) {
             });
             return map;
         }
+
         for (var id in meta) {
             var el = html.find("[field-id='" + id + "']");
             var el_meta = list2Map(meta[id]);
@@ -83,11 +86,11 @@ var FormParser = function (conf) {
         return map;
     };
     this.parser = function (meta, html) {
-        if (meta["_meta"] == 'table' || meta["_meta"] == 'file'|| meta["_meta"] == 'tabs') {
-            var tableViewUri = Request.BASH_PATH +(meta["_meta"] == 'tabs'?'admin/form/tabs.html':meta.customPage);
-            var domProperty=list2Map(mini.decode(meta["domProperty"]));
-            var style=domProperty["style"]?domProperty["style"]+";border: 0px none;":"width: 100%;height:100%; border: 0px none;";
-            var table = $("<iframe frameborder='0' style='"+style+"' src='" + tableViewUri + "' ></iframe>");
+        if (meta["_meta"] == 'table' || meta["_meta"] == 'file' || meta["_meta"] == 'tabs') {
+            var tableViewUri = Request.BASH_PATH + (meta["_meta"] == 'tabs' ? 'admin/form/tabs.html' : meta.customPage);
+            var domProperty = list2Map(mini.decode(meta["domProperty"]));
+            var style = domProperty["style"] ? domProperty["style"] + ";border: 0px none;" : "width: 100%;height:100%; border: 0px none;";
+            var table = $("<iframe frameborder='0' style='" + style + "' src='" + tableViewUri + "' ></iframe>");
             table.addClass("form-table");
             table.attr("form-name", meta["name"]);
             tmp.loadingFrame[meta["name"]] == true;
@@ -101,7 +104,7 @@ var FormParser = function (conf) {
                     tmp.helper[meta.name].getValue = win.getData;
                     tmp.helper[meta.name].setValue = win.setData;
                     if (win.setData && tmp.formData)
-                        win.setData(mini.decode(tmp.formData[meta["name"]]),tmp.formData);
+                        win.setData(mini.decode(tmp.formData[meta["name"]]), tmp.formData);
                 }
                 if (win.init)
                     win.init(meta);
