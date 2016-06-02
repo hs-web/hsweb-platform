@@ -87,7 +87,7 @@
         $(data).each(function (i, e) {
             var d = {};
             for (var f in e) {
-                if(f!="_id"&&f!="_uid"&&f!="_state"){
+                if (f != "_id" && f != "_uid" && f != "_state") {
                     d[f] = e[f];
                 }
             }
@@ -95,10 +95,10 @@
         });
         return newData;
     }
-    window.setData = function (d) {
-        this.data = d;
+    window.setData = function (d,formData) {
+        data = d;
         if (d)
-        initData();
+            initData();
     }
     window.init = function (m) {
         meta = mini.clone(m);
@@ -136,7 +136,7 @@
                 }
                 delete column['property'];
             }
-            if(readOnly)delete column["editor"];
+            if (readOnly)delete column["editor"];
             newData.push(column);
         });
         newData.push({header: "状态", width: 20, renderer: renderStatus, headerAlign: "center", align: "center"});
@@ -152,15 +152,15 @@
     function renderStatus(e) {
         var row = e.record;
         if (row && row.fileList && row.fileList.length > 0) {
-            return "<a href='javascript:download(" + e.record._id + ")' title='点击下载'>已上传,文件数量:" + row.fileList.length+"</a>";
+            return "<a href='javascript:download(" + e.record._id + ")' title='点击下载'>已上传,文件数量:" + row.fileList.length + "</a>";
         } else {
             return "未上传";
         }
     }
-    function download(_id){
-        var row =getRow(grid,_id);
-        if(row){
-           downloadFile(row.fileList);
+    function download(_id) {
+        var row = getRow(grid, _id);
+        if (row) {
+            downloadFile(row.fileList);
         }
     }
     function renderAction(e) {
