@@ -95,7 +95,7 @@
         });
         return newData;
     }
-    window.setData = function (d,formData) {
+    window.setData = function (d, formData) {
         data = d;
         if (d)
             initData();
@@ -176,21 +176,19 @@
         return html;
     }
     function uploadFile(_id) {
+        var row = getRow(grid, _id);
+        var fileList;
+        if (row) {
+            fileList = row.fileList;
+        }
         openFileUploader("*/*", "上传文件", function (e) {
-            if (_id) {
-                if (e.length > 0) {
-                    var row = grid.findRow(function (row) {
-                        if (row._id == _id)return true;
-                    });
-                    if (row) {
-                        row.fileList = e;
-                        grid.updateRow(row);
-                    }
-                }
+            if (row) {
+                row.fileList = e;
+                grid.updateRow(row);
             } else {
                 grid.addRow({fileList: e});
             }
-        });
+        },fileList);
     }
     function removeRow(_id) {
         var row = grid.findRow(function (row) {
