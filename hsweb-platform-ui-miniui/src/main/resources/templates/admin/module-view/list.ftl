@@ -240,8 +240,11 @@
                     if (queryType.helper) {
                         formData[f] = queryType.helper(formData[f]);
                     }
+                    param['terms[' + index + '].field'] = conf.field;
+                }else{
+                    param['terms[' + index + '].field'] = conf.field+"$"+conf.queryType;
+
                 }
-                param['terms[' + index + '].field'] = conf.field;
                 param['terms[' + index + '].value'] = formData[f];
                 index++;
             }

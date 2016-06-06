@@ -142,7 +142,7 @@
                         <input property="editor" class="mini-combobox" data="type"/>
                     </div>
                     <div field="queryType" width="60" align="center" headerAlign="center">查询类型
-                        <input property="editor" class="mini-combobox" data="queryType"/>
+                        <input property="editor" allowInput="true"  class="mini-combobox" data="queryType"/>
                     </div>
                 <#--<div field="terms" width="100" align="center" headerAlign="center">条件嵌套-->
                 <#--<input property="editor" class="mini-buttonedit"/>-->

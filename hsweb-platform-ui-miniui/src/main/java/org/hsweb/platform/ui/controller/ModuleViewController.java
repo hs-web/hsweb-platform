@@ -2,10 +2,9 @@ package org.hsweb.platform.ui.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.beanutils.BeanUtils;
+import org.hsweb.ezorm.param.Term;
 import org.hsweb.platform.ui.service.ModuleMetaParserService;
 import org.hsweb.web.bean.common.QueryParam;
-import org.hsweb.web.bean.common.Term;
 import org.hsweb.web.bean.po.module.ModuleMeta;
 import org.hsweb.web.bean.po.user.User;
 import org.hsweb.web.core.authorize.annotation.Authorize;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.webbuilder.utils.common.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
