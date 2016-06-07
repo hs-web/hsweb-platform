@@ -44,6 +44,8 @@ Designer.getPropertiesTemplate = function () {
     var template = {
         name: {
             describe: "名称"
+        },alias: {
+            describe: "别名"
         }, comment: {
             describe: "字段描述"
         }, javaType: {
@@ -157,6 +159,26 @@ Designer.getPropertiesEditors = function () {
                 }
             })
         },
+        correlation:function (value, callback) {
+            var data = mini.decode(value['correlation']);
+            var columns = [
+                {
+                    field: "targetTable", width: 50, headerAlign: "center", allowSort: false, header: "目标表",
+                    editor: {type: "textbox"}
+                },{
+                    field: "alias", width: 50, headerAlign: "center", allowSort: false, header: "别名",
+                    editor: {type: "textbox"}
+                },{
+                    field: "join", width: 40, headerAlign: "center", allowSort: false, header: "类型",
+                    editor: {type: "combobox",data:[{id:"left",text:"left"},{id:"right",text:"right"},{id:"full",text:"full"},{id:"inner",text:"inner"}]}
+                },
+                {
+                    field: "term", width: 100, headerAlign: "center", allowSort: false, header: "条件",
+                    editor: {type: "textbox"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "表链接", callback);
+        },
         "defaultTableData":function (value, callback) {
             var data = mini.decode(value['defaultTableData']);
             var columns = [
@@ -250,19 +272,18 @@ Designer.getPropertiesEditors = function () {
                     field: "key", width: 50, headerAlign: "center", allowSort: false, header: "名称",
                     editor: {
                         type: "combobox", allowInput: true, textField: "id", data: [
-                            {id: "select.wrapper.instance"},
-                            {id: "select.wrapper"},
+                            {id: "select.wrapper.each"},
                             {id: "select.wrapper.done"},
                             {id: "select.before"},
                             {id: "select.done"},
-                            {id: "export.import.before"},
-                            {id: "export.import.each"},
                             {id: "insert.before"},
                             {id: "insert.done"},
                             {id: "update.before"},
                             {id: "update.done"},
                             {id: "delete.before"},
-                            {id: "delete.done"}
+                            {id: "delete.done"},
+                            {id: "export.import.before"},
+                            {id: "export.import.each"},
                         ]
                     }
                 },
@@ -374,12 +395,17 @@ Designer.fields = {
             var template = {
                 name: {
                     describe: "表名"
+                },alias: {
+                    describe: "别名"
                 }, comment: {
                     describe: "表单描述"
                 }, _meta: {
                     describe: "类型",
                     value: "main",
                     editable: false
+                }, correlation: {
+                    describe: "表链接",
+                    value: "[]"
                 }, trigger: {
                     describe: "触发器",
                     value: "[]"
@@ -511,6 +537,8 @@ Designer.fields = {
             var template = {
                 name: {
                     describe: "名称"
+                },alias: {
+                    describe: "别名"
                 }, comment: {
                     describe: "字段描述"
                 }, javaType: {
@@ -584,6 +612,8 @@ Designer.fields = {
             var template = {
                 name: {
                     describe: "名称"
+                },alias: {
+                    describe: "别名"
                 }, comment: {
                     describe: "字段描述"
                 }, javaType: {

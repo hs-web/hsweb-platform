@@ -2,7 +2,10 @@ package org.hsweb.platform.ui.listener;
 
 
 import com.alibaba.fastjson.JSON;
+import org.hsweb.ezorm.meta.Correlation;
 import org.hsweb.ezorm.meta.TableMetaData;
+import org.hsweb.ezorm.param.Term;
+import org.hsweb.ezorm.param.TermType;
 import org.hsweb.platform.ui.converter.ConfigOptionConverter;
 import org.hsweb.platform.ui.converter.MapOptionConverter;
 import org.hsweb.web.service.config.ConfigService;
@@ -28,6 +31,36 @@ public class FormInitListener implements FormParser.Listener {
 
     @Override
     public void afterParse(TableMetaData tableMetaData) {
+        List<Map> list = tableMetaData.getProperty("correlation").toList();
+        if (list != null) {
+            list.forEach(correlationConfig -> {
+                String target = (String) correlationConfig.get("targetTable");
+                String term = (String) correlationConfig.get("term");
+                String joinStr = (String) correlationConfig.get("join");
+                if (StringUtils.isNullOrEmpty(joinStr)) {
+                    joinStr = "LEFT";
+                }
+                Correlation.JOIN join;
+                try {
+                    join = Correlation.JOIN.valueOf(joinStr.toUpperCase());
+                } catch (Exception e) {
+                    join = Correlation.JOIN.LEFT;
+                }
+                if (StringUtils.isNullOrEmpty(target) || StringUtils.isNullOrEmpty(term)) return;
+                String alias = (String) correlationConfig.get("alias");
+                if (StringUtils.isNullOrEmpty(alias)) alias = target;
+                Correlation correlation = new Correlation();
+                correlation.setTargetTable(target);
+                correlation.setAlias(alias);
+                Term term1 = new Term();
+                term1.setField(term);
+                term1.setValue(term);
+                correlation.setJoin(join);
+                term1.setTermType(TermType.func);
+                correlation.addTerm(term1);
+                tableMetaData.addCorrelation(correlation);
+            });
+        }
         tableMetaData.getFields().forEach(fieldMetaData -> {
             List<Map> config = fieldMetaData.getProperty("domProperty").toList();
             if (config == null) return;

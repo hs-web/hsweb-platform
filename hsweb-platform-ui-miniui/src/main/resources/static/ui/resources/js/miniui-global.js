@@ -83,6 +83,9 @@ function renderIcon(e) {
 }
 
 function bindDefaultAction(grid) {
+    grid.setSortFieldField("sorts[0].field");
+    grid.setSortOrderField("sorts[0].dir");
+
     grid.un("loaderror", function (e) {
     });
     grid.on("loaderror", function (e) {
