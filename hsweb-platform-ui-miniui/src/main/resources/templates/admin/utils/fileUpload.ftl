@@ -29,6 +29,7 @@
     </div>
 </div>
 <br/><br/>
+
 <div style="width: 180px;margin: auto">
     <a class="mini-button" iconCls="icon-ok" onclick="ok()" plain="true">确定</a>
     <a class="mini-button" iconCls="icon-remove" onclick="closeWindow([])" plain="true">返回</a>
@@ -55,7 +56,7 @@
             mimeTypes: '*/*'
         }
     };
-    var accept="${param.accept!''}";
+    var accept = "${param.accept!''}";
 
     var maxFileSize = 60 * 1024 * 1024;
 
@@ -67,7 +68,7 @@
         compress: false,
         dnd: document.body,
         paste: document.body,
-        accept:accepts[accept],
+        accept: accepts[accept],
         resize: false
     });
     function getRow(id) {
@@ -156,14 +157,17 @@
                 showTips("文件:" + data[i].name + " 还未上传!");
                 return;
             }
-            list.push({name: data[i].name, id: data[i].resourceId});
+            list.push({name: data[i].name, id: data[i].resourceId, size: data[i].size});
         }
         closeWindow(list);
     }
 
     function removeFile(id) {
         var row = getRow(id);
-        uploader.removeFile(id);
+        try {
+            uploader.removeFile(id);
+        } catch (e) {
+        }
         grid.removeRow(row);
     }
     function renderAction(e) {

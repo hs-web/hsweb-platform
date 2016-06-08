@@ -12,7 +12,7 @@ function showTips(msg, state) {
     });
 }
 
-function openWindow(url, title, width, height, ondestroy) {
+function openWindow(url, title, width, height, ondestroy, onload) {
     mini.open({
         url: url,
         showMaxButton: true,
@@ -20,14 +20,28 @@ function openWindow(url, title, width, height, ondestroy) {
         width: width,
         height: height,
         maskOnLoad: false,
+        onload: onload,
         ondestroy: ondestroy
     });
 }
-function openFileUploader(accept, title, onupload) {
+function openFileUploader(accept, title, onupload, defaultData) {
     if (!accept)accept = "";
     openWindow(Request.BASH_PATH + "admin/utils/fileUpload.html?accept=" + accept, title, "600", "500", function (e) {
         if (e != 'close' && e != 'cancel') {
             onupload(e);
+        }
+    }, function () {
+        var iframe = this.getIFrameEl();
+        var win = iframe.contentWindow;
+        if (win.grid) {
+            if (defaultData) {
+                defaultData=mini.clone(defaultData);
+                $(defaultData).each(function(i, e) {
+                    e.status = "已上传";
+                    e.resourceId= e.id;
+                });
+                iframe.contentWindow.grid.setData(defaultData);
+            }
         }
     });
 }
@@ -69,6 +83,9 @@ function renderIcon(e) {
 }
 
 function bindDefaultAction(grid) {
+    grid.setSortFieldField("sorts[0].field");
+    grid.setSortOrderField("sorts[0].dir");
+
     grid.un("loaderror", function (e) {
     });
     grid.on("loaderror", function (e) {
@@ -94,6 +111,22 @@ function doLogin(cbk) {
     openWindow(Request.BASH_PATH + "admin/login.html?uri=ajax", "登录超时,请重新登录!", "600", "400", function (e1) {
         if ("success" == e1)
             cbk();
+    });
+}
+
+function downloadFile(fileList) {
+    $(fileList).each(function (i, file) {
+        var iframe = $("<iframe style='display: none'></iframe>");
+        iframe.attr("src", Request.BASH_PATH + "file/download/" + file.id + (file.name ? "/" + file.name : ""));
+        window.setTimeout(function () {
+            $(document.body).append(iframe);
+        }, (i + 1) * 600);
+    });
+}
+
+function getRow(grid, _id) {
+    return grid.findRow(function (e) {
+        if (e._id == _id)return true;
     });
 }
 

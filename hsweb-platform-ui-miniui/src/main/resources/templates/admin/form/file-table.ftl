@@ -87,7 +87,7 @@
         $(data).each(function (i, e) {
             var d = {};
             for (var f in e) {
-                if(f!="_id"&&f!="_uid"&&f!="_state"){
+                if (f != "_id" && f != "_uid" && f != "_state") {
                     d[f] = e[f];
                 }
             }
@@ -95,10 +95,10 @@
         });
         return newData;
     }
-    window.setData = function (d) {
-        this.data = d;
+    window.setData = function (d, formData) {
+        data = d;
         if (d)
-        initData();
+            initData();
     }
     window.init = function (m) {
         meta = mini.clone(m);
@@ -136,7 +136,7 @@
                 }
                 delete column['property'];
             }
-            if(readOnly)delete column["editor"];
+            if (readOnly)delete column["editor"];
             newData.push(column);
         });
         newData.push({header: "状态", width: 20, renderer: renderStatus, headerAlign: "center", align: "center"});
@@ -147,40 +147,48 @@
     function createActionButton(text, action, icon) {
         return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
                 '<i class="action-icon ' + icon + '"></i>' + "" //text
-                + '</span>&nbsp;';
+                + '</span>&nbsp;&nbsp;';
     }
     function renderStatus(e) {
         var row = e.record;
         if (row && row.fileList && row.fileList.length > 0) {
-            return "已上传,文件数量:" + row.fileList.length;
+            return "<a href='javascript:download(" + e.record._id + ")' title='点击下载'>已上传,文件数量:" + row.fileList.length + "</a>";
         } else {
             return "未上传";
         }
     }
+    function download(_id) {
+        var row = getRow(grid, _id);
+        if (row) {
+            downloadFile(row.fileList);
+        }
+    }
     function renderAction(e) {
+        var row = e.record;
         var html = "";
         html += createActionButton("上传文件", "uploadFile(" + e.record._id + ")", "icon-upload");
+//        if (row && row.fileList && row.fileList.length > 0) {
+//            html+= createActionButton("下载文件", "download(" + e.record._id + ")", "icon-download");
+//        }
         if (meta.canRemoveRow + "" == 'true') {
             html += createActionButton("删除本行", "removeRow(" + e.record._id + ")", "icon-remove");
         }
         return html;
     }
     function uploadFile(_id) {
+        var row = getRow(grid, _id);
+        var fileList;
+        if (row) {
+            fileList = row.fileList;
+        }
         openFileUploader("*/*", "上传文件", function (e) {
-            if (_id) {
-                if (e.length > 0) {
-                    var row = grid.findRow(function (row) {
-                        if (row._id == _id)return true;
-                    });
-                    if (row) {
-                        row.fileList = e;
-                        grid.updateRow(row);
-                    }
-                }
+            if (row) {
+                row.fileList = e;
+                grid.updateRow(row);
             } else {
                 grid.addRow({fileList: e});
             }
-        });
+        },fileList);
     }
     function removeRow(_id) {
         var row = grid.findRow(function (row) {

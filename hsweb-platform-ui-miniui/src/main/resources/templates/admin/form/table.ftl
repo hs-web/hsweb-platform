@@ -87,7 +87,7 @@
         return newData;
     }
     window.setData = function (d, formData) {
-        this.data = d;
+         data = d;
         if (d)
             initData();
     }

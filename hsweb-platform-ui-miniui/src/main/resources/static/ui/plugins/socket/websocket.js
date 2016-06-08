@@ -3,7 +3,7 @@
  */
 
 var Socket = {};
-Socket.URL = "ws://"+window.location.host+"/socket";
+Socket.URL = "ws://" + window.location.host + "/socket";
 function randomChar(len) {
     len = len || 32;
     var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz';
@@ -14,59 +14,80 @@ function randomChar(len) {
     }
     return pwd;
 }
-Socket.open = function (func) {
-    var proxy = getSocket(window);
-    if (!proxy) {
-        try {
-            if (window.WebSocket)
-                proxy = new WebSocket(Socket.URL);
-            else
-            if (window.SockJS)
-                proxy = new SockJS((Socket.URL+"/js").replace("ws","http"), undefined, {protocols_whitelist: []});
-            else {
-                return null;
+Socket.createNewSocket = function (func) {
+    var this_ = this;
+    this_.callbacks = {};
+    this.reConnection = function (f) {
+        Socket.createNewSocket(function (s) {
+            this_.socket = s.socket;
+            f(s);
+        });
+    }
+    this.sub = function (cmd, params, callback) {
+        if (this_.socket.readyState != 1) {
+            if (this_.socket.readyState == 0) {
+                setTimeout(function(){
+                    this_.sub(cmd, params, callback);
+                },100);
+            } else {
+                this_.reConnection(function () {
+                    this_.sub(cmd, params, callback);
+                });
             }
-        } catch (e) {
-            if (window.console)
-                console.log(e);
+            return;
+        }
+        var tmp = {cmd: cmd, params: params};
+        if (typeof (callback) == 'string') {
+            params.callback = callback;
+        } else if (callback) {
+            params.callback = randomChar(16);
+        }
+        this_.socket.send(JSON.stringify(tmp));
+    };
+    this.on = function (call, action) {
+        Socket.callbacks[call] = action;
+    }
+    try {
+        if (window.WebSocket)
+            this_.socket = new WebSocket(Socket.URL);
+        else if (window.SockJS)
+            this_.socket = new SockJS((Socket.URL + "/js").replace("ws", "http"), undefined, {protocols_whitelist: []});
+        else {
             return null;
         }
-        window.__Socket=Socket;
-        Socket.callbacks = {};
-        Socket.__proxy = proxy;
-        proxy.onopen = function () {
-            if (func)func(Socket);
+        this_.socket.onopen = function () {
+            if (func)func(this_);
         };
-        Socket.__proxy.onerror = function (msg) {
-            Socket.closed=true;
-            console.log(msg);
+        this_.socket.onerror = function (msg) {
+            //  console.log(msg);
         };
-        Socket.__proxy.onclose = function (msg) {
-            console.log(msg);
+        this_.socket.onclose = function (msg) {
+            //  console.log(msg);
         };
-        Socket.__proxy.onmessage = function (msg) {
+        this_.socket.onmessage = function (msg) {
             var data = msg.data;
             if (data) {
                 data = JSON.parse(data);
-                if (data.callBack && Socket.callbacks[data.callBack]) {
-                    Socket.callbacks[data.callBack](data.content);
+                if (data.callBack && this_.callbacks[data.callBack]) {
+                    this_.callbacks[data.callBack](data.content);
                 }
             }
         }
-        Socket.sub = function (cmd, params, callback) {
-            var tmp = {cmd: cmd, params: params};
-            if (typeof (callback) == 'string') {
-                params.callback = callback;
-            } else if (callback) {
-                params.callback = randomChar(16);
-            }
-            Socket.__proxy.send(JSON.stringify(tmp));
-        };
-        Socket.on=function(call,action){
-            Socket.callbacks[call]=action;
-        }
+        return this_;
+    } catch (e) {
+        if (window.console)
+            console.log(e);
+        return null;
+    }
+
+}
+Socket.open = function (func) {
+    var proxy = getSocket(window);
+    if (!proxy) {
+        window.__Socket = Socket.createNewSocket();
+        if (func)func(window.__Socket);
     } else {
-        window.__Socket=proxy;
+        window.__Socket = proxy;
         if (func)func(proxy);
         return proxy;
     }
@@ -75,7 +96,6 @@ Socket.open = function (func) {
 
 function getSocket(win) {
     if (win.__Socket) {
-        if(win.__Socket.closed)return null;
         return win.__Socket;
     } else {
         if (win.parent != win) {

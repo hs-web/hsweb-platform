@@ -73,9 +73,9 @@
     </div>
 </div>
 <ul id="excelMenu" class="mini-menu" style="display:none;">
-    <li iconCls="icon-download">导出本页数据</li>
-    <li iconCls="icon-download">导出本页完整数据</li>
-    <li iconCls="icon-download">自定义导出列</li>
+    <li iconCls="icon-download" onclick="exportExcel()">导出本页数据</li>
+    <li iconCls="icon-download" onclick="exportAllColumnExcel()">导出本页完整数据</li>
+    <#--<li iconCls="icon-download" >自定义导出列</li>-->
 </ul>
 <ul id="searchMenu" class="mini-menu" style="display:none;">
     <li iconCls="icon-application-view-list">自定义查询条件</li>
@@ -136,7 +136,7 @@
         var index = 0;
         var newLineIndex = 3;
         var lineNumber = 1;
-        var x=0;
+        var x = 0;
         $(searchFormConfig).each(function (i, e) {
             if (e.field) {
                 x++;
@@ -147,7 +147,7 @@
                     html += "</tr><tr>";
                 }
                 index++;
-                var width = e.title.length * 16;
+              //  var width = e.title.length * 16;
                 html += "<td class='title font' >";
                 html += e.title + ":";
                 html += "</td>";
@@ -156,13 +156,13 @@
                 html += "</td>";
             }
         });
-        if(x>newLineIndex){
-            x=6;
-        }else{
-            x=x*2;
+        if (x > newLineIndex) {
+            x = 6;
+        } else {
+            x = x * 2;
         }
         html += "<tr/><tr>";
-        html += "<td class='searchTd' colspan='"+x+"' align='center'></td>";
+        html += "<td class='searchTd' colspan='" + x + "' align='center'></td>";
         html += "</tr></table>"
         $("#searchForm").html(html);
         $("<a class='mini-button' iconCls='icon-search' plain='true' onclick='search()'>查询</a>" +
@@ -174,7 +174,7 @@
     bindDefaultAction(grid);
     grid.on("load", function (data) {
         mini.showTips({
-            content: "成功加载" + data.total + "条数据",
+            content: "成功加载" + data.data.length + "条数据",
             state: 'success',
             x: 'right',
             y: 'top',
@@ -184,6 +184,45 @@
     grid.setUrl(Request.BASH_PATH + meta.table_api);
     grid.setColumns(queryTableConfig);
     search();
+
+    function exportExcel() {
+        var param =mini.clone( grid.getLoadParams());
+        if(param.excludes){
+            param.excludes+=",u_id";
+        }else{
+            param.excludes="u_id";
+        }
+        var exportApi=Request.BASH_PATH + meta.table_api+"/export/导出.xlsx";
+        var paramStr=object2param(param,null,"utf-8");
+        window.open(exportApi+"?"+paramStr);
+    }
+    function exportAllColumnExcel() {
+        var param =mini.clone( grid.getLoadParams());
+        delete param.includes;
+        if(param.excludes){
+            param.excludes+=",u_id";
+        }else{
+            param.excludes="u_id";
+        }
+        var exportApi=Request.BASH_PATH + meta.table_api+"/export/导出.xlsx";
+        var paramStr=object2param(param,null,"utf-8");
+        window.open(exportApi+"?"+paramStr);
+    }
+    var object2param = function (param, key, encode) {
+        if(param==null) return '';
+        var paramStr = '';
+        var t = typeof (param);
+        if (t == 'string' || t == 'number' || t == 'boolean') {
+            paramStr += '&' + key + '=' + ((encode==null||encode) ? encodeURIComponent(param) : param);
+        } else {
+            for (var i in param) {
+                var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
+                paramStr += object2param(param[i], k, encode);
+            }
+        }
+        return paramStr;
+    };
+
     function search() {
         var param = {};
         var formData = new mini.Form("#searchForm").getData();
@@ -201,8 +240,11 @@
                     if (queryType.helper) {
                         formData[f] = queryType.helper(formData[f]);
                     }
+                    param['terms[' + index + '].field'] = conf.field;
+                }else{
+                    param['terms[' + index + '].field'] = conf.field+"$"+conf.queryType;
+
                 }
-                param['terms[' + index + '].field'] = conf.field;
                 param['terms[' + index + '].value'] = formData[f];
                 index++;
             }

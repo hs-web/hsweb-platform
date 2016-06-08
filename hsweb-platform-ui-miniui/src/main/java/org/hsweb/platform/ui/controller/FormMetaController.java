@@ -1,5 +1,8 @@
 package org.hsweb.platform.ui.controller;
 
+import org.hsweb.ezorm.meta.TableMetaData;
+import org.hsweb.ezorm.run.Database;
+import org.hsweb.ezorm.run.Table;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.form.Form;
 import org.hsweb.web.core.authorize.annotation.Authorize;
@@ -11,10 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.webbuilder.sql.DataBase;
-import org.webbuilder.sql.FieldMetaData;
-import org.webbuilder.sql.Table;
-import org.webbuilder.sql.TableMetaData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
 public class FormMetaController {
 
     @Autowired
-    private DataBase dataBase;
+    private Database dataBase;
 
     @Autowired
     private FormService formService;
@@ -50,7 +49,7 @@ public class FormMetaController {
                 metaData = ((TableMetaData) dynamicFormService.parseMeta(form));
             }
         } else {
-            metaData = table.getMetaData();
+            metaData = table.getMeta();
         }
         List<Map<String, Object>> fieldMeta = metaData.getFields()
                 .stream().map(fieldMetaData -> {
