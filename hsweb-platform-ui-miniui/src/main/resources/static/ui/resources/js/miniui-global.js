@@ -35,10 +35,10 @@ function openFileUploader(accept, title, onupload, defaultData) {
         var win = iframe.contentWindow;
         if (win.grid) {
             if (defaultData) {
-                defaultData=mini.clone(defaultData);
-                $(defaultData).each(function(i, e) {
+                defaultData = mini.clone(defaultData);
+                $(defaultData).each(function (i, e) {
                     e.status = "已上传";
-                    e.resourceId= e.id;
+                    e.resourceId = e.id;
                 });
                 iframe.contentWindow.grid.setData(defaultData);
             }
@@ -95,14 +95,16 @@ function bindDefaultAction(grid) {
                 grid.reload()
             });
         }
-        if (res.code == 403) {
+        else if (res.code == 403) {
             showTips("权限不够", "danger");
         }
-        if (res.code == 500) {
+        else if (res.code == 500) {
             showTips("数据加载失败:系统错误", "danger");
             if (window.console) {
                 window.console.log(res.message);
             }
+        } else {
+            showTips("数据加载失败:" + res.message, "danger");
         }
     });
 }
