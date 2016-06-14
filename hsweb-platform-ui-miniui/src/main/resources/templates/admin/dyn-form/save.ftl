@@ -105,7 +105,7 @@
         mini.confirm("确定删除此草稿？", "确定？",
                 function (action) {
                     if (action == "ok") {
-                        Request.delete("draft/" + formName + "/" + id, {}, function (e) {
+                        Request['delete']("draft/" + formName + "/" + id, {}, function (e) {
                             if (e.success) {
                                 showTips("删除成功");
                                 loadDraft();
