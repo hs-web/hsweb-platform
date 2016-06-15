@@ -43,7 +43,7 @@
             <li iconCls="icon-save" onclick="saveAll()">保存全部</li>
         </ul>
     </div>
-    <div title="center" region="center" bodyStyle="overflow:hidden;">
+    <div title="center" region="center">
         <br/>
 
         <div id="formContainer">
