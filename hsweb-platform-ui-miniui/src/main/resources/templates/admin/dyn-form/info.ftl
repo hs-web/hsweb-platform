@@ -37,9 +37,10 @@
 <@global.importRequest/>
 <@global.importPlugin  "form-designer/form.parser.js"/>
 <script type="text/javascript">
-    var formName = "${name}";
+    var formName = "${name!''}";
+    var version="#{version!'0'}";
     var id = "${id!''}";
-    var formParser = new FormParser({name: formName, target: "#formContent",readOnly:true});
+    var formParser = new FormParser({name: formName, target: "#formContent",version:version,readOnly:true});
     formParser.onload = function () {
         mini.parse();
         uParse('#formContent', {

@@ -46,7 +46,7 @@ public class FormMetaController {
             if (form == null) {
                 return ResponseMessage.error("表单不存在");
             } else {
-                metaData = ((TableMetaData) dynamicFormService.parseMeta(form));
+                metaData = dynamicFormService.parseMeta(form);
             }
         } else {
             metaData = table.getMeta();

@@ -23,13 +23,12 @@ public class MapOptionConverter implements OptionConverter {
 
     @Override
     public Object converterData(Object value) {
-        Object obj = mapping.get(value);
-        if (obj == null) {
-            for (Map.Entry<String, Object> entry : mapping.entrySet()) {
-                if (entry.getValue().equals(value)) {
-                    obj = entry.getValue();
-                    continue;
-                }
+        Object obj = mapping.get(String.valueOf(value));
+        if (obj != null) return value;
+        for (Map.Entry<String, Object> entry : mapping.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                obj = entry.getKey();
+                continue;
             }
         }
         return obj;

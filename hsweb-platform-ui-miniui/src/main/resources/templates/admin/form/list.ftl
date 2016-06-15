@@ -48,6 +48,7 @@
             cursor: pointer;
             display: inline-block;
             line-height: 16px;
+            margin-left: 1em;
         }
     </style>
 </head>

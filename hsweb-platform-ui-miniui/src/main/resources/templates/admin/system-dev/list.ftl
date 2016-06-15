@@ -21,11 +21,13 @@
         .action-edit {
             color: green;
             cursor: pointer;
+            margin-left: 0.8em;
         }
 
         .action-remove {
             color: red;
             cursor: pointer;
+            margin-left: 0.8em;
         }
     </style>
 </head>

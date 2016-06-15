@@ -63,6 +63,33 @@ public class ModuleViewController {
         return modelAndView;
     }
 
+    @RequestMapping("/{metaId}/{type}.html")
+    @Authorize
+    public ModelAndView savePage(@PathVariable("metaId") String metaId,
+                                 @PathVariable("type") String type,
+                                 @RequestParam(value = "id",defaultValue = "") String id) throws Exception {
+        User user = WebUtil.getLoginUser();
+        List<String> roleId = user.getUserRoles().stream()
+                .map(userRole -> userRole.getRoleId())
+                .collect(Collectors.toList());
+        QueryParam param = new QueryParam();
+        param.nest().and("id", metaId);
+        Term term = param.nest();
+        roleId.forEach(rId -> term.or("roleId$LIKE", "%," + rId + ",%"));
+        ModuleMeta moduleMeta = moduleMetaService.selectSingle(param);
+        if (moduleMeta == null) {
+            throw new NotFoundException("模块不存在或者无访问权限!");
+        }
+        JSONObject jsonObject = JSON.parseObject(moduleMeta.getMeta());
+        String formName = jsonObject.getString("dynForm");
+        Object version = jsonObject.getOrDefault("dynFormVersion", 0);
+        ModelAndView modelAndView = new ModelAndView("admin/dyn-form/" + type);
+        modelAndView.addObject("name", formName);
+        modelAndView.addObject("version", version);
+        modelAndView.addObject("id", id);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage autoCreate(@RequestBody String formId) throws Exception {

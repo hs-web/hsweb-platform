@@ -7,8 +7,16 @@ var FormParser = function (conf) {
 
     this.load = function (formData) {
         if (formData)tmp.formData = formData;
-        else tmp.formData = {};
-        var api = conf.name == "" ? "form/" + conf.id : "dyn-form/deployed/" + conf.name;
+        var api = "";
+        if (conf.name && conf.name != "") {
+            if (conf.version && conf.version != '0') {
+                api = "dyn-form/" + conf.name + "/v/" + conf.version;
+            } else {
+                api = "dyn-form/deployed/" + conf.name;
+            }
+        } else {
+            api = "form/" + conf.id;
+        }
         Request.get(api, {}, function (e) {
             if (e.success) {
                 e.data.meta = mini.decode(e.data.meta);
@@ -56,6 +64,7 @@ var FormParser = function (conf) {
     this.layout = function () {
         var meta = tmp.data.meta;
         var html = $(tmp.data.html);
+
         function list2Map(list) {
             var map = {};
             $(list).each(function (index, o) {

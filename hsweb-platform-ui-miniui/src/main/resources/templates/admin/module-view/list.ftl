@@ -46,6 +46,23 @@
         .searchForm td {
             height: 30px;;
         }
+
+        .action-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            background-position: 50% 50%;
+            cursor: pointer;
+            line-height: 16px;
+        }
+
+        .action-span {
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            line-height: 16px;
+            margin-left: 0.8em;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +92,7 @@
 <ul id="excelMenu" class="mini-menu" style="display:none;">
     <li iconCls="icon-download" onclick="exportExcel()">导出本页数据</li>
     <li iconCls="icon-download" onclick="exportAllColumnExcel()">导出本页完整数据</li>
-    <#--<li iconCls="icon-download" >自定义导出列</li>-->
+<#--<li iconCls="icon-download" >自定义导出列</li>-->
 </ul>
 <ul id="searchMenu" class="mini-menu" style="display:none;">
     <li iconCls="icon-application-view-list">自定义查询条件</li>
@@ -90,8 +107,23 @@
 <@global.importRequest/>
 <script type="text/javascript">
     var searchFormConfig =${queryPlanConfig!"''"};
+    <#assign json=meta.meta?eval/>
+    <#assign actionGt1=false/>
+    <#list json.actionConfig as item>
+        <#if authorize.module(json.dynForm item.moduleAction)>
+            <#assign actionGt1=true/>
+        function action_${item_index}_event(_id) {
+            var row = getRow(grid, _id);
+            var id = row.u_id;
+            ${item.onclick};
+        }
+        </#if>
+    </#list>
     var meta = ${meta.meta!''};
     var queryTableConfig = meta.queryTableConfig;
+    <#if actionGt1>
+    queryTableConfig.push({"width":100,"visible":true,"align":"center","headerAlign":"center","header":"操作","renderer":"actionButton"});
+    </#if>
     var includes = ["u_id"];
     var searchFormConfigMap = {};
     $(searchFormConfig).each(function (i, e) {
@@ -122,6 +154,7 @@
             value: "notin"
         }
     }
+    var metaId = "${meta.id}";
     queryTableConfig.unshift({type: 'indexcolumn', header: "#", headerAlign: 'center'});
     $(queryTableConfig).each(function (i, e) {
         if (e.field)
@@ -141,13 +174,10 @@
             if (e.field) {
                 x++;
                 if (index != 0 && index % newLineIndex == 0) {
-//                    if (lineNumber == 1)
-//                        html += "<td class='searchTd'></td>";
                     lineNumber++;
                     html += "</tr><tr>";
                 }
                 index++;
-              //  var width = e.title.length * 16;
                 html += "<td class='title font' >";
                 html += e.title + ":";
                 html += "</td>";
@@ -186,34 +216,34 @@
     search();
 
     function exportExcel() {
-        var param =mini.clone( grid.getLoadParams());
-        if(param.excludes){
-            param.excludes+=",u_id";
-        }else{
-            param.excludes="u_id";
+        var param = mini.clone(grid.getLoadParams());
+        if (param.excludes) {
+            param.excludes += ",u_id";
+        } else {
+            param.excludes = "u_id";
         }
-        var exportApi=Request.BASH_PATH + meta.table_api+"/export/导出.xlsx";
-        var paramStr=object2param(param,null,"utf-8");
-        window.open(exportApi+"?"+paramStr);
+        var exportApi = Request.BASH_PATH + meta.table_api + "/export/导出.xlsx";
+        var paramStr = object2param(param, null, "utf-8");
+        window.open(exportApi + "?" + paramStr);
     }
     function exportAllColumnExcel() {
-        var param =mini.clone( grid.getLoadParams());
+        var param = mini.clone(grid.getLoadParams());
         delete param.includes;
-        if(param.excludes){
-            param.excludes+=",u_id";
-        }else{
-            param.excludes="u_id";
+        if (param.excludes) {
+            param.excludes += ",u_id";
+        } else {
+            param.excludes = "u_id";
         }
-        var exportApi=Request.BASH_PATH + meta.table_api+"/export/导出.xlsx";
-        var paramStr=object2param(param,null,"utf-8");
-        window.open(exportApi+"?"+paramStr);
+        var exportApi = Request.BASH_PATH + meta.table_api + "/export/导出.xlsx";
+        var paramStr = object2param(param, null, "utf-8");
+        window.open(exportApi + "?" + paramStr);
     }
     var object2param = function (param, key, encode) {
-        if(param==null) return '';
+        if (param == null) return '';
         var paramStr = '';
         var t = typeof (param);
         if (t == 'string' || t == 'number' || t == 'boolean') {
-            paramStr += '&' + key + '=' + ((encode==null||encode) ? encodeURIComponent(param) : param);
+            paramStr += '&' + key + '=' + ((encode == null || encode) ? encodeURIComponent(param) : param);
         } else {
             for (var i in param) {
                 var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
@@ -241,8 +271,8 @@
                         formData[f] = queryType.helper(formData[f]);
                     }
                     param['terms[' + index + '].field'] = conf.field;
-                }else{
-                    param['terms[' + index + '].field'] = conf.field+"$"+conf.queryType;
+                } else {
+                    param['terms[' + index + '].field'] = conf.field + "$" + conf.queryType;
 
                 }
                 param['terms[' + index + '].value'] = formData[f];
@@ -252,25 +282,36 @@
         param.includes = includes + "";
         grid.load(param);
     }
-    function createActionMenu(title, action) {
-        return "&nbsp;&nbsp;<a href='javascript:;' onclick=\"" + action + "\">" + title + "</a>";
+
+    function createActionButton(text, action, icon) {
+        return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
+                '<i class="action-icon ' + icon + '"></i>' + "" //text
+                + '</span>';
     }
 
     function actionButton(e) {
-        return createActionMenu("查看", "infoData('" + e.record.u_id + "')") + createActionMenu("编辑", "editData('" + e.record.u_id + "')");
+        var html = "";
+    <#list json.actionConfig as item>
+        <#if authorize.module(json.dynForm item.moduleAction)>
+            html += createActionButton("${item.title}", "action_${item_index}_event(" + e.record._id + ")", "${item.icon}");
+        </#if>
+    </#list>
+        return html;
     }
 
     function createData() {
         var createUrl = meta.create_page;
+        createUrl = createUrl.replace("{id}").replace("{metaId}", metaId);
         if (createUrl) {
             openWindow(Request.BASH_PATH + createUrl, "编辑", "80%", "80%", function (e) {
                 grid.reload()
             });
         }
     }
+
     function editData(e) {
         var saveUrl = meta.save_page;
-        saveUrl = saveUrl.replace("{u_id}", e);
+        saveUrl = saveUrl.replace("{id}", e).replace("{metaId}", metaId);
         if (saveUrl) {
             openWindow(Request.BASH_PATH + saveUrl, "编辑", "80%", "80%", function (e) {
                 grid.reload()
@@ -279,7 +320,7 @@
     }
     function infoData(e) {
         var url = meta.info_page;
-        url = url.replace("{u_id}", e);
+        url = url.replace("{id}", e).replace("{metaId}", metaId);
         if (url) {
             openWindow(Request.BASH_PATH + url, "查看", "80%", "80%", function (e) {
                 grid.reload()

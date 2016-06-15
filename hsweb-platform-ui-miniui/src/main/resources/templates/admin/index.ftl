@@ -34,8 +34,8 @@
         </div>
     </div>
     <div title="south" region="south" showSplit="false" showHeader="false" height="30">
-        <div style="position:absolute;top:18px;right:10px;">
-            <a class="mini-button mini-button-iconTop" iconCls="icon-close" onclick="exit()" plain="true">注销</a>
+        <div style="line-height:28px;text-align:center;cursor:default;">
+            你好,&nbsp;${(user.name)!'游客'}&nbsp;${.now?string("yyyy年MM月dd日 E")} 当前在线人数:<span class="online-total">-</span>人
         </div>
     </div>
     <div showHeader="true" title="导航" region="west" width="180" height="100%" maxWidth="250" minWidth="100">
@@ -98,5 +98,20 @@
                 }
         );
     }
-    Socket.open(function(socket){});
+    Request.get("online/total",{},function(e){
+        if(e.success){
+            $(".online-total").text(e.data);
+        }
+    });
+    Socket.open(function(socket){
+        if(socket){
+            //订阅在线人数推送
+            socket.sub("online",{type:"total"},"onlineUserTotal");
+            socket.on("onlineUserTotal",function(e){
+                $(".online-total").text(e);
+            });
+        }else{
+            showTips("你的浏览器不支持websocket,部分功能可能无法正常使用!","danger");
+        }
+    });
 </script>

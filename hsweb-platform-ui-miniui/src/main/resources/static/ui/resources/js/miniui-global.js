@@ -152,3 +152,13 @@ function moveDown(grid, _id) {
     });
     grid.moveDown(arr);
 }
+
+function getCleanData(grid){
+    var data=mini.clone(grid.getData());
+    $(data).each(function(i,e){
+        delete e["_id"];
+        delete e["_uid"];
+        delete e["_state"];
+    });
+    return data;
+}

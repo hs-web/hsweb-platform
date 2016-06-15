@@ -27,8 +27,9 @@
     window.UEDITOR_HOME_URL = location.protocol + '//' + document.domain + (location.port ? (":" + location.port) : "") + "/ui/plugins/ueditor/";
     var id = "${param.id!''}";
     var name = "${param.name!''}";
-    var formParser = new FormParser({name: name, id: id, target: "#preview"});
-    formParser.onload=function(){
+    var version = "${param.version!'0'}";
+    var formParser = new FormParser({name: name, id: id, version: version, target: "#preview"});
+    formParser.onload = function () {
         mini.parse();
         uParse('#preview', {
             rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',

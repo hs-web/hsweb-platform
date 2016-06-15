@@ -3,7 +3,9 @@ package org.hsweb.platform.ui.listener;
 
 import com.alibaba.fastjson.JSON;
 import org.hsweb.ezorm.meta.Correlation;
+import org.hsweb.ezorm.meta.FieldMetaData;
 import org.hsweb.ezorm.meta.TableMetaData;
+import org.hsweb.ezorm.meta.expand.OptionConverter;
 import org.hsweb.ezorm.param.Term;
 import org.hsweb.ezorm.param.TermType;
 import org.hsweb.platform.ui.converter.ConfigOptionConverter;
@@ -68,23 +70,31 @@ public class FormInitListener implements FormParser.Listener {
             String data = cfgMap.get("data");
             String url = cfgMap.get("url");
             String valueField = cfgMap.getOrDefault("valueField", "id");
+            if (StringUtils.isNullOrEmpty(valueField))
+                valueField = "id";
             String textField = cfgMap.getOrDefault("textField", "text");
+            if (StringUtils.isNullOrEmpty(textField))
+                textField = "text";
             String fieldName = fieldMetaData.getAlias() + suffix;
             if (!StringUtils.isNullOrEmpty(data)) {
-                Map<String, String> map = list2map(JSON.parseArray(String.valueOf(data), Map.class), valueField, textField);
+                Map<String, String> map = list2map(JSON.parseArray(data, Map.class), valueField, textField);
                 fieldMetaData.setOptionConverter(new MapOptionConverter(fieldName, (Map) map));
             } else if (!StringUtils.isNullOrEmpty(url)) {
                 if (url.startsWith("/")) url = url.substring(1);
                 String[] tmp = url.split("[?]");
                 String realUrl = tmp[0];
-                String param = tmp.length > 1 ? tmp[1] : null;
-                Map<String, String> map = null;
                 if (realUrl.startsWith("config")) {
                     String[] arr = realUrl.split("[/]");
                     fieldMetaData.setOptionConverter(new ConfigOptionConverter(fieldName, arr, configService));
+                } else {
+                    fieldMetaData.setOptionConverter(getOptionConverterByUrl(fieldName, fieldMetaData, realUrl, cfgMap));
                 }
             }
         });
+    }
+
+    protected OptionConverter getOptionConverterByUrl(String fieldName, FieldMetaData metaData, String url, Map<String, String> cfgMap) {
+        return null;
     }
 
 

@@ -120,7 +120,7 @@ function search() {
 function createActionButton(text, action, icon) {
     return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
         '<i class="action-icon ' + icon + '"></i>' + "" //text
-        + '</span>&nbsp;&nbsp;';
+        + '</span>';
 }
 function rendererAction(e) {
     var grid = e.sender;
@@ -139,7 +139,6 @@ function rendererAction(e) {
         var removeHtml = "";
         if (!record.using)
             removeHtml = createActionButton("删除", 'removeForm(\'' + uid + '\')', "icon-remove");
-        ;//'<span class="action-span"><span class="action-icon icon-remove" onclick="removeForm(\'' + uid + '\')"></span>删除';
         actionList.push(removeHtml);
     }
     if (accessDeploy) {
@@ -152,9 +151,6 @@ function rendererAction(e) {
     }
     var html = "";
     $(actionList).each(function (i, e) {
-        if (i != 0) {
-            html += "&nbsp;&nbsp;";
-        }
         html += e;
     });
     return html;
