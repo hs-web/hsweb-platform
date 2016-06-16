@@ -126,6 +126,7 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {
+        var data_tmp=data;
         if (requestBody == true) {
             data = JSON.stringify(data);
         }
@@ -145,7 +146,7 @@ var Request = {
                 }
                 if (msg.code == 401) {
                     doLogin(function () {
-                        Request.doAjax(url, data, method, callback, syc, requestBody);
+                        Request.doAjax(url, data_tmp, method, callback, syc, requestBody);
                     });
                 } else
                     callback(msg);

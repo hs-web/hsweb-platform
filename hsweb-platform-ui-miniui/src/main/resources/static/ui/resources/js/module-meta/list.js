@@ -29,17 +29,38 @@ function deleteMeta(id) {
     });
 }
 
+function copy(id) {
+    Request.get("module-meta/" + id, {}, function (e) {
+        if (e.success) {
+            delete  e.data.id;
+            Request.post("module-meta", e.data, function (e) {
+                if (e.success) {
+                    edit(e.data);
+                } else {
+                    mini.alert(e.message);
+                }
+            });
+        } else {
+            mini.alert(e.message);
+        }
+    });
+}
+
 function rendererAction(e) {
     var grid = e.sender;
     var record = e.record;
     var uid = record.id;
     var actionList = [];
     if (accessUpdate) {
-        var editHtml = '<span class="fa fa-edit action-edit" onclick="edit(\'' + uid + '\')">编辑</span>';
+        var editHtml = '<span class="fa fa-edit action-edit action" onclick="edit(\'' + uid + '\')">编辑</span>';
+        actionList.push(editHtml);
+    }
+    if (accessUpdate) {
+        var editHtml = '<span class="fa fa-copy action-edit action" onclick="copy(\'' + uid + '\')">复制</span>';
         actionList.push(editHtml);
     }
     if (accessDelete) {
-        var editHtml = '<span class="fa fa-close action-remove" onclick="deleteMeta(\'' + uid + '\')">删除</span>';
+        var editHtml = '<span class="fa fa-close action-remove action" onclick="deleteMeta(\'' + uid + '\')">删除</span>';
         actionList.push(editHtml);
     }
     var html = "";

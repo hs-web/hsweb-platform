@@ -52,7 +52,8 @@
                         <td valign="top" style="border-color: rgb(221, 221, 221);" width="375"><input style="width:100%" value="${param.module_id!''}" name="key" id="key" class="mini-textbox" required="true"/></td>
                         <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" width="262" align="right">关联角色<br></td>
                         <td valign="top" style="border-color: rgb(221, 221, 221);" width="541">
-                            <input url="<@global.api "role?paging=false"/>" valuefield="id" textfield="name" multiselect="true" valuefromselect="true" clearonload="true" style="width:100%" name="roleId" id="roleId" class="mini-combobox"></td>
+                            <input url="<@global.api "role?paging=false"/>" valuefield="id" textfield="name" multiselect="true" valuefromselect="true" clearonload="true" style="width:100%" name="roleId" id="roleId" class="mini-combobox">
+                        </td>
                     </tr>
                     <tr>
                         <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;" width="292" align="right">备注</td>
@@ -112,9 +113,11 @@
                     <tr>
                         <td valign="middle" style="word-break: break-all; border-color: rgb(221, 221, 221);" width="150" align="right">动态表单</td>
                         <td valign="top" style="border-color: rgb(221, 221, 221);" width="375">
-                            <input style="width:100%" name="dynForm" id="dynForm" showNullItem="true"
+                            <input style="width:50%" name="dynForm" id="dynForm" showNullItem="true"
                                    idField="name" valueField="name" textField="name" class="mini-combobox" onvaluechanged="dynFormChanged"
-                                   url="<@global.api "form/~latest?paging=false&includes=name"/>">
+                                   url="<@global.api "form/~latest?paging=false&includes=name,version"/>">
+                            版本:<input class="mini-spinner" value="0" name="dynFormVersion"/>(为0时使用发布版)
+                            <a href="javascript:viewForm()">预览</a>
                         </td>
                     </tr>
                     </tbody>
@@ -142,7 +145,7 @@
                         <input property="editor" class="mini-combobox" data="type"/>
                     </div>
                     <div field="queryType" width="60" align="center" headerAlign="center">查询类型
-                        <input property="editor" allowInput="true"  class="mini-combobox" data="queryType"/>
+                        <input property="editor" allowInput="true" class="mini-combobox" data="queryType"/>
                     </div>
                 <#--<div field="terms" width="100" align="center" headerAlign="center">条件嵌套-->
                 <#--<input property="editor" class="mini-buttonedit"/>-->
@@ -187,7 +190,7 @@
                         <input property="editor" class="mini-combobox" textField="id" data="[{id:true},{id:false}]"/>
                     </div>
                     <div field="renderer" width="100" align="center" headerAlign="center">渲染事件
-                        <input property="editor"  onbuttonclick="editScript"  class="mini-buttonedit"/>
+                        <input property="editor" onbuttonclick="editScript" class="mini-buttonedit"/>
                     </div>
                     <div name="action" width="100" renderer="rendererQueryTableAction" align="center" headerAlign="center">操作</div>
                 </div>
@@ -285,6 +288,13 @@
         });
     }
 
+    function viewForm() {
+        var name = mini.getbyName("dynForm").getValue();
+        var version = mini.getbyName("dynFormVersion").getValue();
+        openWindow(Request.BASH_PATH + "/admin/form/view.html?name=" + name + "&version=" + version, "预览表单", "80%", "80%", function (e) {
+
+        })
+    }
     function removeQueryTableRow(id) {
         query_table_grid.findRow(function (row) {
             if (!row)return;
@@ -297,23 +307,23 @@
 
     function rendererActionTableAction(e) {
         var html = "";
-        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(action_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
-        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(action_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
-        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(action_grid,'" + e.record._id + "')\"></i>";
+        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(action_grid," + e.record._id + ")\"></i>&nbsp;&nbsp;";
+        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(action_grid," + e.record._id + ")\"></i>&nbsp;&nbsp;";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(action_grid," + e.record._id + ")\"></i>";
     }
 
     function rendererQueryTableAction(e) {
         var html = "";
-        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_table_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
-        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_table_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
-        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(query_table_grid,'" + e.record._id + "')\"></i>";
+        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_table_grid," + e.record._id + ")\"></i>&nbsp;&nbsp;";
+        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_table_grid," + e.record._id + ")\"></i>&nbsp;&nbsp;";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(query_table_grid," + e.record._id + ")\"></i>";
     }
 
     function rendererAction(e) {
         var html = "";
-        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_plan_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
-        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_plan_grid,'" + e.record._id + "')\"></i>&nbsp;&nbsp;";
-        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(query_plan_grid,'" + e.record._id + "')\"></i>";
+        html += "<i class='action-icon icon-arrow-up' style='width: 16px' onclick=\"moveUp(query_plan_grid," + e.record._id + ")\"></i>&nbsp;&nbsp;";
+        html += "<i class='action-icon icon-arrow-down' style='width: 16px'  onclick=\"moveDown(query_plan_grid," + e.record._id + ")\"></i>&nbsp;&nbsp;";
+        return html + "<i class='action-icon icon-remove' style='width: 16px' onclick=\"removeRow(query_plan_grid," + e.record._id + ")\"></i>";
     }
 
     function addQueryField() {
@@ -358,6 +368,7 @@
 
     function dynFormChanged(e) {
         if (e.selected.name != "") {
+            mini.getbyName("dynFormVersion").setMaxValue(e.selected.version);
             Request.get("form-meta/" + e.selected.name, {}, function (e) {
                 if (e.success) {
                     formMetaFieldList = e.data;
@@ -383,20 +394,27 @@
         if (id != "") {
             Request.get("module-meta/" + id, {}, function (e) {
                 if (e.success) {
-                    var data = {key: e.data.key, role_id: e.data.role_id};
+                    var roleId = e.data.roleId;
+                    var data = {key: e.data.key, roleId: roleId,remark: e.data.remark};
                     var meta = mini.decode(e.data.meta);
                     data.save_page = meta.save_page;
                     data.info_page = meta.info_page;
                     data.create_page = meta.create_page;
                     data.table_api = meta.table_api;
                     data.dynForm = meta.dynForm;
-                    dynFormChanged({selected: {name: data.dynForm}});
+                    data.dynFormVersion = meta.dynFormVersion;
+                    mini.getbyName("dynForm").doValueChanged();
                     new mini.Form("#content-body").setData(data);
                     query_plan_grid.setData(meta.queryPlanConfig);
                     query_table_grid.setData(meta.queryTableConfig);
                     action_grid.setData(meta.actionConfig);
                 }
             });
+        } else {
+            action_grid.setData([
+                {"onclick": "infoData(id);", "icon": "icon-find", "title": "查看", "moduleAction": ""},
+                {"onclick": "editData(id);", "icon": "icon-edit", "title": "编辑", "moduleAction": "U"}
+            ]);
         }
     }
     function save() {
@@ -414,9 +432,9 @@
         if (data.roleId != '')data.roleId = "," + data.roleId + ",";
         newData.roleId = data.roleId;
         var meta = {};
-        meta.queryPlanConfig = query_plan_grid.getData();
-        meta.queryTableConfig = query_table_grid.getData();
-        meta.actionConfig=action_grid.getData();
+        meta.queryPlanConfig = getCleanData(query_plan_grid);
+        meta.queryTableConfig = getCleanData(query_table_grid);
+        meta.actionConfig = getCleanData(action_grid);
         $(meta.queryTableConfig).each(function (i, e) {
             e.width = parseInt(e.width);
         });

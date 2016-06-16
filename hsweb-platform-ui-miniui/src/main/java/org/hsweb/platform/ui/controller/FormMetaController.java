@@ -1,7 +1,6 @@
 package org.hsweb.platform.ui.controller;
 
 import org.hsweb.ezorm.meta.TableMetaData;
-import org.hsweb.ezorm.run.Database;
 import org.hsweb.ezorm.run.Table;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.form.Form;
@@ -28,9 +27,6 @@ import java.util.stream.Collectors;
 public class FormMetaController {
 
     @Autowired
-    private Database dataBase;
-
-    @Autowired
     private FormService formService;
 
     @Autowired
@@ -39,14 +35,14 @@ public class FormMetaController {
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     @Authorize(module = "form")
     public ResponseMessage fieldList(@PathVariable("name") String name) throws Exception {
-        Table table = dataBase.getTable(name);
+        Table table = dynamicFormService.getDefaultDatabase().getTable(name);
         TableMetaData metaData;
         if (table == null) {
             Form form = formService.selectSingle(new QueryParam().where("name", name));
             if (form == null) {
                 return ResponseMessage.error("表单不存在");
             } else {
-                metaData = ((TableMetaData) dynamicFormService.parseMeta(form));
+                metaData = dynamicFormService.parseMeta(form);
             }
         } else {
             metaData = table.getMeta();

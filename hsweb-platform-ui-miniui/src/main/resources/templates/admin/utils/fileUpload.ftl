@@ -1,5 +1,4 @@
 <#import "../../global.ftl" as global />
-<#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +37,11 @@
 </html>
 <@global.importRequest/>
 <script type="text/javascript">
+    if (!WebUploader.Uploader.support()) {
+        mini.alert("您的浏览器太旧不支持文件上传!<br/>" +
+                "如果你使用的是IE浏览器,请<a href='https://www.baidu.com/s?wd=ie%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9B%B4%E6%96%B0flash%20player' target='_blank'>升级flash版本</a>!");
+        throw new Error("");
+    }
     mini.parse();
     var accepts = {
         img: {
@@ -54,10 +58,14 @@
             title: 'word',
             extensions: 'doc,docx',
             mimeTypes: '*/*'
+        },
+        all: {
+            title: '文件',
+            extensions: '*',
+            mimeTypes: '*/*'
         }
     };
-    var accept = "${param.accept!''}";
-
+    var accept = "${param.accept!'all'}";
     var maxFileSize = 60 * 1024 * 1024;
 
     var grid = mini.get('grid');
@@ -84,28 +92,31 @@
         }
         grid.addRow({id: file.id, name: file.name, status: "等待上传", size: bytesToSize(file.size)});
         var row = getRow(file.id);
-        uploader.md5File(file)
-            // 及时显示进度
-                .progress(function (percentage) {
-                    var range = ( percentage * 100).toFixed(1);
-                    row.status = "检测文件中" + range + "%";
-                    grid.updateRow(row);
-                })
-            // 完成
-                .then(function (val) {
-                    Request.get("resources/" + val, {}, function (data) {
-                        if (data && data.success) {
-                            uploader.removeFile(file.id);
-                            row.status = "文件秒传成功";
-                            row.resourceId = data.data.id;
-                            grid.acceptRecord(row);
-                            grid.updateRow(row);
-                        } else {
-                            row.status = "等待上传";
-                            grid.updateRow(row);
-                        }
+        var md5File = uploader.md5File(file);
+        if (md5File)
+            md5File
+                // 及时显示进度
+                    .progress(function (percentage) {
+                        var range = ( percentage * 100).toFixed(1);
+                        row.status = "检测文件中" + range + "%";
+                        grid.updateRow(row);
+                    })
+                // 完成
+                    .then(function (val) {
+                        row.md5 = val;
+                        Request.get("resources/" + val, {}, function (data) {
+                            if (data && data.success) {
+                                uploader.removeFile(file.id);
+                                row.status = "文件秒传成功";
+                                row.resourceId = data.data.id;
+                                grid.acceptRecord(row);
+                                grid.updateRow(row);
+                            } else {
+                                row.status = "等待上传";
+                                grid.updateRow(row);
+                            }
+                        });
                     });
-                });
     });
     function bytesToSize(bytes) {
         if (bytes === 0) return '0 B';
@@ -130,20 +141,38 @@
     });
     uploader.on('uploadSuccess', function (file, message) {
         var row = getRow(file.id);
+        console.log(message);
         if (message && message.success && message.data.length > 0) {
             row.status = "上传成功!";
             row.resourceId = message.data[0].id;
             grid.acceptRecord(row);
         } else {
             row.status = "上传失败!";
+            grid.updateRow(row);
         }
-        grid.updateRow(row);
+
     });
 
     uploader.on('uploadError', function (file) {
         var row = getRow(file.id);
-        row.status = "上传失败";
-        grid.updateRow(row);
+        //解决ie下,由于mediaType问题导致文件上传成功,但是抛出异常的问题
+        if (row.md5) {
+            Request.get("resources/" + row.md5, {}, function (data) {
+                if (data && data.success) {
+                    uploader.removeFile(file.id);
+                    row.status = "上传成功!";
+                    row.resourceId = data.data.id;
+                    grid.acceptRecord(row);
+                    grid.updateRow(row);
+                } else {
+                    row.status = "上传失败!";
+                    grid.updateRow(row);
+                }
+            });
+        } else {
+            row.status = "上传失败";
+            grid.updateRow(row);
+        }
     });
 
     uploader.on('uploadComplete', function (file) {

@@ -26,18 +26,18 @@
             display: inline-block;
             line-height: 16px;
         }
+        .tool a{
+            margin-left: 0.8em;
+        }
     </style>
 </head>
 <body>
 <div id="formContent">
 </div>
-<div style="margin: 20px auto 30px;width: 350px">
+<div style="margin: 20px auto 30px;width: 350px" class="tool">
     <a class="mini-menubutton" iconCls="icon-database-table" plain="true" menu="#DraftMenu">草稿箱</a>
-    &nbsp;&nbsp;
     <a class="mini-button" iconCls="icon-reload" plain="true" onclick="window.location.reload()">重新填写</a>
-    &nbsp;&nbsp;
     <a class="mini-button" iconCls="icon-tick" plain="true" onclick="save()">提交</a>
-    &nbsp;&nbsp;
     <a class="mini-button" iconCls="icon-undo" plain="true" onclick="window.closeWindow(id)">返回</a>
 </div>
 <ul id="DraftMenu" class="mini-menu" style="display:none;">
@@ -60,9 +60,10 @@
 <@global.importPlugin  "form-designer/form.parser.js"/>
 <@global.importPlugin "mousetrap/mousetrap.min.js"/>
 <script type="text/javascript">
-    var formName = "${name}";
+    var formName = "${name!''}";
+    var version="#{version!'0'}";
     var id = "${id!''}";
-    var formParser = new FormParser({name: formName, target: "#formContent"});
+    var formParser = new FormParser({name: formName, target: "#formContent",version:version});
     var grid;
     var win;
     var needAudit=true;
@@ -105,7 +106,7 @@
         mini.confirm("确定删除此草稿？", "确定？",
                 function (action) {
                     if (action == "ok") {
-                        Request.delete("draft/" + formName + "/" + id, {}, function (e) {
+                        Request['delete']("draft/" + formName + "/" + id, {}, function (e) {
                             if (e.success) {
                                 showTips("删除成功");
                                 loadDraft();

@@ -118,9 +118,9 @@ public class ModuleMetaParserService {
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("table_api", "dyn-form/" + form.getName());
-        jsonObject.put("create_page", "dyn-form/" + form.getName() + "/save.html");
-        jsonObject.put("save_page", "dyn-form/" + form.getName() + "/save.html?id={u_id}");
-        jsonObject.put("info_page", "dyn-form/" + form.getName() + "/info.html?id={u_id}");
+        jsonObject.put("create_page", "module-view/{metaId}/save.html");
+        jsonObject.put("save_page", "module-view/{metaId}/save.html?id={id}");
+        jsonObject.put("info_page", "module-view/{metaId}/info.html?id={id}");
         jsonObject.put("queryPlanConfig", new JSONArray());
         jsonObject.put("queryTableConfig", new JSONArray());
         jsonObject.put("dynForm", form.getName());
