@@ -21,9 +21,11 @@
 ,'codemirror/addon/fold/foldcode.js'
 ,'codemirror/addon/hint/show-hint.js'
 ,'codemirror/addon/hint/javascript-hint.js'
+,'codemirror/addon/hint/css-hint.js'
 ,'codemirror/addon/hint/anyword-hint.js'
 ,'codemirror/mode/javascript/javascript.js'
 ,'codemirror/mode/groovy/groovy.js'
+,'codemirror/mode/css/css.js'
 ,'codemirror/keymap/sublime.js'
 />
 <@global.importMiniui/>

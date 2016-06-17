@@ -25,7 +25,7 @@ function deploy(id) {
             if (action == "ok") {
                 Request.put("form/" + id + "/deploy", {}, function (e) {
                     if (e.success)showTips("发布成功!");
-                    else showTips(e.message,'danger');
+                    else showTips(e.message, 'danger');
                     grid.reload();
                 });
             }
@@ -38,7 +38,7 @@ function undeploy(id) {
             if (action == "ok") {
                 Request.put("form/" + id + "/unDeploy", {}, function (e) {
                     if (e.success)showTips("取消发布成功!");
-                    else showTips(e.message,'danger');
+                    else showTips(e.message, 'danger');
                     grid.reload();
                 });
             }
@@ -51,15 +51,15 @@ function onShowRowDetail(e) {
     var td = grid.getRowDetailCellEl(row);
     td.appendChild(detailGrid_Form);
     detailGrid_Form.style.display = "block";
-    var param=Request.encodeParam({name:row.name,'id$NOT':row.id});
-    param.paging=false;
+    var param = Request.encodeParam({name: row.name, 'id$NOT': row.id});
+    param.paging = false;
     param.excludes = "config,meta,html";
-    param.sortFiled="version";
-    param.sortOrder="desc";
+    param.sortFiled = "version";
+    param.sortOrder = "desc";
     employee_grid.load(param);
 }
 
-function newVersion(id){
+function newVersion(id) {
     mini.confirm("确定创建新版本?", "确定？",
         function (action) {
             if (action == "ok") {
@@ -82,26 +82,15 @@ function renderStatus(e) {
     else return "<span style='color: green'>未发布</span>";
 }
 
-function enable(id) {
-    grid.loading("启用中...");
-    Request.put("user/" + id + "/enable", {}, function (e) {
-        if (e.success) {
-            grid.reload();
-            showTips("启用成功!");
-        } else {
-            showTips(e.message, 'danger');
-        }
-    });
-}
-function disable(id) {
-    mini.confirm("确定注销此用户？注销后用户不能再登录系统!", "确定？",
+function removeForm(id) {
+    mini.confirm("确定删除此表单?删除后将无法恢复", "确定？",
         function (action) {
             if (action == "ok") {
-                grid.loading("注销中...");
-                Request.put("user/" + id + "/disable", {}, function (e) {
+                grid.loading("删除中...");
+                Request['delete']("form/" + id, {}, function (e) {
                     if (e.success) {
                         grid.reload();
-                        showTips("注销成功!");
+                        showTips("删除成功!");
                     } else {
                         showTips(e.message, 'danger');
                     }

@@ -21,6 +21,13 @@ var Request = {
         var query = {};
         query.param = {};
         query.terms = [];
+        query.getParams = function () {
+            var tmp = buildParam(query.terms);
+            for (var f in tmp) {
+                query.param[f] = tmp[f];
+            }
+            return query.param;
+        };
         query.select = function (fields) {
             query.param.includes = fields + "";
             return query;
@@ -112,8 +119,8 @@ var Request = {
     get: function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "GET", callback, true, false);
     },
-    post: function (uri, data, callback,requestBody) {
-        if(requestBody!=false)requestBody=true;
+    post: function (uri, data, callback, requestBody) {
+        if (requestBody != false)requestBody = true;
         Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, requestBody);
     },
     put: function (uri, data, callback) {
@@ -126,7 +133,7 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {
-        var data_tmp=data;
+        var data_tmp = data;
         if (requestBody == true) {
             data = JSON.stringify(data);
         }

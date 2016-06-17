@@ -150,11 +150,10 @@ function submitProperties(e) {
             logger.error("存在相同的字段:" + field.name);
         }
     }
-    fieldData[nowEditorTarget] = propertiesTable.getData();
+    fieldData[nowEditorTarget] = getCleanData(propertiesTable);
 }
 function initProperties() {
     var data = fieldData[nowEditorTarget];
-    var defaultData = {};
     var newData = [];
     if (!data) {
         data = Designer.fields["textbox"].getDefaultProperties();
@@ -173,8 +172,8 @@ function initProperties() {
             newData.push(e);
         }
     });
+    fieldData[nowEditorTarget]=newData;
     propertiesTable.setData(newData);
-
 }
 function insert(id) {
     var conf = Designer.fields[id];

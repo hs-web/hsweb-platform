@@ -105,6 +105,7 @@ var FormParser = function (conf) {
             tmp.loadingFrame[meta["name"]] == true;
             table.on("load", function () {
                 var win = this.contentWindow;
+                if(meta["_meta"] == 'tabs')
                 if (conf.readOnly && win.setReadOnly) {
                     win.setReadOnly();
                 }

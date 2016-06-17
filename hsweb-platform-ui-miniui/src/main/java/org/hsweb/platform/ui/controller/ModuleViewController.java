@@ -44,7 +44,7 @@ public class ModuleViewController {
                 .collect(Collectors.toList());
         ModuleMeta moduleMeta;
         if (StringUtils.isNullOrEmpty(metaId)) {
-            QueryParam param = new QueryParam();
+            QueryParam param = QueryParam.build();
             param.nest().and("key", key).or("module_id", key);
             Term term = param.nest();
             roleId.forEach(id -> term.or("roleId$LIKE", "%," + id + ",%"));
