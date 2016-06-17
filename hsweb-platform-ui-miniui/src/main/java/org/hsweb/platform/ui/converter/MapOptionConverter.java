@@ -1,7 +1,10 @@
 package org.hsweb.platform.ui.converter;
 
+import com.alibaba.fastjson.JSON;
 import org.hsweb.ezorm.meta.expand.OptionConverter;
+import org.webbuilder.utils.common.StringUtils;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -31,11 +34,41 @@ public class MapOptionConverter implements OptionConverter {
                 continue;
             }
         }
+        if (obj == null) {
+            String strValue = String.valueOf(value);
+            if (strValue.contains(",")) {
+                String[] arrayValue = strValue.split("[,]");
+                obj = Arrays.asList(arrayValue).stream()
+                        .map(str -> {
+                            Object v = converterData(str.trim());
+                            if (v == null) v = str;
+                            return v;
+                        }).reduce((s1, s2) -> s1 + "," + s2).get();
+            }
+        }
         return obj;
     }
 
     @Override
     public Object converterValue(Object data) {
-        return mapping.get(String.valueOf(data));
+        String stringData = String.valueOf(data);
+        Object value = mapping.get(String.valueOf(data));
+        if (value == null) {
+            //转换多个值
+            if (stringData.contains(",")) {
+                String[] arrayData = stringData.split("[,]");
+                value = Arrays.asList(arrayData).stream()
+                        .map(str -> {
+                            Object v = mapping.get(str.trim());
+                            if (StringUtils.isNullOrEmpty(v)) {
+                                v = str.trim();
+                            }
+                            return v;
+                        }).reduce((s1, s2) -> s1 + "," + s2).get();
+            }
+        }
+        if (value == null) value = data;
+        return value;
     }
+
 }
