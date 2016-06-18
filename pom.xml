@@ -12,7 +12,6 @@
     <modules>
         <module>hsweb-platform-ui-miniui</module>
         <module>hsweb-platform-run</module>
-        <module>hsweb-platform-core</module>
         <module>hsweb-platform-workflow-modeler</module>
     </modules>
     <artifactId>hsweb-platform</artifactId>
