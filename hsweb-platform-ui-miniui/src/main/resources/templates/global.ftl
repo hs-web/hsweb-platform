@@ -21,7 +21,7 @@
 </#macro>
 <#macro importWebsocket()>
     <@importPlugin "socket/websocket.js" />
-<script type="text/javascript">Socket.URL = "<@basePath/>".replace("http","ws")+"/socket";</script>
+<script type="text/javascript">Socket.URL = "<@basePath/>".replace("http", "ws") + "/socket";</script>
 </#macro>
 <#macro importFontIcon>
     <@resources "icons/css/font-awesome.min.css"/>
@@ -40,10 +40,11 @@
 <#--jquery-cdn-->
 <#macro importJquery>
 <#--http://code.jquery.com/jquery-1.12.3.min.js-->
-<@importPlugin "jquery/1.11.1/jquery.min.js"/>
+    <@importPlugin "jquery/1.11.1/jquery.min.js"/>
 </#macro>
 <#--miniui-->
 <#macro importMiniui themes...>
+    <script type="text/javascript">window.BASE_PATH="<@basePath/>"</script>
     <@importJquery />
     <@importPlugin "miniui/miniui.js","miniui/themes/default/miniui.css","miniui/themes/icons.css" />
     <@resources "js/miniui-global.js"/>
