@@ -73,7 +73,6 @@
         data = d;
     }
     window.init = function (m) {
-        alert(1);
         var tabConfig = m.tabConfig;
         if (tabConfig) {
             tabConfig = mini.decode(tabConfig);

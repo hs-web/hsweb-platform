@@ -2,6 +2,7 @@ package org.hsweb.platform.ui.listener;
 
 
 import com.alibaba.fastjson.JSON;
+import org.hsweb.commons.StringUtils;
 import org.hsweb.ezorm.meta.Correlation;
 import org.hsweb.ezorm.meta.FieldMetaData;
 import org.hsweb.ezorm.meta.TableMetaData;
@@ -14,7 +15,6 @@ import org.hsweb.web.service.config.ConfigService;
 import org.hsweb.web.service.form.FormParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.webbuilder.utils.common.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,10 +1,10 @@
 package org.hsweb.platform.ui.controller;
 
+import org.hsweb.commons.file.FileUtils;
 import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.message.ResponseMessage;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.webbuilder.utils.file.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
