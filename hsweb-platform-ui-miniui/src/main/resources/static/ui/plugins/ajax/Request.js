@@ -123,11 +123,13 @@ var Request = {
         if (requestBody != false)requestBody = true;
         Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, requestBody);
     },
-    put: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, true);
+    put: function (uri, data, callback,requestBody) {
+        if (requestBody != false)requestBody = true;
+        Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, requestBody);
     },
-    patch: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "PATCH", callback, true, true);
+    patch: function (uri, data, callback,requestBody) {
+        if (requestBody != false)requestBody = true;
+        Request.doAjax(Request.BASH_PATH + uri, data, "PATCH", callback, true, requestBody);
     },
     "delete": function (uri, data, callback) {
         Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
@@ -135,7 +137,9 @@ var Request = {
     doAjax: function (url, data, method, callback, syc, requestBody) {
         var data_tmp = data;
         if (requestBody == true) {
-            data = JSON.stringify(data);
+            if(typeof(data)!='string'){
+                data = JSON.stringify(data);
+            }
         }
         var param = {
             type: method,
