@@ -27,13 +27,13 @@
             <tr>
                 <td style="width:60px;"><label for="username$text">帐号：</label></td>
                 <td>
-                    <input id="username" name="username" class="mini-textbox" value="test" required="true" style="width:150px;"/>
+                    <input id="username" name="username" class="mini-textbox" value="admin" required="true" style="width:150px;"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:60px;"><label for="pwd$text">密码：</label></td>
                 <td>
-                    <input id="password" name="password" class="mini-password" value="123456" required="true" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
+                    <input id="password" name="password" class="mini-password" value="admin" required="true" requiredErrorText="密码不能为空" required="true" style="width:150px;" onenter="onLoginClick"/>
                 </td>
             </tr>
             <tr>
