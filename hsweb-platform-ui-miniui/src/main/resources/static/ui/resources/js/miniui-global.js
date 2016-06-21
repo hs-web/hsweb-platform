@@ -153,12 +153,26 @@ function moveDown(grid, _id) {
     grid.moveDown(arr);
 }
 
-function getCleanData(grid){
-    var data=mini.clone(grid.getData());
-    $(data).each(function(i,e){
+function getCleanData(grid) {
+    var data = mini.clone(grid.getData());
+    $(data).each(function (i, e) {
         delete e["_id"];
         delete e["_uid"];
         delete e["_state"];
     });
     return data;
+}
+
+function downloadText(text, fileName) {
+    try {
+        var aLink = document.createElement('a');
+        var blob = new Blob(["\ufeff" + text]);
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("click", false, false);
+        aLink.download = fileName;
+        aLink.href = URL.createObjectURL(blob);
+        aLink.dispatchEvent(evt);
+    } catch (e) {
+        showTips("您的浏览器不支持此功能!");
+    }
 }

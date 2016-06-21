@@ -60,6 +60,7 @@
     </profiles>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -138,10 +139,6 @@
             <artifactId>druid</artifactId>
             <version>1.0.20</version>
         </dependency>
-        <dependency>
-            <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-platform-core</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.hsweb</groupId>
@@ -192,18 +189,18 @@
         <dependency>
             <groupId>org.hsweb</groupId>
             <artifactId>hsweb-web-websocket</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>org.fusesource</groupId>
             <artifactId>sigar</artifactId>
             <version>1.6.4</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--</dependency>-->
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-redis</artifactId>-->

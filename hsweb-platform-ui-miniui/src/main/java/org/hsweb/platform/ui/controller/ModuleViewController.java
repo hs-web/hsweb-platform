@@ -76,6 +76,7 @@ public class ModuleViewController {
         param.nest().and("id", metaId);
         Term term = param.nest();
         roleId.forEach(rId -> term.or("roleId$LIKE", "%," + rId + ",%"));
+        term.or("roleId$ISNULL", true).or("roleId$EMPTY", true);
         ModuleMeta moduleMeta = moduleMetaService.selectSingle(param);
         if (moduleMeta == null) {
             throw new NotFoundException("模块不存在或者无访问权限!");

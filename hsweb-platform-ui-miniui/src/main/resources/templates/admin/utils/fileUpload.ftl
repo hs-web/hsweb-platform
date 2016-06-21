@@ -52,7 +52,7 @@
         excel: {
             title: 'EXCEL',
             extensions: 'xls,xlsx',
-            mimeTypes: '*/*'
+            mimeTypes: 'application/excel'
         },
         word: {
             title: 'word',

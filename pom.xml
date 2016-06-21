@@ -41,12 +41,6 @@
                 <artifactId>hsweb-platform-workflow-modeler</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.hsweb</groupId>
-                <artifactId>hsweb-platform-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
         </dependencies>
 
     </dependencyManagement>

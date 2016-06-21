@@ -21,14 +21,13 @@ import org.activiti.explorer.ui.variable.VariableRendererManager;
 import org.activiti.workflow.simple.converter.WorkflowDefinitionConversionFactory;
 import org.activiti.workflow.simple.converter.json.SimpleWorkflowJsonConverter;
 import org.apache.commons.io.IOUtils;
+import org.hsweb.commons.file.FileUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.webbuilder.utils.file.FileUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
