@@ -117,27 +117,35 @@ var Request = {
         return query;
     },
     get: function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "GET", callback, true, false);
+        var data_ = data, callback_;
+        if (typeof(data) == 'undefined')data_ = {};
+        if (typeof(callback) == 'object')data_ = callback;
+        if (typeof(data) == 'function')callback_ = data;
+        return Request.doAjax(Request.BASH_PATH + uri, data_, "GET", callback_, typeof(callback_) != 'undefined', false);
     },
     post: function (uri, data, callback, requestBody) {
         if (requestBody != false)requestBody = true;
         Request.doAjax(Request.BASH_PATH + uri, data, "POST", callback, true, requestBody);
     },
-    put: function (uri, data, callback,requestBody) {
+    put: function (uri, data, callback, requestBody) {
         if (requestBody != false)requestBody = true;
         Request.doAjax(Request.BASH_PATH + uri, data, "PUT", callback, true, requestBody);
     },
-    patch: function (uri, data, callback,requestBody) {
+    patch: function (uri, data, callback, requestBody) {
         if (requestBody != false)requestBody = true;
         Request.doAjax(Request.BASH_PATH + uri, data, "PATCH", callback, true, requestBody);
     },
     "delete": function (uri, data, callback) {
-        Request.doAjax(Request.BASH_PATH + uri, data, "DELETE", callback, true, false);
+        var data_ = data, callback_;
+        if (typeof(data) == 'undefined')data_ = {};
+        if (typeof(callback) == 'object')data_ = callback;
+        if (typeof(data) == 'function')callback_ = data;
+        return Request.doAjax(Request.BASH_PATH + uri, data_, "DELETE", callback_, typeof(callback_) != 'undefined', false);
     },
     doAjax: function (url, data, method, callback, syc, requestBody) {
         var data_tmp = data;
         if (requestBody == true) {
-            if(typeof(data)!='string'){
+            if (typeof(data) != 'string') {
                 data = JSON.stringify(data);
             }
         }
@@ -159,14 +167,16 @@ var Request = {
                     doLogin(function () {
                         Request.doAjax(url, data_tmp, method, callback, syc, requestBody);
                     });
-                } else
-                    callback(msg);
+                } else {
+                    if (callback)
+                        callback(msg);
+                }
             },
             dataType: 'json'
         };
         if (requestBody == true) {
             param.contentType = "application/json";
         }
-        $.ajax(param);
+        return $.ajax(param).responseJSON;
     }
 }
