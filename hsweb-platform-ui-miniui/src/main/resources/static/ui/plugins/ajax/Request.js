@@ -117,7 +117,7 @@ var Request = {
         return query;
     },
     get: function (uri, data, callback) {
-        var data_ = data, callback_;
+        var data_ = data, callback_=callback;
         if (typeof(data) == 'undefined')data_ = {};
         if (typeof(callback) == 'object')data_ = callback;
         if (typeof(data) == 'function')callback_ = data;
@@ -136,7 +136,7 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "PATCH", callback, true, requestBody);
     },
     "delete": function (uri, data, callback) {
-        var data_ = data, callback_;
+        var data_ = data, callback_=callback;
         if (typeof(data) == 'undefined')data_ = {};
         if (typeof(callback) == 'object')data_ = callback;
         if (typeof(data) == 'function')callback_ = data;
