@@ -58,6 +58,10 @@
             title: 'word',
             extensions: 'doc,docx',
             mimeTypes: '*/*'
+        }, json: {
+            title: 'JSON',
+            extensions: 'json',
+            mimeTypes: 'application/json'
         },
         all: {
             title: '文件',
