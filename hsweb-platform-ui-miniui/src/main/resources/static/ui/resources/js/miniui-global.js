@@ -13,6 +13,9 @@ function showTips(msg, state) {
 }
 
 function openWindow(url, title, width, height, ondestroy, onload) {
+    if (url.indexOf("http") != 0) {
+        url = Request.BASH_PATH + url;
+    }
     mini.open({
         url: url,
         showMaxButton: true,
@@ -173,6 +176,14 @@ function downloadText(text, fileName) {
         aLink.href = URL.createObjectURL(blob);
         aLink.dispatchEvent(evt);
     } catch (e) {
-        showTips("您的浏览器不支持此功能!");
+        var form = document.createElement("form");
+        form.action = Request.BASH_PATH + "file/download-text/" + fileName;
+        form.target = "_blank";
+        form.method = "POST";
+        var input = document.createElement("input");
+        input.name = "text";
+        input.value = text;
+        form.appendChild(input);
+        form.submit();
     }
 }
