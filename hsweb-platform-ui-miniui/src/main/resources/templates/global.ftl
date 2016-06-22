@@ -21,7 +21,10 @@
 </#macro>
 <#macro importWebsocket()>
     <@importPlugin "socket/websocket.js" />
-<script type="text/javascript">Socket.URL = "<@basePath/>".replace("http", "ws") + "/socket";</script>
+<script type="text/javascript">
+    Socket.URL = "<@basePath/>".replace("http", "ws") + "socket";
+    if(Socket.URL.indexOf("/")==0) Socket.URL="ws://"+window.location.host+Socket.URL;
+</script>
 </#macro>
 <#macro importFontIcon>
     <@resources "icons/css/font-awesome.min.css"/>
