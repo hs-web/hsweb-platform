@@ -47,14 +47,26 @@ public class FormMetaController {
         } else {
             metaData = table.getMeta();
         }
-        List<Map<String, Object>> fieldMeta = metaData.getFields()
+        List<Map<String, String>> fieldMeta = metaData.getFields()
                 .stream().map(fieldMetaData -> {
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("id", fieldMetaData.getName());
-                    data.put("text", fieldMetaData.getName() + "(" + fieldMetaData.getComment() + ")");
+                    Map<String, String> data = new HashMap<>();
+                    data.put("id", fieldMetaData.getAlias());
+                    data.put("text", fieldMetaData.getAlias() + "(" + fieldMetaData.getComment() + ")");
                     data.put("comment", fieldMetaData.getComment());
                     return data;
                 }).collect(Collectors.toList());
+        //关联表
+        metaData.getCorrelations().forEach(correlation -> {
+            TableMetaData metaData1 = metaData.getDatabaseMetaData().getTable(correlation.getTargetTable());
+            if (metaData1 == null) return;
+            metaData1.getFields().forEach(m -> {
+                Map<String, String> data = new HashMap<>();
+                data.put("id", correlation.getAlias() + "." + m.getAlias());
+                data.put("text", correlation.getAlias() + "." + m.getAlias() + "(" + m.getComment() + ")");
+                data.put("comment", m.getComment());
+                fieldMeta.add(data);
+            });
+        });
         return ResponseMessage.ok(fieldMeta);
     }
 }
