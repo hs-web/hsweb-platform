@@ -32,10 +32,10 @@ ue.addListener('selectionchange', function () {
     var tagIsInput = tag == "input" || tag == "INPUT";
     var tagIsSelect = tag == "select" || tag == "SELECT";
     var tagIsTextArea = tag == "textarea" || tag == "TEXTAREA";
-    var tagIsDate=$(focusNode).attr("onclick")=="WdatePicker()"
-        ||$(focusNode).parent().prev().text().indexOf("日期")!=-1
-        ||$(focusNode).parent().prev().text().indexOf("时间")!=-1;
-    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea||tagIsDate;
+    var tagIsDate = $(focusNode).attr("onclick") == "WdatePicker()"
+        || $(focusNode).parent().prev().text().indexOf("日期") != -1
+        || $(focusNode).parent().prev().text().indexOf("时间") != -1;
+    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea || tagIsDate;
     if (id) {
         nowEditorTarget = id;
     } else {
@@ -51,14 +51,14 @@ ue.addListener('selectionchange', function () {
                 var property = [];
                 property.push({key: "style", value: "width:90%"});
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
-            }else if (tagIsDate) {
+            } else if (tagIsDate) {
                 insert("datepicker");
                 var property = [];
                 property.push({key: "style", value: "width:200px"});
-                fieldData[nowEditorTarget][2].value="date";
-                fieldData[nowEditorTarget][3].value="date";
+                fieldData[nowEditorTarget][2].value = "date";
+                fieldData[nowEditorTarget][3].value = "date";
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
-            }  else if (tagIsInput) {
+            } else if (tagIsInput) {
                 insert("textbox");
                 var property = [];
                 property.push({key: "style", value: "width:200px"});
@@ -161,7 +161,7 @@ function initProperties() {
     var map = list2Map(data);
     var meta = map["_meta"];
     var conf = Designer.fields[meta];
-    if(!conf){
+    if (!conf) {
         return;
     }
     $(conf.getDefaultProperties()).each(function (i, e) {
@@ -172,7 +172,7 @@ function initProperties() {
             newData.push(e);
         }
     });
-    fieldData[nowEditorTarget]=newData;
+    fieldData[nowEditorTarget] = newData;
     propertiesTable.setData(newData);
 }
 function insert(id) {
@@ -216,6 +216,37 @@ function getFormData() {
     form.config = mini.encode(otherAttr);
     form.html = ue.getContent();
     return form;
+}
+function downloadForm() {
+    var form = getFormData();
+    var tmp = $(form.html);
+    for (var e in fieldData) {
+        if (e == "main")continue;
+        var field = tmp.find("[field-id='" + e + "']");
+        if (field.length == 0) {
+            delete  fieldData[e];
+        }
+    }
+    form.meta = mini.encode(fieldData);
+
+    downloadText(mini.encode(form), form.name + ".json");
+}
+
+function importForm() {
+    openFileUploader("json", "上传表单", function (e) {
+        if (e.length > 0) {
+            var file = e[0];
+            Request.get("file/download/" + file.id, function (e) {
+                if (e&&e.meta) {
+                    fieldData = mini.decode(e.meta);
+                    ue.setContent(e.html);
+                    initProperties();
+                }else{
+                    showTips("请确定您上传的文件正确!","danger");
+                }
+            });
+        }
+    });
 }
 function save(callback) {
     var form = getFormData();
@@ -329,7 +360,7 @@ function autoCreateModule() {
 function removeChooseFieldRow(e) {
     var grid = mini.get('chooseFieldGrid');
     grid.findRow(function (row) {
-        if (row&&row.name == e) {
+        if (row && row.name == e) {
             grid.removeRow(row);
             return true;
         }

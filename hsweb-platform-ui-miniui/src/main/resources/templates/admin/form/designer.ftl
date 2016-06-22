@@ -58,8 +58,8 @@
                         <a class="mini-button" iconCls="icon-bullet-cross" style="color: red" onclick="closeWindow('exit')" plain="true">退出</a>
                         <span class="separator"></span>
                         <a class="mini-button" iconCls="icon-reload" plain="true" onclick="window.location.reload()">刷新</a>
-                        <a class="mini-button" iconCls="icon-upload" plain="true">导入</a>
-                        <a class="mini-button" iconCls="icon-download" plain="true">下载</a>
+                        <a class="mini-button" iconCls="icon-upload" plain="true" onclick="importForm()">导入</a>
+                        <a class="mini-button" iconCls="icon-download" plain="true" onclick="downloadForm()">下载</a>
                     </td>
                     <td style="white-space:nowrap;">
                     </td>
@@ -67,17 +67,8 @@
             </table>
         </div>
         <ul id="popupMenu" class="mini-menu" style="display:none;">
-            <li>
-                <span>操作</span>
-                <ul>
-                    <li iconCls="icon-new">新建表单</li>
-                    <li class="separator"></li>
-                    <li iconCls="icon-add">创建新版本</li>
-                    <li iconCls="icon-application-add" onclick="autoCreateModule()">自动生成系统模块</li>
-                </ul>
-            </li>
-            <li class="separator"></li>
-            <li iconCls="icon-open">打开</li>
+            <li iconCls="icon-new" onclick="window.location.href='<@global.api 'admin/form/designer.html'/>'">新建表单</li>
+            <li iconCls="icon-application-add" onclick="autoCreateModule()">自动生成系统模块</li>
         </ul>
     </div>
     <div title="south" region="east" showSplit="true" showHeader="false" width="200" bodyStyle="border:0px;">
