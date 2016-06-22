@@ -85,7 +85,6 @@
             <div field="revision" align="center" width="50" headerAlign="center" allowSort="true">修订版</div>
             <div field="release" align="center" width="50" headerAlign="center" allowSort="true">发布版</div>
             <div field="using" renderer="renderStatus" align="center" width="100" headerAlign="center" allowSort="true">是否已发布</div>
-            <#--<div field="customAttr.isLogin" renderer="renderLogin" align="center" width="100" headerAlign="center" allowSort="true">是否已登录</div>-->
             <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
         </div>
     </div>
@@ -101,7 +100,6 @@
                 <div field="revision" align="center" width="50" headerAlign="center" allowSort="true">修订版</div>
                 <div field="release" align="center" width="50" headerAlign="center" allowSort="true">发布版</div>
                 <div field="using" renderer="renderStatus" align="center" width="100" headerAlign="center" allowSort="true">是否已发布</div>
-                <#--<div field="customAttr.isLogin" renderer="renderLogin" align="center" width="100" headerAlign="center" allowSort="true">是否已登录</div>-->
                 <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
             </div>
         </div>
