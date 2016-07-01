@@ -62,7 +62,7 @@
     mini.parse();
     var tabs = mini.get('mainTabs');
     function nodeselect(e) {
-        if (e.node && e.node.id != "-1") {
+        if (e.node && e.node.id != "-1" && $.trim(e.node.uri) != "") {
             if (window.history.pushState)
                 window.history.pushState(0, 0, "#m=" + e.node.id);
             showTab(e.node);
@@ -98,20 +98,20 @@
                 }
         );
     }
-    Request.get("online/total",{},function(e){
-        if(e.success){
+    Request.get("online/total", {}, function (e) {
+        if (e.success) {
             $(".online-total").text(e.data);
         }
     });
-    Socket.open(function(socket){
-        if(socket){
+    Socket.open(function (socket) {
+        if (socket) {
             //订阅在线人数推送
-            socket.sub("online",{type:"total"},"onlineUserTotal");
-            socket.on("onlineUserTotal",function(e){
+            socket.sub("online", {type: "total"}, "onlineUserTotal");
+            socket.on("onlineUserTotal", function (e) {
                 $(".online-total").text(e);
             });
-        }else{
-            showTips("你的浏览器不支持websocket,部分功能可能无法正常使用!","danger");
+        } else {
+            showTips("你的浏览器不支持websocket,部分功能可能无法正常使用!", "danger");
         }
     });
 </script>

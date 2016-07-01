@@ -62,6 +62,8 @@
 </div>
 <div id="win" title="表结构" class="mini-window" style="width: 800px;height: 600px;">
     <div class="mini-toolbar">
+        <input id="tableName"  class="mini-textbox"  enabled="false" />
+        <input id="tableComment" class="mini-textbox" emptyText="备注" />
         <a class="mini-button" iconCls="icon-add" onclick="fieldGrid.addRow({properties:{not_null:false}})" plain="true">添加字段</a>
     </div>
     <div id="tableMetaTabs" onactivechanged="initMetaSql" class="mini-tabs" activeIndex="0" style="width:100%;height:90%;">
@@ -141,7 +143,7 @@
         var tableMeta = {};
         var tableInfo = tree.getSelectedNode();
         tableMeta.name = tableInfo.name;
-        tableMeta.comment = tableInfo.comment;
+        tableMeta.comment =  mini.get("tableComment").getValue();
         var fieldList = getCleanData(fieldGrid);
         var fields = [];
         $(fieldList).each(function () {
@@ -166,6 +168,9 @@
         $(node.fields).each(function () {
             this.old_name = this.name;
         })
+        mini.get("tableName").setValue(node.name);
+        mini.get("tableComment").setValue(node.comment);
+
         fieldGrid.setData(node.fields);
         tableMetaTabsObj.activeTab(0);
     }
