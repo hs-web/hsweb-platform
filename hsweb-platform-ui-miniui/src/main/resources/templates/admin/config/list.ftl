@@ -94,6 +94,7 @@
                     <div field="comment" width="30" align="center" headerAlign="center">备注
                         <input property="editor" class="mini-textarea"/>
                     </div>
+                    <div width="30" renderer="actionRender" align="center" headerAlign="center">操作</div>
                 </div>
             </div>
         </div>
@@ -123,6 +124,13 @@
         }
     });
     initData();
+    function actionRender(e) {
+        var html = "";
+        html += createActionButton("上移", "moveUp(grid," + e.record._id + ")", "icon-arrow-up");
+        html += createActionButton("下移", "moveDown(grid," + e.record._id + ")", "icon-arrow-down");
+        html += createActionButton("删除", "removeRow(grid," + e.record._id + ")", "icon-remove");
+        return html;
+    }
     function initData() {
         var TreeData = [];
         Request.createQuery("classified/byType/config").select(["id", "parentId", "name", "icon"]).noPaging()

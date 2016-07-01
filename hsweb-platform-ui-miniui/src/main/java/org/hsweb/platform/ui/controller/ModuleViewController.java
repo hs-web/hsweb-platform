@@ -7,6 +7,7 @@ import org.hsweb.ezorm.param.Term;
 import org.hsweb.platform.ui.service.ModuleMetaParserService;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.module.ModuleMeta;
+import org.hsweb.web.bean.po.role.UserRole;
 import org.hsweb.web.bean.po.user.User;
 import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.exception.NotFoundException;
@@ -40,7 +41,7 @@ public class ModuleViewController {
     public ModelAndView listPage(@PathVariable("key") String key, String metaId) throws Exception {
         User user = WebUtil.getLoginUser();
         List<String> roleId = user.getUserRoles().stream()
-                .map(userRole -> userRole.getRoleId())
+                .map(UserRole::getRoleId)
                 .collect(Collectors.toList());
         ModuleMeta moduleMeta;
         if (StringUtils.isNullOrEmpty(metaId)) {

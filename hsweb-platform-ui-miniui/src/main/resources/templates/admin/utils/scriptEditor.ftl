@@ -25,6 +25,8 @@
 ,'codemirror/addon/hint/anyword-hint.js'
 ,'codemirror/mode/javascript/javascript.js'
 ,'codemirror/mode/groovy/groovy.js'
+,'codemirror/mode/htmlmixed/htmlmixed.js'
+,'codemirror/mode/xml/xml.js'
 ,'codemirror/mode/css/css.js'
 ,'codemirror/keymap/sublime.js'
 />

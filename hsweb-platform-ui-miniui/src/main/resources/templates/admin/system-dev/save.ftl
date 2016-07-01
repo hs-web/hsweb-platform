@@ -151,10 +151,10 @@
                 <#--<input property="editor" class="mini-buttonedit"/>-->
                 <#--</div>-->
                     <div field="customAttr" autoEscape="true" width="100" align="center" headerAlign="center">自定义控件属性(JSON)
-                        <input property="editor" class="mini-textarea"/>
+                        <input property="editor" onbuttonclick="editJson" class="mini-buttonedit"/>
                     </div>
-                    <div field="customHtml" autoEscape="true" width="100" align="center" headerAlign="center">自定义控件
-                        <input property="editor" class="mini-textarea"/>
+                    <div field="customHtml" autoEscape="true" width="100" align="center" headerAlign="center">自定义控件(HTML)
+                        <input property="editor" onbuttonclick="editHTML" class="mini-buttonedit"/>
                     </div>
                     <div name="action" width="100" renderer="rendererAction" align="center" headerAlign="center">操作</div>
                 </div>
@@ -192,6 +192,9 @@
                     <div field="renderer" width="100" align="center" headerAlign="center">渲染事件
                         <input property="editor" onbuttonclick="editScript" class="mini-buttonedit"/>
                     </div>
+                    <div field="properties" width="100" align="center" headerAlign="center">其他属性(JSON)
+                        <input property="editor" onbuttonclick="editJson" class="mini-buttonedit"/>
+                    </div>
                     <div name="action" width="100" renderer="rendererQueryTableAction" align="center" headerAlign="center">操作</div>
                 </div>
             </div>
@@ -213,6 +216,9 @@
                     </div>
                     <div field="icon" width="60" renderer="renderIcon" align="center" headerAlign="center">图标
                         <input property="editor" onbuttonclick="chooseIcon" class="mini-buttonedit"/>
+                    </div>
+                    <div field="condition" width="60" align="center" headerAlign="center">显示条件(JS)
+                        <input property="editor" onbuttonclick="editScript" class="mini-buttonedit"/>
                     </div>
                     <div field="onclick" width="60" align="center" headerAlign="center">事件
                         <input property="editor" onbuttonclick="editScript" class="mini-buttonedit"/>
@@ -258,6 +264,8 @@
     var query_plan_grid = mini.get('query_plan_grid');
     var query_table_grid = mini.get('query_table_grid');
     var action_grid = mini.get('action_grid');
+    bindCellBeginButtonEdit(query_plan_grid);
+    bindCellBeginButtonEdit(query_table_grid);
     bindCellBeginButtonEdit(action_grid);
     function editScript(e) {
         var tmp = e.sender.value;
@@ -265,6 +273,28 @@
             tmp = "";
         }
         openScriptEditor("javascript", tmp, function (script) {
+            e.sender.setValue(script);
+            e.sender.setText(script);
+        });
+    }
+
+    function editJson(e) {
+        var tmp = e.sender.value;
+        if (!tmp) {
+            tmp = "";
+        }
+        openScriptEditor("text/json", tmp, function (script) {
+            e.sender.setValue(script);
+            e.sender.setText(script);
+        });
+    }
+
+    function editHTML(e) {
+        var tmp = e.sender.value;
+        if (!tmp) {
+            tmp = "";
+        }
+        openScriptEditor("text/html", tmp, function (script) {
             e.sender.setValue(script);
             e.sender.setText(script);
         });

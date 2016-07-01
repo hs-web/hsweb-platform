@@ -46,23 +46,6 @@
         .searchForm td {
             height: 30px;;
         }
-
-        .action-icon {
-            width: 16px;
-            height: 16px;
-            display: inline-block;
-            background-position: 50% 50%;
-            cursor: pointer;
-            line-height: 16px;
-        }
-
-        .action-span {
-            font-size: 16px;
-            cursor: pointer;
-            display: inline-block;
-            line-height: 16px;
-            margin-left: 0.8em;
-        }
     </style>
 </head>
 <body>
@@ -122,7 +105,7 @@
     var meta = ${meta.meta!''};
     var queryTableConfig = meta.queryTableConfig;
     <#if actionGt1>
-    queryTableConfig.push({"width":100,"visible":true,"align":"center","headerAlign":"center","header":"操作","renderer":"actionButton"});
+    queryTableConfig.push({"width": 100, "visible": true, "align": "center", "headerAlign": "center", "header": "操作", "renderer": "actionButton"});
     </#if>
     var includes = ["u_id"];
     var searchFormConfigMap = {};
@@ -283,17 +266,25 @@
         grid.load(param);
     }
 
-    function createActionButton(text, action, icon) {
-        return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
-                '<i class="action-icon ' + icon + '"></i>' + "" //text
-                + '</span>';
-    }
-
     function actionButton(e) {
         var html = "";
+        var row = e.record;
     <#list json.actionConfig as item>
         <#if authorize.module(json.dynForm item.moduleAction)>
-            html += createActionButton("${item.title}", "action_${item_index}_event(" + e.record._id + ")", "${item.icon}");
+            function showCondition${item_index}() {
+                try {
+                ${item.condition!'return true;'}
+                } catch (e) {
+                    if (window.console) {
+                        window.console.log(e);
+                    }
+                }
+                return false;
+            }
+
+            if (showCondition${item_index}() == true) {
+                html += createActionButton("${item.title}", "action_${item_index}_event(" + e.record._id + ")", "${item.icon}");
+            }
         </#if>
     </#list>
         return html;

@@ -106,11 +106,7 @@ function search() {
     queryParam.excludes = "config,meta,html";
     grid.load(queryParam);
 }
-function createActionButton(text, action, icon) {
-    return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
-        '<i class="action-icon ' + icon + '"></i>' + "" //text
-        + '</span>';
-}
+
 function rendererAction(e) {
     var grid = e.sender;
     var record = e.record;

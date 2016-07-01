@@ -31,7 +31,7 @@
         </div>
     </div>
     <div showHeader="false" region="west" width="250" maxWidth="500" minWidth="200">
-        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sortField=sortIndex" />"
+        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sorts[0].field=sortIndex" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="true"
              iconField="icon"
              onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0"
@@ -114,8 +114,8 @@
                     <div field="text" width="30" align="center" headerAlign="center">备注
                         <input property="editor" class="mini-textarea"/>
                     </div>
-                    <div field="checked" width="30" align="center" headerAlign="center">默认
-                        <input property="editor" class="mini-combobox" data="[{'id':true,text:'true'},{'id':false,text:'false'}]" valueField="id" textField="text"/>
+                    <div field="checked" width="30" align="center" headerAlign="center" renderer="renderTrueOrFalse">默认
+                        <input property="editor" class="mini-combobox" data="[{'id':true,text:'是'},{'id':false,text:'否'}]" valueField="id" textField="text"/>
                     </div>
                 </div>
             </div>
@@ -138,6 +138,9 @@
                 e.sender.setText(icon);
             }
         });
+    }
+    function renderTrueOrFalse(e){
+        return e.value+""=="true"?"是":"否";
     }
 </script>
 <@global.resources "js/module/list.js"/>

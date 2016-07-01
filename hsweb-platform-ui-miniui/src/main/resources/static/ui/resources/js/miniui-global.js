@@ -187,3 +187,9 @@ function downloadText(text, fileName) {
         form.submit();
     }
 }
+
+function createActionButton(text, action, icon) {
+    return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
+        '<span class="action-icon ' + icon + '"></span>' + "" //text
+        + '</span>';
+}
