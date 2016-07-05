@@ -21,25 +21,26 @@
     <profiles>
         <profile>
             <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <environment.package>develop</environment.package>
                 <jdbc.type>oracle</jdbc.type>
+                <logging.path>./logger/</logging.path>
                 <jdbc.url>jdbc:h2:file:./data/h2db</jdbc.url>
                 <jdbc.username>sa</jdbc.username>
                 <jdbc.password></jdbc.password>
                 <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <envistronment.package>product</envistronment.package>
                 <jdbc.type>mysql</jdbc.type>
-                <logging.path>/var/logger/hsweb/</logging.path>
-                <jdbc.url>jdbc:mysql://mysql:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>
+                <logging.path>./logger/</logging.path>
+                <jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password>19920622</jdbc.password>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
@@ -60,7 +61,7 @@
     </profiles>
 
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -93,13 +94,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>springloaded</artifactId>
-                        <version>1.2.5.RELEASE</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>

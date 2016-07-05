@@ -13,14 +13,10 @@ login:
     enable: true
 #spring config
 spring:
-    devtools:
-        remote:
-            secret: hsweb
     aop:
         auto: true
     application:
         name: ${app.name}
-        index: index.html
         version: ${app.version}
     datasource:
         name: core

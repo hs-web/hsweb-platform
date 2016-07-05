@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.IOException;
+
 /**
  * Created by zhouhao on 16-4-12.
  */
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 //@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 public class Run {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         SpringApplication.run(Run.class, args);
     }
 

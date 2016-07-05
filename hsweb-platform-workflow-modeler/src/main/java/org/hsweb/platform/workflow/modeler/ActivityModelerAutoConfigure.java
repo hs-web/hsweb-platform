@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.Model;
 import org.activiti.explorer.*;
 import org.activiti.explorer.navigation.NavigationFragmentChangeListener;
@@ -22,9 +20,9 @@ import org.activiti.workflow.simple.converter.WorkflowDefinitionConversionFactor
 import org.activiti.workflow.simple.converter.json.SimpleWorkflowJsonConverter;
 import org.apache.commons.io.IOUtils;
 import org.hsweb.commons.file.FileUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -39,6 +37,7 @@ import java.util.Locale;
  * Created by zhouhao on 16-4-30.
  */
 @Configuration
+@ComponentScan(basePackages = {"org.hsweb.web.workflow"})
 public class ActivityModelerAutoConfigure {
 
     @Autowired
@@ -46,21 +45,7 @@ public class ActivityModelerAutoConfigure {
 
     @PostConstruct
     protected void initModelData() throws Exception {
-        createModelData("测试流程模型", "This is a demo model", "test.model.json");
-    }
-
-    @Bean
-    InitializingBean usersAndGroupsInitializer(final IdentityService identityService) {
-        return () -> {
-            Group group = identityService.newGroup("user");
-            group.setName("users");
-            group.setType("security-role");
-            identityService.saveGroup(group);
-
-            User admin = identityService.newUser("admin");
-            admin.setPassword("admin");
-            identityService.saveUser(admin);
-        };
+       // createModelData("测试流程模型", "This is a demo model", "test.model.json");
     }
 
     @Bean
