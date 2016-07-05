@@ -3,13 +3,48 @@
  */
 mini.parse();
 var grid = mini.get('grid');
+var tree = mini.get("leftTree");
 var employee_grid = mini.get("employee_grid");
 var detailGrid_Form = document.getElementById("detailGrid_Form");
 bindDefaultAction(employee_grid);
 bindDefaultAction(grid);
 search();
+var nowEditorNode;
+function nodeselect(e) {
+    if (!e.node) {
+        return;
+    }
+    nowEditorNode = e.node;
+    search();
+}
+initData();
+function initData() {
+    Request.get("classified/byType/form", function (e) {
+        e.data.unshift({name: "全部分类", id: "-1", parentId: "parent"});
+        tree.loadList(e.data);
+    })
+}
+function newClassified() {
+    var pid = nowEditorNode.id;
+    if (!nowEditorNode)pid = "-1";
+    mini.prompt("请输入分类名称", "请输入",
+        function (action, value) {
+            if (action == "ok") {
+                if (value == "")return;
+                var data = {name: value, type: "form", parentId: pid};
+                Request.post("classified", data, function (e) {
+                    if (e.success) {
+                        initData();
+                    } else {
+                        mini.alert(e.message);
+                    }
+                });
+            }
+        });
+}
+
 function create() {
-    openWindow(Request.BASH_PATH + "admin/form/designer.html", "新建表单", "100%", "100%", function (e) {
+    openWindow(Request.BASH_PATH + "admin/form/designer.html?cid=" + nowEditorNode.id, "新建表单", "100%", "100%", function (e) {
         grid.reload();
     });
 }
@@ -102,11 +137,24 @@ function removeForm(id) {
 
 function search() {
     var data = new mini.Form("#searchForm").getData();
+    if (nowEditorNode && nowEditorNode.id != '-1') {
+        var arr = [nowEditorNode.id];
+        getClassifiedIdList(nowEditorNode, arr);
+        data['classifiedId$IN'] = arr + "";
+    }
     var queryParam = Request.encodeParam(data);
     queryParam.excludes = "config,meta,html";
+
     grid.load(queryParam);
 }
-
+function getClassifiedIdList(data, arr) {
+    if (data.children) {
+        $(data.children).each(function () {
+            arr.push(this.id);
+            getClassifiedIdList(this, arr);
+        });
+    }
+}
 function rendererAction(e) {
     var grid = e.sender;
     var record = e.record;

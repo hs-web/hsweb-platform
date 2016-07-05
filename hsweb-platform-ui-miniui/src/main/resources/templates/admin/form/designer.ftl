@@ -60,6 +60,11 @@
                         <a class="mini-button" iconCls="icon-reload" plain="true" onclick="window.location.reload()">刷新</a>
                         <a class="mini-button" iconCls="icon-upload" plain="true" onclick="importForm()">导入</a>
                         <a class="mini-button" iconCls="icon-download" plain="true" onclick="downloadForm()">下载</a>
+                        <span class="separator"></span>
+                        所属分类:
+                        <input id="classifiedId" class="mini-treeselect" valueFromSelect="true" clearOnLoad="true"
+                               url="<@global.api "classified/byType/form?paging=false"/>" value="${cid!''}"
+                               allowInput="true" ajaxType="GET" resultAsTree="false" parentField="parentId" textField="name" />
                     </td>
                     <td style="white-space:nowrap;">
                     </td>
@@ -110,7 +115,7 @@
             <a class="mini-button" onclick="addChooseField()" iconCls="icon-add">添加</a>
             <input id="chooseFieldCombobox" style="width: 250px;" class="mini-combobox" allowInput="true"
                    pinyinField="text" valueField="filedId" valuefromselect="true"/>
-            <div id="chooseFieldGrid"  showPager="false" class="mini-datagrid" style="width: 100%;height: 300px">
+            <div id="chooseFieldGrid" showPager="false" class="mini-datagrid" style="width: 100%;height: 300px">
                 <div property="columns">
                     <div field="name" width="50" headerAlign="center" allowSort="false">字段</div>
                     <div field="comment" width="50" headerAlign="center" allowSort="false">字段描述</div>
@@ -135,12 +140,12 @@
         // window.open('/admin/form/view.html?id='+id);
         openWindow('/admin/form/view.html?id=' + id, "预览表单", "80%", "80%");
     }
-    function addChooseField(){
-        var fieldId=mini.get('chooseFieldCombobox').getValue();
-        if(fieldId&&fieldId!=""){
+    function addChooseField() {
+        var fieldId = mini.get('chooseFieldCombobox').getValue();
+        if (fieldId && fieldId != "") {
             var data = fieldData[fieldId];
-            data=list2Map(data);
-            mini.get('chooseFieldGrid').addRow({name:data.name,comment:data.comment});
+            data = list2Map(data);
+            mini.get('chooseFieldGrid').addRow({name: data.name, comment: data.comment});
         }
     }
     function openChooseFieldWindow(data) {
@@ -149,8 +154,8 @@
             if (f != 'main') {
                 var finfo = fieldData[f];
                 var info = list2Map(finfo);
-                info.text=info.name+"("+info.comment+")";
-                info.filedId=f;
+                info.text = info.name + "(" + info.comment + ")";
+                info.filedId = f;
                 list.push(info);
             }
         }

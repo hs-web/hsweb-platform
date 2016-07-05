@@ -7,6 +7,7 @@ ue.ready(function () {
     if (id != "") {
         Request.get("form/" + id, {}, function (e) {
             if (e.success) {
+                mini.get('classifiedId').setValue(e.data.classifiedId);
                 fieldData = mini.decode(e.data.meta);
                 ue.setContent(e.data.html);
                 initProperties();
@@ -32,15 +33,20 @@ ue.addListener('selectionchange', function () {
     var tagIsInput = tag == "input" || tag == "INPUT";
     var tagIsSelect = tag == "select" || tag == "SELECT";
     var tagIsTextArea = tag == "textarea" || tag == "TEXTAREA";
-    var tagIsDate = $(focusNode).attr("onclick") == "WdatePicker()"
-        || $(focusNode).parent().prev().text().indexOf("日期") != -1
-        || $(focusNode).parent().prev().text().indexOf("时间") != -1;
-    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea || tagIsDate;
+    var tagIsDate=$(focusNode).attr("onclick")=="WdatePicker()"
+        ||$(focusNode).parent().prev().text().indexOf("日期")!=-1
+        ||$(focusNode).parent().prev().text().indexOf("时间")!=-1;
+    var autocreate = tagIsInput || tagIsSelect || tagIsTextArea||tagIsDate;
     if (id) {
         nowEditorTarget = id;
     } else {
         if (autocreate) {
             var name = $(focusNode).attr("name");
+            if(!name){
+                nowEditorTarget="main";
+                initProperties();
+                return;
+            };
             if (name.indexOf(".") != -1)
                 name = name.split(".")[1];
             name = name.replace(/([A-Z])/g, "_$1").toLowerCase();
@@ -213,6 +219,7 @@ function getFormData() {
             otherAttr[e.key] = e.value;
         }
     });
+    form.classifiedId=mini.get('classifiedId').getValue();
     form.config = mini.encode(otherAttr);
     form.html = ue.getContent();
     return form;
@@ -228,7 +235,6 @@ function downloadForm() {
         }
     }
     form.meta = mini.encode(fieldData);
-
     downloadText(mini.encode(form), form.name + ".json");
 }
 
@@ -237,12 +243,12 @@ function importForm() {
         if (e.length > 0) {
             var file = e[0];
             Request.get("file/download/" + file.id, function (e) {
-                if (e&&e.meta) {
+                if (e && e.meta) {
                     fieldData = mini.decode(e.meta);
                     ue.setContent(e.html);
                     initProperties();
-                }else{
-                    showTips("请确定您上传的文件正确!","danger");
+                } else {
+                    showTips("请确定您上传的文件正确!", "danger");
                 }
             });
         }
@@ -250,6 +256,10 @@ function importForm() {
 }
 function save(callback) {
     var form = getFormData();
+    if(form.name==''){
+        showTips("未设置表名","danger");
+        return;
+    }
     var tmp = $(form.html);
     for (var e in fieldData) {
         if (e == "main")continue;
