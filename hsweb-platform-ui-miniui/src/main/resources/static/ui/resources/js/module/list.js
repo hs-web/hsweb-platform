@@ -127,12 +127,6 @@ function onBeforeOpen(e) {
         e.cancel = true;
         return;
     }
-    if (node && node.text == "Base") {
-        e.cancel = true;
-        //阻止浏览器默认右键菜单
-        e.htmlEvent.preventDefault();
-        return;
-    }
 }
 function ondrop(e) {
     var dragNode = e.dragNode;

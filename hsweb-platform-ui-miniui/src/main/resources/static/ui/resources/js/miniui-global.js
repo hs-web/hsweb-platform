@@ -73,7 +73,7 @@ function closeWindow(action) {
 }
 function bindCellBeginButtonEdit(grid) {
     grid.on("cellbeginedit", function (e) {
-        if (e.editor.type == "buttonedit") {
+        if (e.editor && e.editor.type == "buttonedit") {
             e.editor.setValue(e.value);
             e.editor.setText(e.value);
         }
@@ -188,8 +188,24 @@ function downloadText(text, fileName) {
     }
 }
 
+function downloadZip(data, fileName) {
+    var form = document.createElement("form");
+    form.action = Request.BASH_PATH + "file/download-zip/" + fileName;
+    form.target = "_blank";
+    form.method = "POST";
+    var input = document.createElement("input");
+    input.name = "data";
+    input.value = JSON.stringify(data);
+    form.appendChild(input);
+    form.submit();
+}
+
 function createActionButton(text, action, icon) {
     return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
         '<span class="action-icon ' + icon + '"></span>' + "" //text
         + '</span>';
+}
+String.prototype.endWith = function (str) {
+    var reg = new RegExp(str + "$");
+    return reg.test(this);
 }

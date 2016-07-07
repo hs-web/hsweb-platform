@@ -2,6 +2,8 @@ package org.hsweb.platform.run;
 
 
 import org.hsweb.web.core.authorize.annotation.Authorize;
+import org.hsweb.web.service.impl.FromDeployContextLoaderListener;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;

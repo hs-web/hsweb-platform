@@ -98,7 +98,6 @@
         </div>
         <div style="margin: auto;width:600px;">
             <br/>
-
             <h3 align="center">可选操作</h3>
             <a class="mini-button" iconCls="icon-add" onclick="mini.get('m_option_table').addRow({},0)" plain="true"></a>
             <a class="mini-button" iconCls="icon-remove" plain="true" onclick="mini.get('m_option_table').removeRow(mini.get('m_option_table').getSelected())"></a>

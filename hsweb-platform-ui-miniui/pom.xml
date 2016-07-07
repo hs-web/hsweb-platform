@@ -43,5 +43,13 @@
             <groupId>org.hsweb</groupId>
             <artifactId>hsweb-web-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-expands-compress</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-platform-generator</artifactId>
+        </dependency>
     </dependencies>
 </project>

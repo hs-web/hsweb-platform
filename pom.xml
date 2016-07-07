@@ -13,6 +13,7 @@
         <module>hsweb-platform-ui-miniui</module>
         <module>hsweb-platform-run</module>
         <module>hsweb-platform-workflow-modeler</module>
+        <module>hsweb-platform-generator</module>
     </modules>
     <artifactId>hsweb-platform</artifactId>
 
@@ -39,6 +40,11 @@
             <dependency>
                 <groupId>org.hsweb</groupId>
                 <artifactId>hsweb-platform-workflow-modeler</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hsweb</groupId>
+                <artifactId>hsweb-platform-generator</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
