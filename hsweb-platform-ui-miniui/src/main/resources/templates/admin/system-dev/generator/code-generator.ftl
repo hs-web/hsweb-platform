@@ -78,7 +78,7 @@
                         <span class="separator"></span>
                         <a class="mini-button" iconCls="icon-control-play-blue" plain="true" onclick="generator()">生成代码</a>
                         <span class="separator"></span>
-                        <a class="mini-button" iconCls="icon-reload" plain="true" onclick="grid.reload()">刷新</a>
+                        <a class="mini-button" iconCls="icon-reload" plain="true" onclick="tableMetaGrid.setData([])">重置</a>
                     </td>
                 </tr>
             </table>
