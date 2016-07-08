@@ -254,7 +254,9 @@
         template = mini.clone(template);
         cleanTreeData(template);
         data.template = template;
+        var box = mini.loading("生成中...", "请稍候");
         Request.post("generator", data, function (e) {
+            mini.hideMessageBox(box);
             if (e.success) {
                 $("#result").show();
                 var data = [];
@@ -416,7 +418,7 @@
                 $(varData).each(function () {
                     if (this.name == 'tableName') {
                         this.value = tName;
-                        varsGrid.updateRow(this,this);
+                        varsGrid.updateRow(this, this);
                     }
                 });
             }

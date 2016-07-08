@@ -27,6 +27,7 @@ public class GeneratorUtils {
     }
 
     public String buildCreateSQL(String dbType, String tableName, String comment, List<Map<String, Object>> fields) {
+        if(fields==null||fields.size()==0)return "";
         DatabaseMetaData databaseMetaData;
         switch (dbType) {
             case "h2":

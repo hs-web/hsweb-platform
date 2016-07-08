@@ -61,10 +61,19 @@
 <script>
     mini.parse();
     var tabs = mini.get('mainTabs');
+    var tree = mini.get("leftTree");
+
+    if (window.location.hash) {
+        var node = tree.getNodesByValue(window.location.hash.substring(1));
+        if (node) {
+            tree.selectNode(node[0]);
+            showTab(node[0]);
+        }
+    }
     function nodeselect(e) {
         if (e.node && e.node.id != "-1" && $.trim(e.node.uri) != "") {
             if (window.history.pushState)
-                window.history.pushState(0, 0, "#m=" + e.node.id);
+                window.history.pushState(0, 0, "#" + e.node.id);
             showTab(e.node);
             return;
         }
