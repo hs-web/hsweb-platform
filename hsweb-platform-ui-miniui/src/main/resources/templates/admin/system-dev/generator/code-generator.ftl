@@ -50,10 +50,9 @@
         .CodeMirror {
             border: 1px solid #D2D6D7;
             font-size: 16px;
-            width: 80%;
+            width: 70%;
             margin: auto;
             height: 600px;
-            min-width: 600px;
         }
     </style>
 </head>
@@ -120,7 +119,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="resultTree" style="height: 100%;max-width: 300px;float: left" class="mini-tree"
+                <div id="resultTree" style="height: 100%;width:28%;float: left" class="mini-tree"
                      expandOnLoad="false" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
                      onnodeselect="resultTreeNodeSelect" idField="absPath" parentField="parentPath" textField="fileName" borderStyle="border:0">
                 </div>
