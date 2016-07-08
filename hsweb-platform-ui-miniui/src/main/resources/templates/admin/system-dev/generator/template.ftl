@@ -62,10 +62,12 @@
              onnodeclick="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0">
         </div>
         <ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
+            <li class="treeNode copy" iconCls="icon-page-white-copy" onclick="copy()">复制(ctrl+c)</li>
+            <li class="treeNode cut" iconCls="icon-cut" onclick="cut()">粘贴(ctrl+v)</li>
             <li class="treeNode createDir" iconCls="icon-folder" onclick="mkdir()">新建目录</li>
             <li class="treeNode createFile" iconCls="icon-application" onclick="newFile()">新建模板</li>
-            <li class="treeNode rename" iconCls="icon-edit" onclick="renameFile()">重命名</li>
-            <li class="treeNode deleteNode" iconCls="icon-remove" onclick="deleteNode()">删除</li>
+            <li class="treeNode rename" iconCls="icon-edit" onclick="renameFile()">重命名(ctrl+r)</li>
+            <li class="treeNode deleteNode" iconCls="icon-remove" onclick="deleteNode()">删除(ctrl+d)</li>
         </ul>
     </div>
     <div title="center" region="center">
@@ -129,9 +131,26 @@
 </body>
 </html>
 <@global.importRequest/>
+<@global.importPlugin "mousetrap/mousetrap.min.js"/>
 <script type="text/javascript">
-
+    var clipboard;
     mini.parse();
+    Mousetrap.bind('ctrl+c', function (e) {
+        copy();
+        return false;
+    });
+    Mousetrap.bind('ctrl+r', function (e) {
+        renameFile();
+        return false;
+    });
+    Mousetrap.bind('ctrl+v', function (e) {
+        cut();
+        return false;
+    });
+    Mousetrap.bind(['del',"ctrl+d"], function (e) {
+        deleteNode();
+        return false;
+    });
     var tree = mini.get('leftTree');
     var defaultData = [{id: "parent", name: "新建模板", icon: "icon-application", type: "dir"}];
     tree.loadList(defaultData);
@@ -152,6 +171,9 @@
         var menu = e.sender;
         var node = tree.getSelectedNode();
         $('.treeNode').show();
+        if (!clipboard) {
+            $('.cut').hide();
+        }
         if (node) {
             if (node.type != 'dir') {
                 $('.createDir').hide();
@@ -159,6 +181,7 @@
             }
             if (node.id == 'parent') {
                 $('.deleteNode').hide();
+                $('.copy').hide();
             }
         }
         return;
@@ -173,11 +196,28 @@
             e.sender.setText(script);
         });
     }
+    function copy() {
+        var node = tree.getSelectedNode();
+        if (node) {
+            node = mini.clone(node);
+            cleanTreeData(node);
+            clipboard = node;
+        }
+    }
+    function cut() {
+        var node = tree.getSelectedNode();
+        if (clipboard && node) {
+            var target=mini.clone(clipboard);
+            tree.addNode(target,0, node);
+            tree.beginEdit(target);
+            tree.expandNode(target);
+        }
+    }
     function beforedrop(e) {
         var dragNode = e.dragNode;
         var dropNode = e.dropNode;
         var dragAction = e.dragAction;
-        if (dropNode.type != 'dir') {
+        if (dropNode.type != 'dir'&&dragAction=='add') {
             e.cancel = true;
         }
     }

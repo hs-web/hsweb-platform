@@ -72,11 +72,11 @@
                         <a class="mini-button" iconCls="icon-add" plain="true" onclick="createTemplate()">新建配置</a>
                         <a class="mini-button" iconCls="icon-edit" plain="true" onclick="editTemplate()">编辑配置</a>
                         <a class="mini-button" iconCls="icon-remove" plain="true" onclick="removeTemplate()">删除模板</a>
-                        <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveTempate()">保存配置</a>
+                        <a class="mini-button" iconCls="icon-save" plain="true" onclick="saveTempate()">保存配置(ctrl+s)</a>
                         <a class="mini-button" iconCls="icon-download" plain="true" onclick="download()">下载配置</a>
                         <a class="mini-button" iconCls="icon-upload" plain="true" onclick="importConfig()">导入配置</a>
                         <span class="separator"></span>
-                        <a class="mini-button" iconCls="icon-control-play-blue" plain="true" onclick="generator()">生成代码</a>
+                        <a class="mini-button" iconCls="icon-control-play-blue" plain="true" onclick="generator()">生成代码(F9)</a>
                         <span class="separator"></span>
                         <a class="mini-button" iconCls="icon-reload" plain="true" onclick="tableMetaGrid.setData([])">重置</a>
                     </td>
@@ -223,7 +223,10 @@
         saveTempate();
         return false;
     });
-
+    Mousetrap.bind('f9', function (e) {
+        generator();
+        return false;
+    });
     function initCode(mode, data) {
         var option = {
             lineNumbers: true,
