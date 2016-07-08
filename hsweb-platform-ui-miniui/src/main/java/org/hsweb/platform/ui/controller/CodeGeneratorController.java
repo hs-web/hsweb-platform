@@ -32,6 +32,7 @@ public class CodeGeneratorController {
 
     @RequestMapping(method = RequestMethod.POST)
     @Authorize(module = "generator")
+    @AccessLogger("生成代码")
     public ResponseMessage generator(@RequestBody JSONObject config) {
         JSONArray fields = config.getJSONArray("fields");
         JSONArray varsArr = config.getJSONArray("vars");
