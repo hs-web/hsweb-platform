@@ -176,27 +176,27 @@ function downloadText(text, fileName) {
         aLink.href = URL.createObjectURL(blob);
         aLink.dispatchEvent(evt);
     } catch (e) {
-        var form = document.createElement("form");
-        form.action = Request.BASH_PATH + "file/download-text/" + fileName;
-        form.target = "_blank";
-        form.method = "POST";
-        var input = document.createElement("input");
-        input.name = "text";
-        input.value = text;
-        form.appendChild(input);
+        var form = $("<form style='display: none'></form>");
+        form.attr({
+            action: Request.BASH_PATH + "file/download-text/" + fileName,
+            target: "_blank",
+            method: "POST"
+        });
+        form.append($("<input name='text' />").val(text));
+        form.appendTo(document.body);
         form.submit();
     }
 }
 
 function downloadZip(data, fileName) {
-    var form = document.createElement("form");
-    form.action = Request.BASH_PATH + "file/download-zip/" + fileName;
-    form.target = "_blank";
-    form.method = "POST";
-    var input = document.createElement("input");
-    input.name = "data";
-    input.value = JSON.stringify(data);
-    form.appendChild(input);
+    var form = $("<form style='display: none'></form>");
+    form.attr({
+        action: Request.BASH_PATH + "file/download-zip/" + fileName,
+        target: "_blank",
+        method: "POST"
+    });
+    form.append($("<input name='data' />").val(data));
+    form.appendTo(document.body);
     form.submit();
 }
 
