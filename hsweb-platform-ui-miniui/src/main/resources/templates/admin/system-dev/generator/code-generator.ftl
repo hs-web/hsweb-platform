@@ -133,11 +133,19 @@
             </ul>
             <ul id="tableMetaGridMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
                 <li name="add" iconCls="icon-add" onclick="tableMetaGrid.addRow({})">新增列</li>
+                <li name="add" iconCls="icon-find" onclick="selectFromDb()">从数据库中选择
+                </li>
             </ul>
         </div>
     </div>
 </div>
+<div id="dbMetaWin" title="选择表" class="mini-window" style="width: 400px;" showFooter="true">
+    <input class="mini-combobox" id="dbList" allowInput="true" style="width: 100%"><br>
 
+    <div property="footer" style="text-align:right;padding: 5px 15px 5px 5px;">
+        <input type='button' value="确定" onclick="chooseDbMeta()" style='vertical-align:middle;'/>
+    </div>
+</div>
 </body>
 </html>
 <@global.importRequest/>
@@ -153,6 +161,7 @@
     new CopyExcel(tableMetaGrid);
     var resultTree = mini.get('resultTree');
     var nowEditNode;
+    var dbMeta;
     function editTemplate() {
         var selected = tree.getSelectedNode();
         var node = getRootSelectNode(selected);
@@ -173,6 +182,9 @@
         }
     }
     var nowEditorCode;
+    function selectFromDb() {
+        mini.get('dbMetaWin').show();
+    }
     function resultTreeNodeSelect(e) {
         saveCode();
         if (e.node.code) {
@@ -386,7 +398,43 @@
         });
     }
     loadData();
+    function chooseDbMeta() {
+        var tName = mini.get("dbList").getValue();
+        if (tName) {
+            var meta = dbMeta[tName];
+            if (meta) {
+                var fields = [];
+                $(meta.fields).each(function () {
+                    var data = mini.clone(this);
+                    if (data.name == 'u_id') {
+                        fields.push({column: data.name, property: "id", comment: data.comment, dataType: data.dataType});
+                    } else
+                        fields.push({column: data.name, comment: data.comment, dataType: data.dataType});
+                });
+                tableMetaGrid.setData(fields);
+                var varData = varsGrid.getData();
+                $(varData).each(function () {
+                    if (this.name == 'tableName') {
+                        this.value = tName;
+                        varsGrid.updateRow(this,this);
+                    }
+                });
+            }
+        }
+        mini.get('dbMetaWin').hide();
+    }
     function loadData() {
+        Request.get("database/tables", function (e) {
+            if (e) {
+                dbMeta = [];
+                var comboboxData = [];
+                $(e).each(function () {
+                    dbMeta[this.name] = this;
+                    comboboxData.push({id: this.name, text: this.name + (this.comment ? "(" + this.comment + ")" : "")});
+                });
+                mini.get("dbList").setData(comboboxData);
+            }
+        });
         Request.get("user-profile/code-generator", function (e) {
             if (e.success) {
                 var data = mini.decode(e.data.content);
@@ -394,7 +442,7 @@
                 tree.selectNode(data[0]);
             } else {
                 if (e.code == 404) {
-                    Request.get("ui/resources/json/demo.g.json",function(e){
+                    Request.get("ui/resources/json/demo.g.json", function (e) {
                         console.log(e);
                         tree.loadData([e])
                         tree.selectNode(e);

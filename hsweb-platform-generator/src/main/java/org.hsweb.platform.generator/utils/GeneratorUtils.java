@@ -56,6 +56,7 @@ public class GeneratorUtils {
             fieldMetaData.setComment((String) map.get("comment"));
             fieldMetaData.setDataType((String) map.get("dataType"));
             fieldMetaData.setJdbcType(JDBCType.valueOf((String) map.get("jdbcType")));
+            fieldMetaData.setProperty("not-null", StringUtils.isTrue(map.get("notNull")));
             metaData.addField(fieldMetaData);
         });
         SQL sql = render.render(metaData, metaData);
