@@ -1,7 +1,7 @@
 
 INSERT INTO s_user VALUES ('admin', 'admin', '23ec59e119da971084cbd0ba72d230a0', '超级管理员', NULL, NULL, '1', '1991-08-11 12:10:36', NULL);
 
-INSERT INTO s_modules(`u_id`, `name`, `uri`, `icon`, `parent_id`, `remark`, `status`, `optional`, `sort_index`) VALUES ('sys', '系统配置', '', 'fa fa-cog', '-1', '系统权限', 101, '[{"id":"M","checked":"true"}]', 2);
+INSERT INTO s_modules(`u_id`, `name`, `uri`, `icon`, `parent_id`, `remark`, `status`, `optional`, `sort_index`) VALUES ('sys', '系统配置', '', 'fa fa-cog', '-1', '系统权限', 1, '[{"id":"M","checked":"true"}]', 2);
 INSERT INTO s_modules(`u_id`, `name`, `uri`, `icon`, `parent_id`, `remark`, `status`, `optional`, `sort_index`) VALUES ('module', '权限管理', 'admin/module/list.html', 'fa fa-list-alt', 'sys', '', 1, '[{"id":"M","text":"菜单可见","checked":true},{"id":"C","text":"新增","checked":false},{"id":"R","text":"查询","checked":false},{"id":"U","text":"修改","checked":false},{"id":"D","text":"删除","checked":false}]', 201);
 INSERT INTO s_modules(`u_id`, `name`, `uri`, `icon`, `parent_id`, `remark`, `status`, `optional`, `sort_index`) VALUES ('role', '角色管理', 'admin/role/list.html', 'fa fa-users', 'sys', '初始数据', 1, '[{"id":"M", "text":"菜单可见", "uri":""},{"id":"C", "text":"新增", "uri":""},{"id":"R", "text":"查询", "uri":""},{"id":"U", "text":"修改", "uri":""},{"id":"D", "text":"删除", "uri":""}]', 202);
 INSERT INTO s_modules(`u_id`, `name`, `uri`, `icon`, `parent_id`, `remark`, `status`, `optional`, `sort_index`) VALUES ('user', '用户管理', 'admin/user/list.html', 'fa fa-user', 'sys', '初始数据', 1, '[{"id":"M","text":"菜单可见"},{"id":"C","text":"新增"},{"id":"R","text":"查询"},{"id":"U","text":"修改"},{"id":"D","text":"删除"}]', 203);
