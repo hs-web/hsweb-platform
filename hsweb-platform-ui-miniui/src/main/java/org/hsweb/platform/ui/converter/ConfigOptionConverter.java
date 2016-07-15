@@ -6,15 +6,13 @@ import org.hsweb.platform.ui.listener.FormInitListener;
 import org.hsweb.web.service.config.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/**
- * Created by zhouhao on 16-6-6.
- */
 public class ConfigOptionConverter implements OptionConverter {
     protected String filedName;
     private String[] configId;
@@ -53,7 +51,15 @@ public class ConfigOptionConverter implements OptionConverter {
                     }
                 }
             }
-            return map;
+            //key-value 倒置
+            return map.entrySet().stream().map(stringObjectEntry -> {
+                Map<String, Object> config = new HashMap<>();
+                config.put((String) stringObjectEntry.getValue(), stringObjectEntry.getKey());
+                return config;
+            }).reduce((map1, map2) -> {
+                map1.putAll(map2);
+                return map1;
+            }).get();
         } catch (Exception e) {
             logger.error("转换data为value时出错", e);
         }
