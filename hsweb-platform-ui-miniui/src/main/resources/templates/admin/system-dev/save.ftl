@@ -226,6 +226,12 @@
                     <div name="action" width="100" renderer="rendererActionTableAction" align="center" headerAlign="center">操作</div>
                 </div>
             </div>
+            <div style="width: 80%;margin: auto;">
+                <h1 align="center">js脚本</h1>
+                <iframe id="script" style="width: 100%;height: 300px;border: 0px;" src="<@global.api "admin/utils/scriptEditorFrame.html"/>">
+
+                </iframe>
+            </div>
         </div>
     </div>
     <div style="height: 10%;text-align: center">
@@ -267,6 +273,13 @@
     bindCellBeginButtonEdit(query_plan_grid);
     bindCellBeginButtonEdit(query_table_grid);
     bindCellBeginButtonEdit(action_grid);
+
+    var scriptEl = $('#script')[0];
+    var scriptWindow;
+    $("#script").on("load",function(){
+        scriptWindow = this.contentWindow;
+        loadData();
+    });
     function editScript(e) {
         var tmp = e.sender.value;
         if (!tmp) {
@@ -397,7 +410,7 @@
     }
 
     function dynFormChanged(e) {
-        if (e.selected.name != "") {
+        if (e&&e.selected&&e.selected.name != "") {
             mini.getbyName("dynFormVersion").setMaxValue(e.selected.version);
             Request.get("form-meta/" + e.selected.name, {}, function (e) {
                 if (e.success) {
@@ -419,13 +432,13 @@
         }
         return pwd;
     }
-    loadData();
+
     function loadData() {
         if (id != "") {
             Request.get("module-meta/" + id, {}, function (e) {
                 if (e.success) {
                     var roleId = e.data.roleId;
-                    var data = {key: e.data.key, roleId: roleId,remark: e.data.remark};
+                    var data = {key: e.data.key, roleId: roleId, remark: e.data.remark};
                     var meta = mini.decode(e.data.meta);
                     data.save_page = meta.save_page;
                     data.info_page = meta.info_page;
@@ -433,14 +446,23 @@
                     data.table_api = meta.table_api;
                     data.dynForm = meta.dynForm;
                     data.dynFormVersion = meta.dynFormVersion;
+                    scriptWindow.initScript("text/javascript", meta.script)
                     mini.getbyName("dynForm").doValueChanged();
                     new mini.Form("#content-body").setData(data);
                     query_plan_grid.setData(meta.queryPlanConfig);
                     query_table_grid.setData(meta.queryTableConfig);
-                    action_grid.setData(meta.actionConfig);
+                    if (!meta.actionConfig) {
+                        action_grid.setData([
+                            {"onclick": "infoData(id);", "icon": "icon-find", "title": "查看", "moduleAction": ""},
+                            {"onclick": "editData(id);", "icon": "icon-edit", "title": "编辑", "moduleAction": "U"}
+                        ]);
+                    } else {
+                        action_grid.setData(meta.actionConfig);
+                    }
                 }
             });
         } else {
+            scriptWindow.initScript("text/javascript", "");
             action_grid.setData([
                 {"onclick": "infoData(id);", "icon": "icon-find", "title": "查看", "moduleAction": ""},
                 {"onclick": "editData(id);", "icon": "icon-edit", "title": "编辑", "moduleAction": "U"}
@@ -455,9 +477,10 @@
         if (form.isValid() == false) return;
         //提交数据
         var data = form.getData();
+        console.log(data);
         var newData = {};
         newData.key = data.key;
-        newData.module_id = newData.key;
+        newData.moduleId = newData.key;
         newData.remark = data.remark;
         if (data.roleId != '')data.roleId = "," + data.roleId + ",";
         newData.roleId = data.roleId;
@@ -465,6 +488,7 @@
         meta.queryPlanConfig = getCleanData(query_plan_grid);
         meta.queryTableConfig = getCleanData(query_table_grid);
         meta.actionConfig = getCleanData(action_grid);
+        meta.script=scriptWindow.getScript();
         $(meta.queryTableConfig).each(function (i, e) {
             e.width = parseInt(e.width);
         });
