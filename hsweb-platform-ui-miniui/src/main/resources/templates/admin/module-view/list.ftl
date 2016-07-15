@@ -197,7 +197,7 @@
     grid.setUrl(Request.BASH_PATH + meta.table_api);
     grid.setColumns(queryTableConfig);
     search();
-
+    ${json.script!''}
     function exportExcel() {
         var param = mini.clone(grid.getLoadParams());
         if (param.excludes) {
