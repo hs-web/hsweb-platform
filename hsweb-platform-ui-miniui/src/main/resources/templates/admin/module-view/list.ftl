@@ -139,12 +139,28 @@
     }
     var metaId = "${meta.id}";
     queryTableConfig.unshift({type: 'indexcolumn', header: "#", headerAlign: 'center'});
+    var tmpIndex=0;
     $(queryTableConfig).each(function (i, e) {
         if (e.field)
             includes.push(e.field)
         for (var f in e) {
             if (e[f] == 'true')e[f] = true;
             if (e[f] == 'false')e[f] = false;
+        }
+        if (f == "renderer"&&e[f]&&e[f]!='') {
+            var scriptId = "renderer" + (tmpIndex++);
+            var script = "window." + scriptId + "=function(e){" +
+                    "var row = e.record;var value=e.value;" +
+                    e[f] +
+                    "}";
+            eval(script);
+            e[f] = "window." + scriptId;
+        }
+        if (f == "properties") {
+            var properties = mini.decode(e['properties']);
+            for (var p in properties) {
+                e[p] = properties[p];
+            }
         }
     });
     function initSearchForm() {
@@ -196,8 +212,10 @@
     });
     grid.setUrl(Request.BASH_PATH + meta.table_api);
     grid.setColumns(queryTableConfig);
-    search();
+    var defaultQueryParam = {};
     ${json.script!''}
+
+    search();
     function exportExcel() {
         var param = mini.clone(grid.getLoadParams());
         if (param.excludes) {
@@ -239,6 +257,9 @@
     function search() {
         var param = {};
         var formData = new mini.Form("#searchForm").getData();
+        for (var i in defaultQueryParam) {
+            formData[i] = defaultQueryParam[i];
+        }
         var index = 0;
         for (var f in formData) {
             if (formData[f] == "")continue;
@@ -259,8 +280,11 @@
 
                 }
                 param['terms[' + index + '].value'] = formData[f];
-                index++;
+            } else {
+                param['terms[' + index + '].field'] = f;
+                param['terms[' + index + '].value'] = formData[f];
             }
+            index++;
         }
         param.includes = includes + "";
         grid.load(param);

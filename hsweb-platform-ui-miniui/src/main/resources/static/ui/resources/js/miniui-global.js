@@ -1,6 +1,7 @@
 /**
  * Created by zhouhao on 16-5-6.
  */
+
 mini_debugger = false;
 function showTips(msg, state) {
     mini.showTips({
@@ -14,6 +15,7 @@ function showTips(msg, state) {
 
 function openWindow(url, title, width, height, ondestroy, onload) {
     if (url.indexOf("http") != 0) {
+        if (url.indexOf("/") == 0)url = url.substr(1);
         url = Request.BASH_PATH + url;
     }
     mini.open({
