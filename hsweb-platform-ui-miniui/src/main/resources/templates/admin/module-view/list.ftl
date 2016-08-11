@@ -65,7 +65,8 @@
                 <span class="separator"></span>
             </#if>
                 <a class="mini-button" iconCls="icon-reload" plain="true" onclick="search()">刷新</a>
-                <a class='mini-menubutton' iconCls='icon-search' plain='true' menu='#searchMenu' onclick='search()'>查询</a>
+                <a class='mini-button' iconCls='icon-application-view-list' plain='true'
+                   onclick='customSearch()'>自定义查询</a>
             </td>
         </tr>
     </table>
@@ -76,9 +77,6 @@
     <li iconCls="icon-download" onclick="exportExcel()">导出本页数据</li>
     <li iconCls="icon-download" onclick="exportAllColumnExcel()">导出本页完整数据</li>
 <#--<li iconCls="icon-download" >自定义导出列</li>-->
-</ul>
-<ul id="searchMenu" class="mini-menu" style="display:none;">
-    <li iconCls="icon-application-view-list">自定义查询条件</li>
 </ul>
 <div class="mini-fit">
     <div id="grid" class="mini-datagrid" style="width:100%;height:100%;" ajaxOptions="{type:'GET',dataType:'json'}" idField="id"
@@ -104,9 +102,7 @@
     </#list>
     var meta = ${meta.meta!''};
     var queryTableConfig = meta.queryTableConfig;
-    <#if actionGt1>
-    queryTableConfig.push({"width": 100, "visible": true, "align": "center", "headerAlign": "center", "header": "操作", "renderer": "actionButton"});
-    </#if>
+
     var includes = ["u_id"];
     var searchFormConfigMap = {};
     $(searchFormConfig).each(function (i, e) {
@@ -163,6 +159,9 @@
             }
         }
     });
+    <#if actionGt1>
+    queryTableConfig.push({"width": 100, "visible": true, "align": "center", "headerAlign": "center", "header": "操作", "renderer": "actionButton"});
+    </#if>
     function initSearchForm() {
         var html = "<table class='searchForm'><tr>";
         var index = 0;
@@ -201,6 +200,22 @@
     mini.parse();
     var grid = mini.get('grid');
     bindDefaultAction(grid);
+
+    function customSearch(){
+        openWindow("admin/plan/query-plan.html?name=" + meta.dynForm, "自定义查询", "700px", "400px", function (e) {}, function () {
+            var iframe = this.getIFrameEl();
+            var win = iframe.contentWindow;
+            function initWin() {
+                win.onsearch = function (e) {
+                    e.includes = includes + "";
+                    grid.load(e);
+                }
+            }
+            $(iframe).on("load",initWin)
+            initWin();
+        });
+    }
+
     grid.on("load", function (data) {
         mini.showTips({
             content: "成功加载" + data.data.length + "条数据",
@@ -289,7 +304,6 @@
         param.includes = includes + "";
         grid.load(param);
     }
-
     function actionButton(e) {
         var html = "";
         var row = e.record;
