@@ -39,6 +39,7 @@ public class FormInitListener implements FormParser.Listener {
                 String target = (String) correlationConfig.get("targetTable");
                 String term = (String) correlationConfig.get("term");
                 String joinStr = (String) correlationConfig.get("join");
+                String comment = (String) correlationConfig.get("comment");
                 if (StringUtils.isNullOrEmpty(joinStr)) {
                     joinStr = "LEFT";
                 }
@@ -54,6 +55,7 @@ public class FormInitListener implements FormParser.Listener {
                 Correlation correlation = new Correlation();
                 correlation.setTargetTable(target);
                 correlation.setAlias(alias);
+                correlation.setComment(comment);
                 Term term1 = new Term();
                 term1.setField(term);
                 term1.setValue(term);
