@@ -2,8 +2,6 @@ package org.hsweb.platform.run;
 
 
 import org.hsweb.web.core.authorize.annotation.Authorize;
-import org.hsweb.web.service.impl.FromDeployContextLoaderListener;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
@@ -15,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 
-/**
- * Created by zhouhao on 16-4-12.
- */
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"org.hsweb.platform"})
@@ -35,4 +30,5 @@ public class Run {
     public String index() {
         return "admin/index";
     }
+
 }

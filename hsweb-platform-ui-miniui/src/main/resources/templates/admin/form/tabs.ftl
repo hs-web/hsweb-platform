@@ -86,13 +86,13 @@
         }
     }
     function initUrl(url) {
-        if (formData) {
-            for (var f in formData) {
-                url = url.replace("{" + f + "}", formData[f]);
-            }
-            return url.replace(/{.+?}/g,"");
-        }
-        return url.replace(/{.+?}/g,"");
+        var r = /\{(.+?)}/g;
+        var matches = url.match(r);
+        $(matches).each(function () {
+            var group = this.substring(1, this.length - 1);
+            url = url.replace("{" + group + "}", eval("(function(){return formData." + group + "})()"));
+        });
+        return url;
     }
     window.onblur = function (e) {
 

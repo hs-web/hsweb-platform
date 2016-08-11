@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created by zhouhao on 16-6-18.
@@ -46,9 +47,17 @@ public class UeditorController {
         return new ActionEnter(request, getDownloadPath(request)).exec();
     }
 
-
+    /**
+     * ueditor上传文件
+     *
+     * @param files   文件列表
+     * @param request {@link HttpServletRequest}
+     * @return 上传结果
+     * @throws IOException 文件上传错误
+     */
     @RequestMapping(method = RequestMethod.POST, consumes = "multipart/form-data")
-    public String upload(@RequestParam(value = "upfile", required = false) MultipartFile[] files, HttpServletRequest request) throws Exception {
+    public String upload(@RequestParam(value = "upfile", required = false) MultipartFile[] files,
+                         HttpServletRequest request) throws IOException {
         if (files != null && files.length > 0) {
             for (MultipartFile file : files) {
                 Resources resources = fileService.saveFile(file.getInputStream(), file.getOriginalFilename());

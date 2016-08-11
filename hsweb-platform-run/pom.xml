@@ -191,6 +191,10 @@
             <version>1.6.4</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-expands-request</artifactId>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-actuator</artifactId>-->

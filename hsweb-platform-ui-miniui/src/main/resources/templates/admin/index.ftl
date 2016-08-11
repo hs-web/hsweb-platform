@@ -107,7 +107,7 @@
                 }
         );
     }
-    Request.get("online/total", {}, function (e) {
+    Request.get("online/total", function (e) {
         if (e.success) {
             $(".online-total").text(e.data);
         }
