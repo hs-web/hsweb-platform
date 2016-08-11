@@ -5,6 +5,7 @@ import org.hsweb.ezorm.run.Table;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.form.Form;
 import org.hsweb.web.core.authorize.annotation.Authorize;
+import org.hsweb.web.core.exception.NotFoundException;
 import org.hsweb.web.core.message.ResponseMessage;
 import org.hsweb.web.service.form.DynamicFormService;
 import org.hsweb.web.service.form.FormService;
@@ -34,13 +35,17 @@ public class FormMetaController {
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     @Authorize(module = "form")
-    public ResponseMessage fieldList(@PathVariable("name") String name) throws Exception {
-        Table table = dynamicFormService.getDefaultDatabase().getTable(name);
+    public ResponseMessage fieldList(@PathVariable("name") String name) {
+        Table table = null;
+        try {
+            table = dynamicFormService.getDefaultDatabase().getTable(name);
+        } catch (NullPointerException e) {
+        }
         TableMetaData metaData;
         if (table == null) {
             Form form = formService.selectSingle(new QueryParam().where("name", name));
             if (form == null) {
-                return ResponseMessage.error("表单不存在");
+                throw new NotFoundException("表单不存在");
             } else {
                 metaData = dynamicFormService.parseMeta(form);
             }
@@ -63,7 +68,9 @@ public class FormMetaController {
                 Map<String, String> data = new HashMap<>();
                 data.put("id", correlation.getAlias() + "." + m.getAlias());
                 data.put("text", correlation.getAlias() + "." + m.getAlias() + "(" + m.getComment() + ")");
-                data.put("comment", m.getComment());
+                String comment = correlation.getComment();
+                if (comment == null) comment = metaData1.getComment();
+                data.put("comment", correlation.getComment() + ":" + m.getComment());
                 fieldMeta.add(data);
             });
         });
