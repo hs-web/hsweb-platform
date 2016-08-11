@@ -26,6 +26,11 @@ public class ConfigOptionConverter implements OptionConverter {
     }
 
     @Override
+    public Object getOptions() {
+        return getMapping();
+    }
+
+    @Override
     public String getFieldName() {
         return filedName;
     }

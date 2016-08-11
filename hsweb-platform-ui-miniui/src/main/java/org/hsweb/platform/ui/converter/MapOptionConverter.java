@@ -19,6 +19,11 @@ public class MapOptionConverter implements OptionConverter {
     }
 
     @Override
+    public Object getOptions() {
+        return mapping;
+    }
+
+    @Override
     public String getFieldName() {
         return filedName;
     }
