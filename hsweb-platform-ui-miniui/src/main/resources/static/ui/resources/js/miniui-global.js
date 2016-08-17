@@ -197,7 +197,7 @@ function downloadZip(data, fileName) {
         target: "_blank",
         method: "POST"
     });
-    form.append($("<input name='data' />").val(data));
+    form.append($("<input name='data' />").val(mini.encode(data)));
     form.appendTo(document.body);
     form.submit();
 }
