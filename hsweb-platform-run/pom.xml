@@ -136,6 +136,11 @@
 
         <dependency>
             <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-web-oauth2-simple</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsweb</groupId>
             <artifactId>hsweb-platform-ui-miniui</artifactId>
         </dependency>
 

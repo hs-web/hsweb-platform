@@ -12,6 +12,7 @@ import org.hsweb.ezorm.param.TermType;
 import org.hsweb.platform.ui.converter.ConfigOptionConverter;
 import org.hsweb.platform.ui.converter.MapOptionConverter;
 import org.hsweb.web.service.config.ConfigService;
+import org.hsweb.web.service.form.DynamicFormService;
 import org.hsweb.web.service.form.FormParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

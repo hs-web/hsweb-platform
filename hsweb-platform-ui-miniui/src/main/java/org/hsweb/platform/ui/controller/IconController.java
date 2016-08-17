@@ -15,15 +15,12 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by zhouhao on 16-5-13.
- */
 @RestController
 @RequestMapping("/icon-list")
-@Authorize
 public class IconController {
 
     @RequestMapping
+    @Authorize
     public ResponseMessage iconList() throws IOException {
         Reader reader = FileUtils.getResourceAsReader("static/ui/plugins/miniui/themes/icons.css");
         BufferedReader br = new BufferedReader(reader);

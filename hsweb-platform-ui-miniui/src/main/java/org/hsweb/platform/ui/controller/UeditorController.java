@@ -6,11 +6,12 @@ import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.State;
 import org.hsweb.commons.StringUtils;
 import org.hsweb.web.bean.po.resource.Resources;
-import org.hsweb.web.core.utils.WebUtil;
 import org.hsweb.web.service.resource.FileService;
 import org.hsweb.web.service.resource.ResourcesService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
