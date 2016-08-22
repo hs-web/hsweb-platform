@@ -2,7 +2,7 @@
  * Created by zhouhao on 16-4-21.
  */
 var Request = {
-    BASH_PATH: "",
+    BASH_PATH: "/",
     encodeParam: function (data) {
         var queryParam = {};
         var index = 0;
@@ -117,7 +117,7 @@ var Request = {
         return query;
     },
     get: function (uri, data, callback) {
-        var data_ = data, callback_=callback;
+        var data_ = data, callback_ = callback;
         if (typeof(data) == 'undefined')data_ = {};
         if (typeof(callback) == 'object')data_ = callback;
         if (typeof(data) == 'function')callback_ = data;
@@ -136,7 +136,7 @@ var Request = {
         Request.doAjax(Request.BASH_PATH + uri, data, "PATCH", callback, true, requestBody);
     },
     "delete": function (uri, data, callback) {
-        var data_ = data, callback_=callback;
+        var data_ = data, callback_ = callback;
         if (typeof(data) == 'undefined')data_ = {};
         if (typeof(callback) == 'object')data_ = callback;
         if (typeof(data) == 'function')callback_ = data;
@@ -157,6 +157,10 @@ var Request = {
             async: syc == true,
             success: callback,
             error: function (e) {
+                if (e.status == 200) {
+                    msg = {code: 200, data: e.statusText, success: true};
+                    return msg;
+                }
                 var msg = {};
                 if (e.responseJSON) {
                     msg = e.responseJSON;
