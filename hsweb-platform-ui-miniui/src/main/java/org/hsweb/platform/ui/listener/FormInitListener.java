@@ -34,13 +34,13 @@ public class FormInitListener implements FormParser.Listener {
 
     @Override
     public void afterParse(TableMetaData tableMetaData) {
-        List<Map> list = tableMetaData.getProperty("correlation").toList();
+        List<Map<String, String>> list = (List) tableMetaData.getProperty("correlation").toList();
         if (list != null) {
             list.forEach(correlationConfig -> {
-                String target = (String) correlationConfig.get("targetTable");
-                String term = (String) correlationConfig.get("term");
-                String joinStr = (String) correlationConfig.get("join");
-                String comment = (String) correlationConfig.get("comment");
+                String target = correlationConfig.get("targetTable");
+                String term = correlationConfig.get("term");
+                String joinStr = correlationConfig.get("join");
+                String comment = correlationConfig.get("comment");
                 if (StringUtils.isNullOrEmpty(joinStr)) {
                     joinStr = "LEFT";
                 }
@@ -51,12 +51,13 @@ public class FormInitListener implements FormParser.Listener {
                     join = Correlation.JOIN.LEFT;
                 }
                 if (StringUtils.isNullOrEmpty(target) || StringUtils.isNullOrEmpty(term)) return;
-                String alias = (String) correlationConfig.get("alias");
+                String alias = correlationConfig.get("alias");
                 if (StringUtils.isNullOrEmpty(alias)) alias = target;
                 Correlation correlation = new Correlation();
                 correlation.setTargetTable(target);
                 correlation.setAlias(alias);
                 correlation.setComment(comment);
+                correlationConfig.forEach(correlation::setProperty);
                 Term term1 = new Term();
                 term1.setField(term);
                 term1.setValue(term);
