@@ -57,6 +57,7 @@
 </body>
 </html>
 <@global.importRequest/>
+<@global.resources "js/json-formater.js"/>
 <script type="text/javascript">
     mini.parse();
     var grid = mini.get('datagrid');
@@ -77,8 +78,11 @@
         return html;
     }
     function showValue(cacheName) {
-        Request['get']("monitor/cache/" + selectParentNode.name + "/" + selectNode.name + "/" + cacheName + "/", function (e) {
+        Request.get("monitor/cache/" + selectParentNode.name + "/" + selectNode.name + "/" + cacheName + "/", function (e) {
             if (e.success) {
+                if(typeof(e.data)=="object"){
+                    e.data=JSONFormat(mini.encode(e.data));
+                }
                 $("#valueArea").val(e.data);
                 valueWindow.showAtPos("center", "middle");
             } else {
