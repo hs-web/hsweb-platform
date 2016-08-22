@@ -60,11 +60,12 @@
                         <a class="mini-button" iconCls="icon-reload" plain="true" onclick="window.location.reload()">刷新</a>
                         <a class="mini-button" iconCls="icon-upload" plain="true" onclick="importForm()">导入</a>
                         <a class="mini-button" iconCls="icon-download" plain="true" onclick="downloadForm()">下载</a>
+                        <a class="mini-button" iconCls="icon-html-go" plain="true" onclick="createHtml()">生成源代码</a>
                         <span class="separator"></span>
                         所属分类:
                         <input id="classifiedId" class="mini-treeselect" valueFromSelect="true" clearOnLoad="true"
                                url="<@global.api "classified/byType/form?paging=false"/>" value="${cid!''}"
-                               allowInput="true" ajaxType="GET" resultAsTree="false" parentField="parentId" textField="name" />
+                               allowInput="true" ajaxType="GET" resultAsTree="false" parentField="parentId" textField="name"/>
                     </td>
                     <td style="white-space:nowrap;">
                     </td>
@@ -134,6 +135,9 @@
     </div>
 </body>
 </html>
+<@global.importRequest />
+<@global.importPlugin "form-designer/form.parser.js"/>
+<@global.resources "js/html-formater.js"/>
 <script type="text/javascript">
     var id = "${param.id!''}";
     function preview() {
@@ -163,6 +167,25 @@
         mini.get('chooseFieldGrid').setData(data);
         mini.get('chooseFieldWindow').showAtPos();
     }
+
+    function createHtml() {
+        var html = $("<div></div>");
+        var formParser = new FormParser({name: "", id: "", version: "", target: html});
+        var form = getFormData();
+        form.meta = fieldData;
+        formParser.data = form;
+        formParser.layout();
+        html.find("[field-id]").removeAttr("field-id");
+        var htmlstr = html.html();
+        var formattedHtml = HTMLFormat(htmlstr);
+        var win = window.open("about:blank");
+        console.log($(document).height());
+        win.document.write("<textarea style=\"border: 0px;width: 100%;height: " + ($(document).height()) + "px\">" + formattedHtml + "</textarea>");
+        $(win.document.body).css({
+            padding:0,
+            border:0,
+            margin:0
+        });
+    }
 </script>
-<@global.importRequest />
 <@global.importPlugin "form-designer/designer.config.js","form-designer/designer.js"/>

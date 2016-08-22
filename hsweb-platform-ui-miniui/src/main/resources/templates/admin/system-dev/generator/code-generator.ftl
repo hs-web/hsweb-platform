@@ -59,6 +59,7 @@
 <body>
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
     <div showHeader="false" region="west" width="150" maxWidth="300" minWidth="100">
+        
         <div id="leftTree" style="height: 100%;" class="mini-tree"
              expandOnLoad="false" resultAsTree="true" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
              onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0">
