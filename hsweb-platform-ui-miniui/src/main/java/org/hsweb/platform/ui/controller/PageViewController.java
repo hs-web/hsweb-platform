@@ -1,4 +1,4 @@
-package org.hsweb.platform.ui;
+package org.hsweb.platform.ui.controller;
 
 import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.utils.WebUtil;
