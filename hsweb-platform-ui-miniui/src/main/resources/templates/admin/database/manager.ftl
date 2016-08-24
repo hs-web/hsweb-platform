@@ -65,10 +65,13 @@
 <script type="text/javascript">
     var editor;
     mini.parse();
+    var datasource = "";
+    window.setDataSource = function (ds) {
+        datasource = ds;
+    }
     var tabs = mini.get('mainTabs');
     function nodedblclick(e) {
         var node = e.node;
-
     }
     initScriptEditor("");
     function exec() {
@@ -78,7 +81,7 @@
             sql = editor.getValue()
         }
         if ($.trim(sql) == "")return;
-        Request.post("database/exec", sql, function (e) {
+        Request.post("database/exec/" + datasource, sql, function (e) {
             if (e.success) {
                 var data = e.data;
                 $(data).each(function () {
