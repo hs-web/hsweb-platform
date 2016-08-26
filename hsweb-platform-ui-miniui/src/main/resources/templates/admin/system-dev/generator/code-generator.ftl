@@ -59,7 +59,7 @@
 <body>
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
     <div showHeader="false" region="west" width="150" maxWidth="300" minWidth="100">
-        
+
         <div id="leftTree" style="height: 100%;" class="mini-tree"
              expandOnLoad="false" resultAsTree="true" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
              onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0">
@@ -140,9 +140,11 @@
         </div>
     </div>
 </div>
-<div id="dbMetaWin" title="选择表" class="mini-window" style="width: 400px;" showFooter="true">
-    <input class="mini-combobox" id="dbList" allowInput="true" style="width: 100%"><br>
-
+<div id="dbMetaWin" title="选择表" class="mini-window" style="width: 600px;" showFooter="true">
+    数据源: <input id="datasource" style="width: 20%" class="mini-combobox" emptyText="默认数据源" nullItemText="默认数据源"
+                onvaluechanged="changeDatasource" textField="name" showNullItem="true"
+                 url="<@global.api "datasource?paging=false&includes=id,name"/>"/>
+    表:<input class="mini-combobox" style="width: 60%" id="dbList" allowInput="true"><br>
     <div property="footer" style="text-align:right;padding: 5px 15px 5px 5px;">
         <input type='button' value="确定" onclick="chooseDbMeta()" style='vertical-align:middle;'/>
     </div>
@@ -403,6 +405,24 @@
             }
         });
     }
+
+    changeDatasource({selected:{id:""}});
+    function changeDatasource(e) {
+        var id = "";
+        if (e.selected)
+            id = e.selected.id;
+        Request.get("database/tables/" + id, function (e) {
+            if (e) {
+                dbMeta = [];
+                var comboboxData = [];
+                $(e).each(function () {
+                    dbMeta[this.name] = this;
+                    comboboxData.push({id: this.name, text: this.name + (this.comment ? "(" + this.comment + ")" : "")});
+                });
+                mini.get("dbList").setData(comboboxData);
+            }
+        });
+    }
     loadData();
     function chooseDbMeta() {
         var tName = mini.get("dbList").getValue();
@@ -430,17 +450,7 @@
         mini.get('dbMetaWin').hide();
     }
     function loadData() {
-        Request.get("database/tables", function (e) {
-            if (e) {
-                dbMeta = [];
-                var comboboxData = [];
-                $(e).each(function () {
-                    dbMeta[this.name] = this;
-                    comboboxData.push({id: this.name, text: this.name + (this.comment ? "(" + this.comment + ")" : "")});
-                });
-                mini.get("dbList").setData(comboboxData);
-            }
-        });
+
         Request.get("user-profile/code-generator", function (e) {
             if (e.success) {
                 var data = mini.decode(e.data.content);

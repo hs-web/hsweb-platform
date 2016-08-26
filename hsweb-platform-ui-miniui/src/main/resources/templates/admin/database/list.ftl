@@ -33,6 +33,8 @@
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
     <div class="header" region="north" height="35" showSplit="false" showHeader="false">
         <div class="mini-toolbar">
+            数据源: <input id="datasource" class="mini-combobox" onvaluechanged="changeDatasource" textField="name" showNullItem="true"
+                        nullItemText="默认数据源" emptyText="默认数据源" url="<@global.api "datasource?paging=false&includes=id,name"/>"/>
             <a class="mini-button" iconCls="icon-add" onclick="newWin()" plain="true">新建SQL窗口</a>
             <a class="mini-button" iconCls="icon-reload" onclick="initData()" plain="true">刷新</a>
         </div>
@@ -54,16 +56,14 @@
     <div title="center" region="center">
         <!--默认标签页-->
         <div id="mainTabs" class="mini-tabs" activeIndex="0" style="width:100%;height:100%;">
-            <div title="SQL窗口" showCloseButton="true" name="first" url="manager.html" style="text-align: center;width: 100%;margin: auto;">
-            </div>
         </div>
     </div>
 
 </div>
 <div id="win" title="表结构" class="mini-window" style="width: 800px;height: 600px;">
     <div class="mini-toolbar">
-        <input id="tableName"  class="mini-textbox"  enabled="false" />
-        <input id="tableComment" class="mini-textbox" emptyText="备注" />
+        <input id="tableName" class="mini-textbox" enabled="false"/>
+        <input id="tableComment" class="mini-textbox" emptyText="备注"/>
         <a class="mini-button" iconCls="icon-add" onclick="fieldGrid.addRow({properties:{not_null:false}})" plain="true">添加字段</a>
     </div>
     <div id="tableMetaTabs" onactivechanged="initMetaSql" class="mini-tabs" activeIndex="0" style="width:100%;height:90%;">
@@ -85,6 +85,7 @@
     var nowEditorNode;
     var editor;
     mini.parse();
+    var datasource = "";
     var tree = mini.get("leftTree");
     var fieldWindow = mini.get('win');
     var tables;
@@ -93,6 +94,16 @@
     var tableMetaTabsObj = mini.get('tableMetaTabs');
     var tableMetaSqlWindow;
     var editor;
+    var sqlWindows = [];
+    function changeDatasource(e) {
+        if (e.selected)
+            datasource = e.selected.id;
+        else datasource = "";
+        initData();
+        $(sqlWindows).each(function () {
+            this.setDataSource(datasource);
+        });
+    }
     fieldGrid.set({
         columns: [
             {
@@ -108,7 +119,7 @@
                 }
             },
             {
-                header: "不能为空",width:50, field: "properties.not_null", renderer: "trueOrFalse", align: "center", headerAlign: "center",
+                header: "不能为空", width: 50, field: "properties.not_null", renderer: "trueOrFalse", align: "center", headerAlign: "center",
                 editor: {
                     type: "combobox", data: [{id: true, text: "是"}, {id: false, text: "否"}]
                 }
@@ -143,7 +154,7 @@
         var tableMeta = {};
         var tableInfo = tree.getSelectedNode();
         tableMeta.name = tableInfo.name;
-        tableMeta.comment =  mini.get("tableComment").getValue();
+        tableMeta.comment = mini.get("tableComment").getValue();
         var fieldList = getCleanData(fieldGrid);
         var fields = [];
         $(fieldList).each(function () {
@@ -155,9 +166,10 @@
             });
         });
         tableMeta.fields = fields;
-        Request.post("database/sql/" + nowMetaMod, tableMeta, function (e) {
+        Request.post("database/sql/" + nowMetaMod + "/" + datasource, tableMeta, function (e) {
             if (e.success) {
                 tableMetaSqlWindow.setSql(e.data);
+                tableMetaSqlWindow.setDataSource(datasource);
             }
         });
     }
@@ -174,15 +186,22 @@
         fieldGrid.setData(node.fields);
         tableMetaTabsObj.activeTab(0);
     }
+    newWin();
     function newWin() {
-        var tab = {title: "新建SQL窗口", url: "manager.html", showCloseButton: true};
+        var tab = {
+            title: "新建SQL窗口", url: "manager.html", showCloseButton: true, onload: function (e) {
+                var iframe = e.iframe;
+                var win = iframe.contentWindow;
+                sqlWindows.push(win);
+            }
+        };
         tabs.addTab(tab);
         tabs.activeTab(tab);
     }
     function initData() {
         var old = tree.getSelectedNode();
         var isExpandedNode = old && tree.isExpandedNode(old);
-        Request.get("database/tables", function (e) {
+        Request.get("database/tables/" + datasource, function (e) {
             if (e) {
                 tables = e;
                 var data = mini.clone(tables);
@@ -196,7 +215,9 @@
                     });
                     this.children = this.fields;
                 });
-                tree.setData([{icon: "icon-folder-database", text: "默认数据库", children: data}]);
+                var text = mini.get("datasource").getText();
+                if(text=="")text="默认数据源";
+                tree.setData([{icon: "icon-folder-database", text: text, children: data}]);
                 if (old) {
                     var newNode = tree.findNodes(function (node) {
                         if (node.name == old.name) return true;
