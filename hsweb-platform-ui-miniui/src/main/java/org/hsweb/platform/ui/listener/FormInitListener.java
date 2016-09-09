@@ -57,7 +57,7 @@ public class FormInitListener implements FormParser.Listener {
                 correlation.setTargetTable(target);
                 correlation.setAlias(alias);
                 correlation.setComment(comment);
-                correlationConfig.forEach(correlation::setProperty);
+                correlationConfig.forEach((k, v) -> correlation.setProperty(k, v));
                 Term term1 = new Term();
                 term1.setField(term);
                 term1.setValue(term);

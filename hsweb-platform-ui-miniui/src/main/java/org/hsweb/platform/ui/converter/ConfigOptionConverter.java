@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class ConfigOptionConverter implements OptionConverter {
     protected String filedName;
@@ -57,14 +58,16 @@ public class ConfigOptionConverter implements OptionConverter {
                 }
             }
             //key-value 倒置
-            return map.entrySet().stream().map(stringObjectEntry -> {
-                Map<String, Object> config = new HashMap<>();
-                config.put((String) stringObjectEntry.getValue(), stringObjectEntry.getKey());
-                return config;
-            }).reduce((map1, map2) -> {
-                map1.putAll(map2);
-                return map1;
-            }).get();
+            return map.entrySet().stream().collect(Collectors.toMap(e -> (String) e.getValue(), Map.Entry::getKey));
+
+//            return map.entrySet().stream().map(stringObjectEntry -> {
+//                Map<String, Object> config = new HashMap<>();
+//                config.put((String) stringObjectEntry.getValue(), stringObjectEntry.getKey());
+//                return config;
+//            }).reduce((map1, map2) -> {
+//                map1.putAll(map2);
+//                return map1;
+//            }).get();
         } catch (Exception e) {
             logger.error("转换data为value时出错", e);
         }
