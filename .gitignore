@@ -12,6 +12,7 @@ bin/
 *.iws
 *.iml
 *.db
+*.log
 # Package Files #
 *.jar
 *.war
