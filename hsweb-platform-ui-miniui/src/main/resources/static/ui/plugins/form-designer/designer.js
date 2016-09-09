@@ -57,17 +57,17 @@ ue.addListener('selectionchange', function () {
                 var property = [];
                 property.push({key: "style", value: "width:90%"});
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
-            } else if (tagIsDate) {
+            }else if (tagIsDate) {
                 insert("datepicker");
                 var property = [];
                 property.push({key: "style", value: "width:200px"});
-                fieldData[nowEditorTarget][2].value = "date";
-                fieldData[nowEditorTarget][3].value = "date";
+                fieldData[nowEditorTarget][2].value="date";
+                fieldData[nowEditorTarget][3].value="date";
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
-            } else if (tagIsInput) {
+            }  else if (tagIsInput) {
                 insert("textbox");
                 var property = [];
-                property.push({key: "style", value: "width:200px"});
+                property.push({key: "style", value: "width:90%"});
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
             } else if (tagIsSelect) {
                 insert("combobox");
@@ -84,12 +84,12 @@ ue.addListener('selectionchange', function () {
                 $(property).each(function (i, e) {
                     if (e.key == "data")e.value = dataJson;
                 });
-                property.push({key: "style", value: "width:200px"});
+                property.push({key: "style", value: "width:90%"});
                 fieldData[nowEditorTarget][fieldData[nowEditorTarget].length - 1].value = mini.encode(property);
             }
             if (name) {
                 fieldData[nowEditorTarget][0].value = name;
-                fieldData[nowEditorTarget][1].value = text;
+                fieldData[nowEditorTarget][2].value = text;
             }
         } else {
             nowEditorTarget = "main";
@@ -197,6 +197,37 @@ function nodedblclick(e) {
     insert(node.id);
 }
 
+function downloadForm() {
+    var form = getFormData();
+    var tmp = $(form.html);
+    for (var e in fieldData) {
+        if (e == "main")continue;
+        var field = tmp.find("[field-id='" + e + "']");
+        if (field.length == 0) {
+            delete  fieldData[e];
+        }
+    }
+    form.meta = mini.encode(fieldData);
+
+    downloadText(mini.encode(form), form.name + ".json");
+}
+
+function importForm() {
+    openFileUploader("json", "上传表单", function (e) {
+        if (e.length > 0) {
+            var file = e[0];
+            Request.get("file/download/" + file.id, function (e) {
+                if (e&&e.meta) {
+                    fieldData = mini.decode(e.meta);
+                    ue.setContent(e.html);
+                    initProperties();
+                }else{
+                    showTips("请确定您上传的文件正确!","danger");
+                }
+            });
+        }
+    });
+}
 function randomChar(len) {
     len = len || 32;
     var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz';
@@ -223,36 +254,6 @@ function getFormData() {
     form.config = mini.encode(otherAttr);
     form.html = ue.getContent();
     return form;
-}
-function downloadForm() {
-    var form = getFormData();
-    var tmp = $(form.html);
-    for (var e in fieldData) {
-        if (e == "main")continue;
-        var field = tmp.find("[field-id='" + e + "']");
-        if (field.length == 0) {
-            delete  fieldData[e];
-        }
-    }
-    form.meta = mini.encode(fieldData);
-    downloadText(mini.encode(form), form.name + ".json");
-}
-
-function importForm() {
-    openFileUploader("json", "上传表单", function (e) {
-        if (e.length > 0) {
-            var file = e[0];
-            Request.get("file/download/" + file.id, function (e) {
-                if (e && e.meta) {
-                    fieldData = mini.decode(e.meta);
-                    ue.setContent(e.html);
-                    initProperties();
-                } else {
-                    showTips("请确定您上传的文件正确!", "danger");
-                }
-            });
-        }
-    });
 }
 function save(callback) {
     var form = getFormData();
@@ -370,7 +371,7 @@ function autoCreateModule() {
 function removeChooseFieldRow(e) {
     var grid = mini.get('chooseFieldGrid');
     grid.findRow(function (row) {
-        if (row && row.name == e) {
+        if (row&&row.name == e) {
             grid.removeRow(row);
             return true;
         }

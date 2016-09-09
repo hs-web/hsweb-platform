@@ -82,20 +82,10 @@
         return false;
     };
     window.getData = function () {
-        var newData = [];
-        var data = grid.getData();
-        $(data).each(function (i, e) {
-            var d = {};
-            for (var f in e) {
-                if (f != "_id" && f != "_uid" && f != "_state") {
-                    d[f] = e[f];
-                }
-            }
-            newData.push(d);
-        });
-        return newData;
+        return mini.encode(getCleanData(grid));
     }
     window.setData = function (d, formData) {
+        d = mini.decode();
         data = d;
         if (d)
             initData();
@@ -188,7 +178,7 @@
             } else {
                 grid.addRow({fileList: e});
             }
-        },fileList);
+        }, fileList);
     }
     function removeRow(_id) {
         var row = grid.findRow(function (row) {

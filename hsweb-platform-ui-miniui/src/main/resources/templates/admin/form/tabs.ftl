@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title></title>
 <@global.importMiniui/>
-<@global.importFontIcon/>
     <style>
         html, body {
             width: 100%;
@@ -57,10 +56,7 @@
 </html>
 <@global.importRequest/>
 <script type="text/javascript">
-    mini.parse();
-    var tabs = mini.get('tabs');
-    var meta;
-    var data, formData;
+    var tabs, meta, data, formData;
     var readOnly = false;
     window.setReadOnly = function () {
         readOnly = true;
@@ -73,28 +69,75 @@
         data = d;
     }
     window.init = function (m) {
+        mini.parse();
+        tabs = mini.get('tabs');
         var tabConfig = m.tabConfig;
         if (tabConfig) {
             tabConfig = mini.decode(tabConfig);
+            var showIndex = 0;
             $(tabConfig).each(function (i, e) {
-                var tab = {title: e.title, url: initUrl(e.url)};
+                var show = true;
+                if (e.condition) {
+                    var script = "window.___showCondition_" + i + "=function(data,formData){" + e.condition + "}";
+                    try {
+                        eval(script);
+                        show = window["___showCondition_" + i](data, formData);
+                    } catch (e) {
+                        if (console.log) {
+                            console.log(e);
+                        }
+                    }
+                    if (!show)return;
+                }
+                var scriptText = e.scriptText;
+                var tab = {
+                    title: e.title, url: initUrl(e.url), onload: function (e) {
+                        var iframe = e.iframe;
+                        if (iframe) {
+                            var win = iframe.contentWindow;
+
+                            function doInit() {
+                                if (win) {
+                                    if (win.onInit) {
+                                        win.onInit(data, formData, scriptText);
+                                    }
+                                    if (readOnly && win.setReadOnly) {
+                                        win.setReadOnly();
+                                    }
+                                }
+                            }
+
+                            $(iframe).on("load", function () {
+                                doInit();
+                            });
+                            doInit();
+                        }
+                    }
+                };
                 tabs.addTab(tab);
-                if (i == 0) {
+                if (showIndex == 0) {
                     tabs.activeTab(tab);
                 }
+                showIndex++;
             });
+            if (showIndex == 0) {
+                if (window.hide) {
+                    window.hide();
+                }
+            }
         }
     }
     function initUrl(url) {
+        if (url.indexOf("http") != 0) {
+            url = Request.BASH_PATH + url;
+        }
         var r = /\{(.+?)}/g;
         var matches = url.match(r);
         $(matches).each(function () {
             var group = this.substring(1, this.length - 1);
-            url = url.replace("{" + group + "}", eval("(function(){return formData." + group + "})()"));
+            var val = eval("(function(){return formData." + group + "})()");
+            url = url.replace("{" + group + "}", val?val:"");
         });
         return url;
-    }
-    window.onblur = function (e) {
-
     }
 </script>

@@ -53,7 +53,7 @@
                     <td style="width:100%;">
                         <a class="mini-menubutton" plain="true" menu="#popupMenu">文件</a>
                         <a class="mini-button" iconCls="icon-save" onclick="save()" plain="true">保存</a>
-                        <a class="mini-button" iconCls="icon-find" onclick="save(preview)" plain="true">预览</a>
+                        <a class="mini-button" iconCls="icon-find" onclick="preview" plain="true">预览</a>
                         <a class="mini-button" iconCls="icon-goto" style="color: red" onclick="deploy()" plain="true">发布</a>
                         <a class="mini-button" iconCls="icon-bullet-cross" style="color: red" onclick="closeWindow('exit')" plain="true">退出</a>
                         <span class="separator"></span>
@@ -116,6 +116,7 @@
             <a class="mini-button" onclick="addChooseField()" iconCls="icon-add">添加</a>
             <input id="chooseFieldCombobox" style="width: 250px;" class="mini-combobox" allowInput="true"
                    pinyinField="text" valueField="filedId" valuefromselect="true"/>
+
             <div id="chooseFieldGrid" showPager="false" class="mini-datagrid" style="width: 100%;height: 300px">
                 <div property="columns">
                     <div field="name" width="50" headerAlign="center" allowSort="false">字段</div>
@@ -142,7 +143,21 @@
     var id = "${param.id!''}";
     function preview() {
         // window.open('/admin/form/view.html?id='+id);
-        openWindow('/admin/form/view.html?id=' + id, "预览表单", "80%", "80%");
+        openWindow('/admin/form/view_frame.html', "预览表单", "80%", "80%", function () {
+        }, function () {
+            var iframe = this.getIFrameEl();
+            var win = iframe.contentWindow;
+
+            function view() {
+                var form = getFormData();
+                form.meta = mini.encode(fieldData);
+                if (win.init)
+                    win.init(form);
+            }
+
+            $(iframe).on("load", view);
+            view();
+        });
     }
     function addChooseField() {
         var fieldId = mini.get('chooseFieldCombobox').getValue();
@@ -188,4 +203,5 @@
         });
     }
 </script>
+
 <@global.importPlugin "form-designer/designer.config.js","form-designer/designer.js"/>

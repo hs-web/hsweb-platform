@@ -76,7 +76,7 @@
         return mini.encode(getCleanData(grid));
     }
     window.setData = function (d, formData) {
-        d = mini.decode();
+        d = mini.decode(d);
         data = d;
         if (d)
             initData();
@@ -94,14 +94,13 @@
         initData();
     }
     function initData() {
-        if (!data) {
-            var dft = mini.decode(meta.defaultTableData);
-            data = [];
-            $(dft).each(function (i, e) {
-                data.push(mini.decode(e.data));
-            });
+        if (data) {
+            var list = [];
+            for (var f in data) {
+                list.push({key: f, value: data[f]});
+            }
+            grid.setData(list);
         }
-        grid.setData(data);
     }
     function parseColumns(columns) {
         var newData = [];

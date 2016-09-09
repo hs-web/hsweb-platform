@@ -44,13 +44,16 @@ Designer.getPropertiesTemplate = function () {
     var template = {
         name: {
             describe: "名称"
-        },alias: {
+        }, alias: {
             describe: "别名"
         }, comment: {
             describe: "字段描述"
         }, javaType: {
             describe: "java类型",
             value: "string"
+        }, "is-column": {
+            describe: "是否数据库",
+            value: "true"
         }, dataType: {
             describe: "数据库类型",
             value: "varchar2(128)"
@@ -60,9 +63,10 @@ Designer.getPropertiesTemplate = function () {
         }, "class": {
             describe: "class",
             value: "mini-textbox",
-        }, "can-query": {
-            describe: "查询条件",
-            value: true
+        },
+        "excel-header": {
+            describe: "excel表头",
+            value: ""
         },
         "export-excel": {
             describe: "可导出为excel",
@@ -109,7 +113,7 @@ Designer.showTableTemplate = function (columns, data, title, callback) {
     mini.get("editorWindow").setTitle(title);
     mini.get("editorWindow").showAtPos();
     Designer.saveEditor = function () {
-        callback(mini.encode(mini.get("tmp_table").getData()));
+        callback(mini.encode(getCleanData(mini.get("tmp_table"))));
         mini.get("editorWindow").hide();
     }
 }
@@ -134,7 +138,7 @@ Designer.getPropertiesEditors = function () {
                 if (row.key == "fields") {
                     openChooseFieldWindow(mini.decode(e.sender.value));
                     Designer.actionTmp = function () {
-                        var data = mini.get('chooseFieldGrid').getData();
+                        var data = getCleanData(mini.get('chooseFieldGrid'));
                         if (data.length > 0)row.value = mini.encode(data);
                         mini.get("tmp_table").updateRow(row);
                         mini.get('chooseFieldWindow').hide();
@@ -159,18 +163,24 @@ Designer.getPropertiesEditors = function () {
                 }
             })
         },
-        correlation:function (value, callback) {
+        correlation: function (value, callback) {
             var data = mini.decode(value['correlation']);
             var columns = [
                 {
                     field: "targetTable", width: 50, headerAlign: "center", allowSort: false, header: "目标表",
                     editor: {type: "textbox"}
-                },{
+                }, {
                     field: "alias", width: 50, headerAlign: "center", allowSort: false, header: "别名",
                     editor: {type: "textbox"}
-                },{
+                }, {
+                    field: "api", width: 50, headerAlign: "center", allowSort: false, header: "是否api",
+                    editor: {type: "textbox"}
+                },  {
+                    field: "comment", width: 50, headerAlign: "center", allowSort: false, header: "备注",
+                    editor: {type: "textbox"}
+                }, {
                     field: "join", width: 40, headerAlign: "center", allowSort: false, header: "类型",
-                    editor: {type: "combobox",data:[{id:"left",text:"left"},{id:"right",text:"right"},{id:"full",text:"full"},{id:"inner",text:"inner"}]}
+                    editor: {type: "combobox", data: [{id: "left", text: "left"}, {id: "right", text: "right"}, {id: "full", text: "full"}, {id: "inner", text: "inner"}]}
                 },
                 {
                     field: "term", width: 100, headerAlign: "center", allowSort: false, header: "条件",
@@ -179,7 +189,7 @@ Designer.getPropertiesEditors = function () {
             ];
             Designer.showTableTemplate(columns, data, "表链接", callback);
         },
-        "defaultTableData":function (value, callback) {
+        "defaultTableData": function (value, callback) {
             var data = mini.decode(value['defaultTableData']);
             var columns = [
                 {
@@ -191,7 +201,7 @@ Designer.getPropertiesEditors = function () {
             Designer.defaultTableDataEdit = function (e) {
                 var row = mini.get("tmp_table").getSelected();
                 var val = e.sender.value;
-                if (!val || val == '')val ='{\n"property":"value"\n}';
+                if (!val || val == '')val = '{\n"property":"value"\n}';
                 openScriptEditor("application/ld+json", val, function (json) {
                     if (json == "cancel" || json == "close") {
                         return;
@@ -207,6 +217,100 @@ Designer.getPropertiesEditors = function () {
                     e.editor.setText(e.value);
                 }
             });
+        }, "scripts": function (value, callback) {
+            var data = mini.decode(value['scripts']);
+            var columns = [
+                {
+                    field: "type", width: 50, headerAlign: "center", allowSort: false, header: "类型",
+                    editor: {type: "combobox", data: [{id: "link"}, {id: "script"}], textField: "id"}
+                },
+                {
+                    field: "script", width: 100, headerAlign: "center", allowSort: false, header: "内容",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.scriptEditor"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "编辑脚本", callback);
+            Designer.scriptEditor = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if (!val || val == '')val = '//此脚本在页面执行';
+                openScriptEditor("javascript", val, function (json) {
+                    if (json == "cancel" || json == "close") {
+                        return;
+                    }
+                    e.sender.setText(json);
+                    e.sender.setValue(json);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            };
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "script") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
+        }
+        , "css": function (value, callback) {
+            var data = mini.decode(value['css']);
+            var columns = [
+                {
+                    field: "type", width: 50, headerAlign: "center", allowSort: false, header: "类型",
+                    editor: {type: "combobox", data: [{id: "link"}, {id: "css"}], textField: "id"}
+                },
+                {
+                    field: "css", width: 100, headerAlign: "center", allowSort: false, header: "内容",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.scriptCss"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "编辑css", callback);
+            Designer.scriptCss = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if (!val || val == '')val = '';
+                openScriptEditor("text/css", val, function (json) {
+                    if (json == "cancel" || json == "close") {
+                        return;
+                    }
+                    e.sender.setText(json);
+                    e.sender.setValue(json);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            };
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "css") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
+        },
+        showCondition: function (value, callback) {
+            var data = mini.decode(value['showCondition']);
+            var columns = [
+                {
+                    field: "condition", width: 100, headerAlign: "center", allowSort: false, header: "脚本",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.tabCondition"}
+                }
+            ];
+            Designer.showTableTemplate(columns, data, "显示条件", callback);
+            Designer.tabCondition = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if (!val || val == '')val = '';
+                openScriptEditor("javascript", val, function (script) {
+                    if (script == "cancel" || script == "close") {
+                        return;
+                    }
+                    e.sender.setText(script);
+                    e.sender.setValue(script);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            };
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "condition") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
         },
         tabConfig: function (value, callback) {
             var data = mini.decode(value['tabConfig']);
@@ -218,9 +322,36 @@ Designer.getPropertiesEditors = function () {
                 {
                     field: "url", width: 100, headerAlign: "center", allowSort: false, header: "路径",
                     editor: {type: "textbox"}
+                },
+                {
+                    field: "condition", width: 100, headerAlign: "center", allowSort: false, header: "显示条件",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.tabCondition"}
+                },
+                {
+                    field: "scriptText", width: 100, headerAlign: "center", allowSort: false, header: "加载后执行js",
+                    editor: {type: "buttonedit", onbuttonclick: "Designer.tabCondition"}
                 }
             ];
             Designer.showTableTemplate(columns, data, "配置路径", callback);
+            Designer.tabCondition = function (e) {
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                if (!val || val == '')val = '';
+                openScriptEditor("javascript", val, function (script) {
+                    if (script == "cancel" || script == "close") {
+                        return;
+                    }
+                    e.sender.setText(script);
+                    e.sender.setValue(script);
+                    mini.get("tmp_table").updateRow(row);
+                });
+            };
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "condition" || e.field == 'scriptText') {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
         },
         "columns": function (value, callback) {
             var data = mini.decode(value['columns']);
@@ -374,9 +505,24 @@ Designer.getPropertiesEditors = function () {
                 {field: "describe", width: 50, headerAlign: "center", allowSort: false, header: "说明", editor: {type: "textbox"}}
             ];
             Designer.permissionsButtonEdit = function (e) {
-
+                var row = mini.get("tmp_table").getSelected();
+                var val = e.sender.value;
+                openScriptEditor("text/x-groovy", val, function (script) {
+                    if (script == "cancel" || script == "close") {
+                        return;
+                    }
+                    e.sender.setText(script);
+                    e.sender.setValue(script);
+                    mini.get("tmp_table").updateRow(row);
+                });
             }
             Designer.showTableTemplate(columns, data, "权限控制", callback);
+            mini.get('tmp_table').on("cellbeginedit", function (e) {
+                if (e.field == "value") {
+                    e.editor.setValue(e.value);
+                    e.editor.setText(e.value);
+                }
+            });
         }
     }
     return editors;
@@ -395,7 +541,7 @@ Designer.fields = {
             var template = {
                 name: {
                     describe: "表名"
-                },alias: {
+                }, alias: {
                     describe: "别名"
                 }, comment: {
                     describe: "表单描述"
@@ -415,6 +561,15 @@ Designer.fields = {
                 }, permissions: {
                     describe: "权限配置",
                     value: "[]"
+                }, scripts: {
+                    describe: "javascript",
+                    value: "[]"
+                }, css: {
+                    describe: "css",
+                    value: "[]"
+                }, addDefaultField: {
+                    describe: "添加默认字段",
+                    value: "true"
                 }
             };
             return template;
@@ -537,13 +692,17 @@ Designer.fields = {
             var template = {
                 name: {
                     describe: "名称"
-                },alias: {
+                }, alias: {
                     describe: "别名"
                 }, comment: {
                     describe: "字段描述"
                 }, javaType: {
                     describe: "java类型",
                     value: "string"
+                }
+                , "is-column": {
+                    describe: "是否数据库",
+                    value: "true"
                 }, dataType: {
                     describe: "数据库类型",
                     value: "clob"
@@ -612,13 +771,16 @@ Designer.fields = {
             var template = {
                 name: {
                     describe: "名称"
-                },alias: {
+                }, alias: {
                     describe: "别名"
                 }, comment: {
                     describe: "字段描述"
                 }, javaType: {
                     describe: "java类型",
                     value: "string"
+                }, "is-column": {
+                    describe: "是否数据库",
+                    value: "true"
                 }, dataType: {
                     describe: "数据库类型",
                     value: "clob"
@@ -631,7 +793,11 @@ Designer.fields = {
                 }, "tabConfig": {
                     describe: "选项卡配置",
                     value: "[]"
-                },"domProperty": {
+                }, "showCondition": {
+                    describe: "显示条件",
+                    value: ""
+                }
+                , "domProperty": {
                     describe: "其他控件配置",
                     value: "[]"
                 }
