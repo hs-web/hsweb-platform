@@ -19,6 +19,13 @@ spring:
         name: ${app.name}
         version: ${app.version}
     datasource:
+        xa:
+            dataSourceClassName: com.alibaba.druid.pool.xa.DruidXADataSource
+            properties:
+                url: ${jdbc.url}
+                driverClassName: ${jdbc.driverClassName}
+                username: ${jdbc.username}
+                password: ${jdbc.password}
         name: core
         url: ${jdbc.url}
         driverClassName: ${jdbc.driverClassName}

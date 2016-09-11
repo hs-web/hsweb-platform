@@ -5,7 +5,7 @@
     <parent>
         <artifactId>hsweb-platform</artifactId>
         <groupId>org.hsweb</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,7 +14,7 @@
     <!--配置信息-->
     <properties>
         <app.name>hsweb-platform</app.name>
-        <app.version>${project.version}</app.version>
+        <app.version>${project.parent.version}</app.version>
     </properties>
 
     <!--环境配置-->
@@ -28,7 +28,7 @@
                 <environment.package>develop</environment.package>
                 <jdbc.type>oracle</jdbc.type>
                 <logging.path>./logger/</logging.path>
-                <jdbc.url>jdbc:h2:file:./data/h2db</jdbc.url>
+                <jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>
                 <jdbc.username>sa</jdbc.username>
                 <jdbc.password></jdbc.password>
                 <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
@@ -133,7 +133,10 @@
             <artifactId>druid</artifactId>
             <version>1.0.20</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-web-datasource</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.hsweb</groupId>
             <artifactId>hsweb-web-oauth2-simple</artifactId>
@@ -151,12 +154,12 @@
 
         <dependency>
             <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-web-service-impl-common</artifactId>
+            <artifactId>hsweb-web-service-simple</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-web-dao-impl-mybatis</artifactId>
+            <artifactId>hsweb-web-dao-mybatis</artifactId>
         </dependency>
 
         <dependency>

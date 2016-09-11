@@ -1,9 +1,33 @@
-# hsweb-platform
-hsweb 敏捷开发平台
-## spring-boot & mybatis & maven & docker
+## 后台管理基础框架-演示
+[![Build Status](https://api.travis-ci.org/hs-web/hsweb-platform.svg?branch=master)](https://travis-ci.org/hs-web/hsweb-platform)
+
+## 注意!
+目前仅提供了一个ui模块:miniui,此ui不为开源项目,仅做演示使用,如需商用请购买正版。
+<br/>
+正在寻找ui替代方案...
+## 在线演示
+[http://demo.hsweb.me](http://demo.hsweb.me)
+用户名 test test1 test2 ... 密码 123456
 
 ## 运行
-main 方法运行: 模块hsweb-platform-run里的Run.java
+1. maven
+```bash
+    $ git clone https://github.com/hs-web/hsweb-platform.git
+    $ cd hsweb-platform/hsweb-platform-run
+    $ mvn spring-boot:run
+```
+
+2. IDE
+直接运行hsweb-platform-run下Run.java类
+
+3. 打包
+```bash
+    $ git clone https://github.com/hs-web/hsweb-platform.git
+    $ cd hsweb-platform/hsweb-platform-run
+    $ mvn package
+    $ cd target
+    $ java -jar hsweb-platform-run.jar
+```
 
 ## 修改数据库链接
 ```xml

@@ -31,16 +31,26 @@
         <tr>
             <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;"
                 width="180" align="right">
-                名称
+                ID
             </td>
             <td valign="top" style="border-color: rgb(221, 221, 221);" width="371">
+                <input class="mini-textbox" required="true" name="id" style="width:100%">
+            </td>
+            <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;"
+                width="180" align="right">
+                名称
+            </td>
+            <td valign="top" style="border-color: rgb(221, 221, 221); word-break: break-all;"
+                width="500">
                 <input class="mini-textbox" required="true" name="name" style="width:100%">
             </td>
+        </tr>
+        <tr>
             <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;"
                 width="180" align="right">
                 driver
             </td>
-            <td valign="top" style="border-color: rgb(221, 221, 221); word-break: break-all;"
+            <td valign="top" colspan="3" style="border-color: rgb(221, 221, 221); word-break: break-all;"
                 width="500">
                 <input class="mini-combobox" required="true" name="driver" url="<@global.api 'config/data-source.array' />"
                        valuefield="value" textfield="key" valuefromselect="true" clearonload="true"
@@ -89,7 +99,7 @@
                 备注
             </td>
             <td valign="top" colspan="3" rowspan="1" style="border-left-color: rgb(221, 221, 221); border-top-color: rgb(221, 221, 221); word-break: break-all;">
-                <input class="mini-textarea"  name="remark" style="width:100%">
+                <input class="mini-textarea" name="remark" style="width:100%">
             </td>
         </tr>
         </tbody>
@@ -113,6 +123,7 @@
     function loadData() {
         if (id != "") {
             Request.get("datasource/" + id, {}, function (e) {
+                mini.getbyName("id").setEnabled(false);
                 if (e.success) {
                     new mini.Form('#data-form').setData(e.data);
                 } else {
