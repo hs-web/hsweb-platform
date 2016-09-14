@@ -100,7 +100,6 @@
     var editor;
     var sqlWindows = [];
 
-
     function searchTree() {
         var key = mini.get("treeFilterKey").getValue();
         if (key == "") {
