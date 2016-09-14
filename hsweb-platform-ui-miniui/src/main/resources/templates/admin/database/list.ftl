@@ -54,7 +54,7 @@
         <ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
             <li id="createMenu" name="add" iconCls="icon-add" onclick="createTable">新建表</li>
             <li id="editMenu" name="edit" iconCls="icon-edit" onclick="editTable">编辑表</li>
-            <li id="findMenu" name="find" iconCls="icon-find" onclick="viewData">浏览数据</li>
+        <#--<li id="findMenu" name="find" iconCls="icon-find" onclick="viewData">浏览数据</li>-->
         </ul>
     </div>
     <div title="center" region="center">
@@ -108,7 +108,7 @@
         } else {
             key = key.toLowerCase();
             tree.filter(function (node) {
-                if (node.text&&node.text.toLowerCase().indexOf(key.toLowerCase()) != -1) {
+                if (node.text && node.text.toLowerCase().indexOf(key.toLowerCase()) != -1) {
                     return true;
                 }
             });
@@ -172,7 +172,12 @@
     function setMetaSql() {
         var tableMeta = {};
         var tableInfo = tree.getSelectedNode();
-        tableMeta.name = tableInfo.name;
+
+        tableMeta.name = tableInfo.name ? tableInfo.name : mini.get("tableName").getValue();
+        if (!tableMeta.name || tableMeta.name == '') {
+            showTips("表名不能为空");
+            return;
+        }
         tableMeta.comment = mini.get("tableComment").getValue();
         var fieldList = getCleanData(fieldGrid);
         var fields = [];
@@ -200,10 +205,21 @@
             this.old_name = this.name;
         })
         mini.get("tableName").setValue(node.name);
+        mini.get("tableName").setEnabled(false);
         mini.get("tableComment").setValue(node.comment);
 
         fieldGrid.setData(node.fields);
         tableMetaTabsObj.activeTab(0);
+    }
+
+    function createTable() {
+        nowMetaMod = "create";
+        mini.get("tableName").setValue("t_new_table");
+        mini.get("tableName").setEnabled(true);
+        mini.get("tableComment").setValue("新建表");
+        fieldGrid.setData([{name: "u_id", comment: "主键", properties: {not_null: true},"properties.not_null":true, dataType: "varchar(32)"}]);
+        tableMetaTabsObj.activeTab(0);
+        mini.get('win').show();
     }
     newWin();
     function newWin() {
