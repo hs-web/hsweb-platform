@@ -40,13 +40,17 @@
         </div>
     </div>
     <div showHeader="false" region="west" width="200" maxWidth="300" minWidth="100">
-        <div id="leftTree" style="height: 100%;" class="mini-tree"
-             expandOnLoad="0" resultAsTree="true" ajaxOptions="{type:'GET'}"
-             iconField="icon" nodedblclick="nodedblclick" showTreeIcon="true"
-             idField="name" textField="text" borderStyle="border:0"
-             contextMenu="#treeMenu">
+        <div class="mini-toolbar" style="border-top: 0px;border-right: 0px;">
+            搜索:<input class="mini-textbox" id="treeFilterKey" onenter="searchTree()"/>
         </div>
-
+        <div class="mini-fit">
+            <div id="leftTree" style="height: 100%;" class="mini-tree"
+                 expandOnLoad="0" resultAsTree="true" ajaxOptions="{type:'GET'}"
+                 iconField="icon" nodedblclick="nodedblclick" showTreeIcon="true"
+                 idField="name" textField="text" borderStyle="border:0"
+                 contextMenu="#treeMenu">
+            </div>
+        </div>
         <ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
             <li id="createMenu" name="add" iconCls="icon-add" onclick="createTable">新建表</li>
             <li id="editMenu" name="edit" iconCls="icon-edit" onclick="editTable">编辑表</li>
@@ -95,6 +99,21 @@
     var tableMetaSqlWindow;
     var editor;
     var sqlWindows = [];
+
+
+    function searchTree() {
+        var key = mini.get("treeFilterKey").getValue();
+        if (key == "") {
+            tree.clearFilter();
+        } else {
+            key = key.toLowerCase();
+            tree.filter(function (node) {
+                if (node.text&&node.text.toLowerCase().indexOf(key.toLowerCase()) != -1) {
+                    return true;
+                }
+            });
+        }
+    }
     function changeDatasource(e) {
         if (e.selected)
             datasource = e.selected.id;
@@ -192,6 +211,15 @@
             title: "新建SQL窗口", url: "manager.html", showCloseButton: true, onload: function (e) {
                 var iframe = e.iframe;
                 var win = iframe.contentWindow;
+
+                function init() {
+                    win.setDataSource(datasource);
+                }
+
+                init();
+                $(iframe).on("load", function () {
+                    init();
+                });
                 sqlWindows.push(win);
             }
         };
@@ -216,7 +244,7 @@
                     this.children = this.fields;
                 });
                 var text = mini.get("datasource").getText();
-                if(text=="")text="默认数据源";
+                if (text == "")text = "默认数据源";
                 tree.setData([{icon: "icon-folder-database", text: text, children: data}]);
                 if (old) {
                     var newNode = tree.findNodes(function (node) {
