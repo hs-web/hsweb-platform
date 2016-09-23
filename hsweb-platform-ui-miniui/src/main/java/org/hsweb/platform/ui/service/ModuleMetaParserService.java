@@ -64,6 +64,7 @@ public class ModuleMetaParserService {
             Map<String, Object> customAttrMap;
             try {
                 customAttrMap = JSON.parseObject(customAttr);
+                if (customAttrMap == null) customAttrMap = new HashMap<>();
             } catch (Exception e) {
                 logger.warn("解析自定义属性json失败", e);
                 customAttrMap = new HashMap<>();
