@@ -53,7 +53,7 @@ public class FormMetaController {
             metaData = table.getMeta();
         }
         List<Map<String, String>> fieldMeta = metaData.getFields()
-                .stream().map(fieldMetaData -> {
+                .stream().sorted().map(fieldMetaData -> {
                     Map<String, String> data = new HashMap<>();
                     data.put("id", fieldMetaData.getAlias());
                     data.put("text", fieldMetaData.getAlias() + "(" + fieldMetaData.getComment() + ")");
@@ -64,7 +64,7 @@ public class FormMetaController {
         metaData.getCorrelations().forEach(correlation -> {
             TableMetaData metaData1 = metaData.getDatabaseMetaData().getTable(correlation.getTargetTable());
             if (metaData1 == null) return;
-            metaData1.getFields().forEach(m -> {
+            metaData1.getFields().stream().sorted().forEach(m -> {
                 Map<String, String> data = new HashMap<>();
                 data.put("id", correlation.getAlias() + "." + m.getAlias());
                 data.put("text", correlation.getAlias() + "." + m.getAlias() + "(" + m.getComment() + ")");
