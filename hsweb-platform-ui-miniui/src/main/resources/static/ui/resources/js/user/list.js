@@ -25,11 +25,11 @@ function enable(id) {
     grid.loading("启用中...");
     Request.put("user/" + id + "/enable", {}, function (e) {
         if (e.success) {
-            grid.reload();
             showTips("启用成功!");
         } else {
             showTips(e.message, 'danger');
         }
+        grid.reload();
     });
 }
 function disable(id) {
@@ -39,11 +39,11 @@ function disable(id) {
                 grid.loading("注销中...");
                 Request.put("user/" + id + "/disable", {}, function (e) {
                     if (e.success) {
-                        grid.reload();
                         showTips("注销成功!");
                     } else {
                         showTips(e.message, 'danger');
                     }
+                    grid.reload();
                 });
             }
         }

@@ -211,3 +211,24 @@ String.prototype.endWith = function (str) {
     var reg = new RegExp(str + "$");
     return reg.test(this);
 }
+
+
+function openCronEditor(cbk, cron) {
+    openWindow(Request.BASH_PATH + "ui/plugins/crontool/index.html", "Cron选择器", "840", "530", function (cron) {
+        if (cron != "close" && cron != "cancel") {
+            cbk(cron);
+        }
+    }, function () {
+        var iframe = this.getIFrameEl();
+        var win = iframe.contentWindow;
+
+        function init() {
+            if (win.setCron) {
+                win.setCron(cron);
+            }
+        }
+
+        init();
+        $(iframe).on("load", init);
+    });
+}

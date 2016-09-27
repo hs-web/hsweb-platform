@@ -28,6 +28,7 @@
 ,'codemirror/mode/htmlmixed/htmlmixed.js'
 ,'codemirror/mode/xml/xml.js'
 ,'codemirror/mode/css/css.js'
+,'codemirror/mode/clike/clike.js'
 ,'codemirror/keymap/sublime.js'
 />
 <@global.importMiniui/>
@@ -37,20 +38,21 @@
             padding: 0;
             border: 0;
             width: 100%;
+            overflow: hidden;
             height: 100%;
         }
 
         .CodeMirror {
             border: 1px solid #D2D6D7;
-            font-size: 16px;
+            font-size: 15px;
             width: 99%;
             margin: auto;
-            height: 100%;
+            height: 98%;
         }
     </style>
 </head>
 <body>
-<div class="mini-fit" style="width: 100%;">
+<div class="mini-fit" style="width: 100%;   overflow: hidden;">
     <textarea id="code"></textarea>
 </div>
 </body>
