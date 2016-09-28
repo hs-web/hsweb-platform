@@ -194,7 +194,6 @@
         var htmlstr = html.html();
         var formattedHtml = HTMLFormat(htmlstr);
         var win = window.open("about:blank");
-        console.log($(document).height());
         win.document.write("<textarea style=\"border: 0px;width: 100%;height: " + ($(document).height()) + "px\">" + formattedHtml + "</textarea>");
         $(win.document.body).css({
             padding:0,

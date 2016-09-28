@@ -64,7 +64,7 @@
             <div field="endTime" width="100" dateFormat="yyyy-MM-dd HH:mm:ss" align="center" align="center" allowSort="true" headerAlign="center">结束时间</div>
             <div field="useTime" renderer="renderUseTime" width="80" align="center" align="center" headerAlign="center">耗时</div>
             <div field="status" width="80" renderer="renderHisStatus" align="center" headerAlign="center" allowSort="true" allowSort="true">状态</div>
-            <div field="result" width="120" align="center" headerAlign="center" allowSort="true">执行结果</div>
+            <div field="result" renderer="renderResult" width="120" align="center" headerAlign="center" allowSort="true">执行结果</div>
         </div>
     </div>
 </div>
@@ -105,6 +105,19 @@
         history_grid.load();
         his_div.appendTo(td);
         his_div.show();
+    }
+    function renderResult(e) {
+        var text = e.value;
+        if (text.length > 30) {
+            return "<a href='javascript:void(0)' onclick=\"showResult('" + e.record.id + "')\">" + (text.substr(0, 29)) + "...</a>";
+        }
+        return text;
+    }
+    function showResult(id) {
+        var row = history_grid.getRowById(id);
+        if (row) {
+            openTextWindow(row.result);
+        }
     }
     function search() {
         var data = new mini.Form("#searchForm").getData();

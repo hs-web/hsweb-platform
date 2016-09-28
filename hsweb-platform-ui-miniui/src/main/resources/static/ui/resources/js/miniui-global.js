@@ -265,3 +265,13 @@ function compareDateWithMs(date3) {
 function compareDate(d1, d2) {
     return compareDateWithMs(Math.abs(d2.getTime() - d1.getTime()));
 }
+
+function openTextWindow(text) {
+    var win = window.open("about:blank");
+    win.document.write("<textarea style=\"border: 0px;width: 100%;height: " + ($(document).height()) + "px\">" + text + "</textarea>");
+    $(win.document.body).css({
+        padding: 0,
+        border: 0,
+        margin: 0
+    });
+}
