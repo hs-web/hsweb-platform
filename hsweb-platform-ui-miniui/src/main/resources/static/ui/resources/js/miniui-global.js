@@ -232,3 +232,36 @@ function openCronEditor(cbk, cron) {
         $(iframe).on("load", init);
     });
 }
+
+function compareDateWithMs(date3) {
+    var days = Math.floor(date3 / (24 * 3600 * 1000));
+    var leave1 = date3 % (24 * 3600 * 1000);
+    var hours = Math.floor(leave1 / (3600 * 1000));
+    var leave2 = leave1 % (3600 * 1000);
+    var minutes = Math.floor(leave2 / (60 * 1000));
+    var leave3 = leave2 % (60 * 1000);
+    var seconds = Math.round(leave3 / 1000);
+    var leave4 = leave3 % (1000);
+    var mseconds = Math.round(leave4);
+    var string = "";
+    if (days > 0) {
+        string += days + "天";
+    }
+    if (hours > 0) {
+        string += hours + "小时";
+    }
+    if (minutes > 0) {
+        string += minutes + "分钟";
+    }
+    if (seconds > 0) {
+        string += seconds + "秒";
+    }
+    if (seconds == 0 && minutes == 0 && hours == 0 && days == 0) {
+        string += mseconds + "毫秒";
+    }
+    return string;
+}
+
+function compareDate(d1, d2) {
+    return compareDateWithMs(Math.abs(d2.getTime() - d1.getTime()));
+}

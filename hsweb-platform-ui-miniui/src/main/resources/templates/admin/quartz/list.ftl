@@ -62,6 +62,7 @@
         <div property="columns">
             <div field="startTime" width="100" dateFormat="yyyy-MM-dd HH:mm:ss" align="center" headerAlign="center" allowSort="true">开始时间</div>
             <div field="endTime" width="100" dateFormat="yyyy-MM-dd HH:mm:ss" align="center" align="center" allowSort="true" headerAlign="center">结束时间</div>
+            <div field="useTime" renderer="renderUseTime" width="80" align="center" align="center" headerAlign="center">耗时</div>
             <div field="status" width="80" renderer="renderHisStatus" align="center" headerAlign="center" allowSort="true" allowSort="true">状态</div>
             <div field="result" width="120" align="center" headerAlign="center" allowSort="true">执行结果</div>
         </div>
@@ -78,9 +79,15 @@
     bindDefaultAction(history_grid);
     search();
     var his_div = $("#history_div");
+    function renderUseTime(e) {
+        var row = e.record;
+        if (row.status != 1)return "-";
+        return compareDate(row.startTime, row.endTime);
+    }
     function onShowRowDetail(e) {
         var row = e.record;
         var td = grid.getRowDetailCellEl(row);
+
         function initExecTimes() {
             Request.get("quartz/cron/exec-times/5", {cron: row.cron}, function (data) {
                 if (data.success) {
@@ -91,6 +98,7 @@
                 }
             });
         }
+
         initExecTimes();
         history_grid.setUrl(Request.BASH_PATH + "quartz/history/" + row.id);
         history_grid.load();
