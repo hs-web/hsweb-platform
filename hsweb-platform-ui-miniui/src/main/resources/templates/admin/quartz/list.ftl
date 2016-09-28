@@ -30,10 +30,10 @@
             </td>
             <td style="white-space:nowrap;">
                 <label>任务名称: </label>
-                <input name="name$LIKE" style="width: 100px" onenter="search()" class="mini-textbox"/>
+                <input name="name$LIKE" style="width: 200px" onenter="search()" class="mini-textbox"/>
                 <label>状态: </label>
-                <input name="status" emptyText="全部" showNullItem="true" nullItemText="全部" style="width: 80px;" onvaluechanged="search()"
-                       data="[{id:1,text:'正常'},{id:-1,text:'已禁用'}]" class="mini-combobox"/>
+                <input name="enabled" emptyText="全部" showNullItem="true" nullItemText="全部" style="width: 80px;" onvaluechanged="search()"
+                       data="[{id:1,text:'正常'},{id:0,text:'已停用'}]" class="mini-combobox"/>
                 <a class="mini-button" iconCls="icon-search" plain="true" onclick="search()">查询</a>
             </td>
         </tr>
@@ -108,6 +108,7 @@
     }
     function renderResult(e) {
         var text = e.value;
+        if(!text)return "";
         if (text.length > 30) {
             return "<a href='javascript:void(0)' onclick=\"showResult('" + e.record.id + "')\">" + (text.substr(0, 29)) + "...</a>";
         }
