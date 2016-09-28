@@ -42,7 +42,7 @@
 <div class="mini-fit">
     <div id="grid" class="mini-datagrid" style="width:100%;height:100%;"
          url="<@global.api 'quartz'/>" ajaxOptions="{type:'GET',dataType:'json'}" idField="id"
-         onshowrowdetail="onShowRowDetail" autoHideRowDetail="false"
+         onshowrowdetail="onShowRowDetail" autoHideRowDetail="true"
          sizeList="[10,20,50,200]" pageSize="20">
         <div property="columns">
             <div type="expandcolumn">查看历史</div>
@@ -95,6 +95,7 @@
                     $(data.data).each(function () {
                         $("#lstExecTimes").append("<span style='margin-left: 2em'>" + this + "</span>");
                     });
+                    $("#lstExecTimes").append("<span style='margin-left: 2em'>预计每" + compareDate(mini.parseDate(data.data[0]), mini.parseDate(data.data[1])) + "执行一次</span>");
                 }
             });
         }
