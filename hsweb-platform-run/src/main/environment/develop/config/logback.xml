@@ -6,14 +6,17 @@
             <pattern>%d{HH:mm:ss.SSS} > %-5level %logger{35} - %m%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.springframework" level="ERROR" />
-    <logger name="org.springframework.web" level="ERROR" />
-    <logger name="org.apache.tomcat" level="ERROR" />
-    <logger name="org.eclipse" level="ERROR" />
-    <logger name="org.hsweb" level="DEBUG" />
-    <logger name="org.apache.commons.beanutils.PropertyUtils" level="OFF" />
-    <logger name="freemarker.cache" level="ERROR" />
-    <logger name="jndi" level="ERROR" />
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache.tomcat" level="ERROR"/>
+    <logger name="org.eclipse" level="ERROR"/>
+    <logger name="org.hsweb" level="DEBUG"/>
+    <logger name="org.hsweb.expands.script" level="ERROR"/>
+    <logger name="freemarker.cache" level="ERROR"/>
+    <logger name="jndi" level="ERROR"/>
+    <logger name="org.apache.commons.beanutils" level="ERROR"/>
+    <logger name="com.atomikos" level="ERROR"/>
+    <logger name="com.atomikos.jdbc.AtomikosConnectionProxy" level="ERROR"/>
+    <logger name="com.alibaba.druid.pool.PreparedStatementPool" level="ERROR"/>
     <root level="DEBUG">
         <appender-ref ref="Console"/>
     </root>

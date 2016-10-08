@@ -2,9 +2,6 @@ package org.hsweb.platform.run;
 
 
 import org.hsweb.web.core.authorize.annotation.Authorize;
-import org.hsweb.web.core.datasource.DynamicDataSource;
-import org.hsweb.web.datasource.dynamic.DynamicDataSourceServiceImpl;
-import org.hsweb.web.service.impl.quartz.SimpleJob;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
