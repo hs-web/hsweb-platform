@@ -1,5 +1,6 @@
 package org.hsweb.platform.ui.controller;
 
+import org.hsweb.commons.MD5;
 import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.utils.WebUtil;
 import org.springframework.stereotype.Controller;
@@ -9,13 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.JDBCType;
-import java.util.Base64;
+import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -41,7 +37,6 @@ public class PageViewController {
             path = path.split("[.]")[0];
         ModelAndView modelAndView = new ModelAndView(path);
         modelAndView.addObject("param", param);
-
         modelAndView.addObject("absPath", WebUtil.getBasePath(request));
         return modelAndView;
     }
@@ -53,6 +48,10 @@ public class PageViewController {
             path = path.substring(content.length() + 1);
         }
         return path;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new BigInteger(MD5.encode("aaaaaass"),16));
     }
 
 }

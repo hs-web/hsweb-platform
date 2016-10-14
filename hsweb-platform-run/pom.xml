@@ -36,24 +36,24 @@
         </profile>
         <profile>
             <id>prod</id>
-            <properties>
-                <environment.package>product</environment.package>
-                <jdbc.type>oracle</jdbc.type>
-                <logging.path>./logger/</logging.path>
-                <jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password></jdbc.password>
-                <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-            </properties>
             <!--<properties>-->
                 <!--<environment.package>product</environment.package>-->
-                <!--<jdbc.type>mysql</jdbc.type>-->
+                <!--<jdbc.type>oracle</jdbc.type>-->
                 <!--<logging.path>./logger/</logging.path>-->
-                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>-->
-                <!--<jdbc.username>root</jdbc.username>-->
-                <!--<jdbc.password>19920622</jdbc.password>-->
-                <!--<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>-->
+                <!--<jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>-->
+                <!--<jdbc.username>sa</jdbc.username>-->
+                <!--<jdbc.password></jdbc.password>-->
+                <!--<jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>-->
             <!--</properties>-->
+            <properties>
+                <environment.package>product</environment.package>
+                <jdbc.type>mysql</jdbc.type>
+                <logging.path>./logger/</logging.path>
+                <jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>19920622</jdbc.password>
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+            </properties>
         </profile>
 
         <profile>
