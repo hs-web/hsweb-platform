@@ -10,17 +10,25 @@
 用户名 test test1 test2 ... 密码 123456
 
 ## 运行
-1. maven
+项目运行环境需要java8
+
+1. 无maven环境
+[下载源码](https://github.com/hs-web/hsweb-platform/archive/master.zip) 解压后执行
+```bash
+    $ ./run.sh #linux
+    $ run.cmd  #window
+```
+2. maven
 ```bash
     $ git clone https://github.com/hs-web/hsweb-platform.git
     $ cd hsweb-platform/hsweb-platform-run
     $ mvn spring-boot:run
 ```
 
-2. IDE
+3. IDE
 直接运行hsweb-platform-run下Run.java类
 
-3. 打包
+4. 打包
 ```bash
     $ git clone https://github.com/hs-web/hsweb-platform.git
     $ cd hsweb-platform/hsweb-platform-run
