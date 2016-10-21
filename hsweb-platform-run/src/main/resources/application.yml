@@ -18,33 +18,25 @@ spring:
     application:
         name: ${app.name}
         version: ${app.version}
-    datasource:
-        xa:
-            dataSourceClassName: com.alibaba.druid.pool.xa.DruidXADataSource
-            properties:
-                url: ${jdbc.url}
-                driverClassName: ${jdbc.driverClassName}
-                username: ${jdbc.username}
-                password: ${jdbc.password}
-        name: core
-        url: ${jdbc.url}
-        driverClassName: ${jdbc.driverClassName}
-        username: ${jdbc.username}
-        password: ${jdbc.password}
-        type: com.alibaba.druid.pool.DruidDataSource
-        filters: stat
-        maxActive: 20
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
+#    datasource:
+#        name: core
+#        url: ${jdbc.url}
+#        username: ${jdbc.username}
+#        password: ${jdbc.password}
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        filters: stat
+#        maxActive: 20
+#        initialSize: 1
+#        maxWait: 60000
+#        minIdle: 1
+#        timeBetweenEvictionRunsMillis: 60000
+#        minEvictableIdleTimeMillis: 300000
+#        validationQuery: select 'x'
+#        testWhileIdle: true
+#        testOnBorrow: false
+#        testOnReturn: false
+#        poolPreparedStatements: true
+#        maxOpenPreparedStatements: 20
     freemarker :
         suffix : .ftl
         request-context-attribute : request
@@ -62,7 +54,11 @@ spring:
         port: 6379
 # MyBatis
 mybatis:
-    type-aliases-package: org.hsweb.web.bean.po
-    mapper-locations: classpath*:org/hsweb/web/dao/impl/mybatis/mapper/${jdbc.type}/**/*.xml
+    mapper-locations:
     config: classpath:config/mybatis-config.xml
-    typeHandlersPackage: org.hsweb.web.mybatis.handler
+hsweb:
+    dynamic-datasource:
+          url: ${jdbc.url}
+          username: ${jdbc.username}
+          password: ${jdbc.password}
+    access-logger: on
