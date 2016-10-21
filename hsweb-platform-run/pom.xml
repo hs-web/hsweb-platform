@@ -142,6 +142,10 @@
         </dependency>
         <dependency>
             <groupId>org.hsweb</groupId>
+            <artifactId>hsweb-expands-shell</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hsweb</groupId>
             <artifactId>hsweb-web-oauth2-simple</artifactId>
         </dependency>
 
