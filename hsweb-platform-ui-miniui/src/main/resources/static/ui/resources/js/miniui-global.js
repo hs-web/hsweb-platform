@@ -82,6 +82,44 @@ function bindCellBeginButtonEdit(grid) {
     });
 }
 
+function downloadExcel(headerJson, dataJson, fileName) {
+    var form = $("<form style='display: none'></form>");
+    form.attr({
+        action: Request.BASH_PATH + "file/download/" + fileName + ".xlsx",
+        target: "_blank",
+        method: "POST"
+    });
+    form.append($("<input name='header' />").val(headerJson));
+    form.append($("<input name='data' />").val(dataJson));
+    form.appendTo(document.body);
+    form.submit();
+}
+
+
+function downloadGridExcel(grid, fileName) {
+    var columns = grid.getColumns();
+    var header = [{title: "序号", field: "__index"}];
+    var renderer = {};
+    $(columns).each(function () {
+        if (this.visible && this.displayField && this.field) {
+            renderer[this.displayField ? this.displayField : this.field] = this.renderer;
+            header.push({title: this.header, field: this.displayField ? this.displayField : this.field});
+        }
+    });
+    var datas = mini.clone(grid.getData());
+
+    $(datas).each(function (i, e) {
+        e.__index = i + 1;
+        for (var f in e) {
+            if (renderer[f]) {
+                window.tmp_row = {record: e, value: e[f]};
+                e[f] = eval("(function(){return " + renderer[f] + "(window.tmp_row);})()");
+            }
+        }
+    });
+    downloadExcel(mini.encode(header), mini.encode(datas), fileName);
+}
+
 function renderIcon(e) {
     return '<i style="width: 16px; height: 16px; display: inline-block; background-position: 50% 50%;line-height: 16px;" ' +
         'class="mini-iconfont ' + e.value + '" style=""></i>';
