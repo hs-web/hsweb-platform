@@ -105,6 +105,9 @@
         </tbody>
     </table>
 </div>
+<div >
+
+</div>
 <div style="width: 100%;height: 20px;text-align: center">
     <a class="mini-button" iconCls="icon-save" plain="true" onclick="save()">保存</a>
     <a class="mini-button" iconCls="icon-undo" plain="true" onclick="closeWindow('close')">返回</a>

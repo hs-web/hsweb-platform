@@ -45,7 +45,7 @@ public class ActivityModelerAutoConfigure {
 
     @PostConstruct
     protected void initModelData() throws Exception {
-       // createModelData("测试流程模型", "This is a demo model", "test.model.json");
+        createModelData("测试流程模型", "This is a demo model", "test.model.json");
     }
 
     @Bean
@@ -77,8 +77,7 @@ public class ActivityModelerAutoConfigure {
     }
 
     protected void createModelData(String name, String description, String jsonFile) throws Exception {
-        List<Model> modelList = repositoryService.createModelQuery().modelName("Demo model").list();
-
+        List<Model> modelList = repositoryService.createModelQuery().modelName(name).list();
         if (modelList == null || modelList.isEmpty()) {
 
             Model model = repositoryService.newModel();

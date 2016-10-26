@@ -42,6 +42,8 @@
 ```
 
 ## 修改数据库链接
+
+如果不修改系统默认使用h2数据库,此操作不是必须的。
 ```xml
     <!--hsweb-platform-run/pom.xml-->
      <profile>
