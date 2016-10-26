@@ -1,3 +1,8 @@
+${AnsiColor.RED}         _                      _
+        | |__  _____      _____| |__
+        | '_ \/ __\ \ /\ / / _ \ '_ \
+        | | | \__ \\ V  V /  __/ |_) |
+        |_| |_|___/ \_/\_/ \___|_.__/
 ${AnsiColor.YELLOW}-------------------database---------------------
 ${AnsiColor.RED}jdbc-url:${jdbc.url}
 ${AnsiColor.RED}jdbc-username:${jdbc.username}
