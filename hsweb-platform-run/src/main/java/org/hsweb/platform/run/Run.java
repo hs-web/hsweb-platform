@@ -2,6 +2,7 @@ package org.hsweb.platform.run;
 
 
 import org.hsweb.web.core.authorize.annotation.Authorize;
+import org.hsweb.web.socket.cmd.support.SystemMonitorProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
