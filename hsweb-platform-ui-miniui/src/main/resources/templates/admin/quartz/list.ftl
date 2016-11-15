@@ -108,7 +108,7 @@
     }
     function renderResult(e) {
         var text = e.value;
-        if(!text)return "";
+        if (!text)return "";
         if (text.length > 30) {
             return "<a href='javascript:void(0)' onclick=\"showResult('" + e.record.id + "')\">" + (text.substr(0, 29)) + "...</a>";
         }
@@ -154,14 +154,32 @@
         html += createActionButton("编辑", "edit('" + row.id + "')", "icon-edit");
         if (!row.enabled) {
             html += createActionButton("启用", "enable('" + row.id + "')", "icon-ok");
-            html += createActionButton("停用", "remove('" + row.id + "')", "icon-remove");
+        <#if authorize.module("quartz","D")>
+            html += createActionButton("删除", "remove('" + row.id + "')", "icon-remove");
+        </#if>
         }
         else {
             html += createActionButton("禁用", "disable('" + row.id + "')", "icon-cross");
         }
         return html;
     }
-
+    function remove(id) {
+        mini.confirm("确定删除此定时任务", "确定？",
+                function (action) {
+                    if (action == "ok") {
+                        grid.loading("删除中...");
+                        Request['delete']("quartz/" + id, {}, function (e) {
+                            if (e.success) {
+                                showTips("删除成功!");
+                            } else {
+                                showTips(e.message, 'danger');
+                            }
+                            grid.reload();
+                        });
+                    }
+                }
+        );
+    }
     function enable(id) {
         grid.loading("启用中...");
         Request.put("quartz/" + id + "/enable", {}, function (e) {
