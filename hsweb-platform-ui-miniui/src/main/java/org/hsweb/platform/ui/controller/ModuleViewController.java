@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 public class ModuleViewController {
 
     @Resource
-    private ModuleMetaService moduleMetaService;
+    protected ModuleMetaService moduleMetaService;
 
     @Autowired
-    private ModuleMetaParserService moduleMetaParserService;
+    protected ModuleMetaParserService moduleMetaParserService;
 
     @RequestMapping("/{key}/list.html")
     @Authorize
