@@ -26,14 +26,13 @@
             </activation>
             <properties>
                 <environment.package>develop</environment.package>
-                <!--<logging.path>./logger/</logging.path>-->
-                <!--<jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>-->
-                <!--<jdbc.username>sa</jdbc.username>-->
-                <!--<jdbc.password></jdbc.password>-->
                 <logging.path>./logger/</logging.path>
-                <jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>
-                <jdbc.username>root</jdbc.username>
-                <jdbc.password>19920622</jdbc.password>
+                <jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>
+                <jdbc.username>sa</jdbc.username>
+                <jdbc.password></jdbc.password>
+                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;upinGlobalTxToPhysicalConnection=true</jdbc.url>-->
+                <!--<jdbc.username>root</jdbc.username>-->
+                <!--<jdbc.password>19920622</jdbc.password>-->
             </properties>
         </profile>
         <profile>
@@ -48,7 +47,7 @@
             <!--<properties>-->
                 <!--<environment.package>product</environment.package>-->
                 <!--<logging.path>./logger/</logging.path>-->
-                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</jdbc.url>-->
+                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;upinGlobalTxToPhysicalConnection=true</jdbc.url>-->
                 <!--<jdbc.username>root</jdbc.username>-->
                 <!--<jdbc.password>19920622</jdbc.password>-->
             <!--</properties>-->
