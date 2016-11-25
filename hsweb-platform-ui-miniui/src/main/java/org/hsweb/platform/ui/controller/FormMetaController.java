@@ -1,7 +1,7 @@
 package org.hsweb.platform.ui.controller;
 
-import org.hsweb.ezorm.meta.TableMetaData;
-import org.hsweb.ezorm.run.Table;
+import org.hsweb.ezorm.rdb.RDBTable;
+import org.hsweb.ezorm.rdb.meta.RDBTableMetaData;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.form.Form;
 import org.hsweb.web.core.authorize.annotation.Authorize;
@@ -36,12 +36,12 @@ public class FormMetaController {
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     @Authorize(module = "form")
     public ResponseMessage fieldList(@PathVariable("name") String name) {
-        Table table = null;
+        RDBTable table = null;
         try {
             table = dynamicFormService.getDefaultDatabase().getTable(name);
         } catch (NullPointerException e) {
         }
-        TableMetaData metaData;
+        RDBTableMetaData metaData;
         if (table == null) {
             Form form = formService.selectSingle(new QueryParam().where("name", name));
             if (form == null) {
@@ -52,7 +52,7 @@ public class FormMetaController {
         } else {
             metaData = table.getMeta();
         }
-        List<Map<String, String>> fieldMeta = metaData.getFields()
+        List<Map<String, String>> fieldMeta = metaData.getColumns()
                 .stream().sorted().map(fieldMetaData -> {
                     Map<String, String> data = new HashMap<>();
                     data.put("id", fieldMetaData.getAlias());
@@ -62,15 +62,15 @@ public class FormMetaController {
                 }).collect(Collectors.toList());
         //关联表
         metaData.getCorrelations().forEach(correlation -> {
-            TableMetaData metaData1 = metaData.getDatabaseMetaData().getTable(correlation.getTargetTable());
+            RDBTableMetaData metaData1 = metaData.getDatabaseMetaData().getTableMetaData(correlation.getTargetTable());
             if (metaData1 == null) return;
-            metaData1.getFields().stream().sorted().forEach(m -> {
+            metaData1.getColumns().stream().sorted().forEach(m -> {
                 Map<String, String> data = new HashMap<>();
                 data.put("id", correlation.getAlias() + "." + m.getAlias());
                 data.put("text", correlation.getAlias() + "." + m.getAlias() + "(" + m.getComment() + ")");
                 String comment = correlation.getComment();
                 if (comment == null) comment = metaData1.getComment();
-                data.put("comment", correlation.getComment() + ":" + m.getComment());
+                data.put("comment", comment + ":" + m.getComment());
                 fieldMeta.add(data);
             });
         });

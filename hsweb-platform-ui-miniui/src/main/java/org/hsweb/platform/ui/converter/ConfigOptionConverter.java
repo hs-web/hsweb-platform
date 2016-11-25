@@ -1,23 +1,20 @@
 package org.hsweb.platform.ui.converter;
 
 import com.alibaba.fastjson.JSON;
-import org.hsweb.ezorm.meta.expand.OptionConverter;
+import org.hsweb.ezorm.core.OptionConverter;
 import org.hsweb.platform.ui.listener.FormInitListener;
 import org.hsweb.web.service.config.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class ConfigOptionConverter implements OptionConverter {
-    protected String filedName;
-    private String[] configId;
-    private ConfigService configService;
+    protected String        filedName;
+    private   String[]      configId;
+    private   ConfigService configService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public ConfigOptionConverter(String filedName, String[] configId, ConfigService configService) {

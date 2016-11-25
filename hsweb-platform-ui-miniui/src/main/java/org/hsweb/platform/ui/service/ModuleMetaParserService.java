@@ -25,9 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.*;
 
-/**
- * Created by zhouhao on 16-5-11.
- */
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class ModuleMetaParserService {

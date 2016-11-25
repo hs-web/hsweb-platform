@@ -3,16 +3,15 @@ package org.hsweb.platform.ui.listener;
 
 import com.alibaba.fastjson.JSON;
 import org.hsweb.commons.StringUtils;
-import org.hsweb.ezorm.meta.Correlation;
-import org.hsweb.ezorm.meta.FieldMetaData;
-import org.hsweb.ezorm.meta.TableMetaData;
-import org.hsweb.ezorm.meta.expand.OptionConverter;
-import org.hsweb.ezorm.param.Term;
-import org.hsweb.ezorm.param.TermType;
+import org.hsweb.ezorm.core.OptionConverter;
+import org.hsweb.ezorm.core.param.Term;
+import org.hsweb.ezorm.core.param.TermType;
+import org.hsweb.ezorm.rdb.meta.Correlation;
+import org.hsweb.ezorm.rdb.meta.RDBColumnMetaData;
+import org.hsweb.ezorm.rdb.meta.RDBTableMetaData;
 import org.hsweb.platform.ui.converter.ConfigOptionConverter;
 import org.hsweb.platform.ui.converter.MapOptionConverter;
 import org.hsweb.web.service.config.ConfigService;
-import org.hsweb.web.service.form.DynamicFormService;
 import org.hsweb.web.service.form.FormParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class FormInitListener implements FormParser.Listener {
     private ConfigService configService;
 
     @Override
-    public void afterParse(TableMetaData tableMetaData) {
+    public void afterParse(RDBTableMetaData tableMetaData) {
         List<Map<String, String>> list = (List) tableMetaData.getProperty("correlation").toList();
         if (list != null) {
             list.forEach(correlationConfig -> {
@@ -59,7 +58,7 @@ public class FormInitListener implements FormParser.Listener {
                 correlation.setComment(comment);
                 correlationConfig.forEach((k, v) -> correlation.setProperty(k, v));
                 Term term1 = new Term();
-                term1.setField(term);
+                term1.setColumn(term);
                 term1.setValue(term);
                 correlation.setJoin(join);
                 term1.setTermType(TermType.func);
@@ -67,7 +66,7 @@ public class FormInitListener implements FormParser.Listener {
                 tableMetaData.addCorrelation(correlation);
             });
         }
-        tableMetaData.getFields().forEach(fieldMetaData -> {
+        tableMetaData.getColumns().forEach(fieldMetaData -> {
             List<Map> config = fieldMetaData.getProperty("domProperty").toList();
             if (config == null) return;
             Map<String, String> cfgMap = list2map(config, "key", "value");
@@ -97,7 +96,7 @@ public class FormInitListener implements FormParser.Listener {
         });
     }
 
-    protected OptionConverter getOptionConverterByUrl(String fieldName, FieldMetaData metaData, String url, Map<String, String> cfgMap) {
+    protected OptionConverter getOptionConverterByUrl(String fieldName, RDBColumnMetaData metaData, String url, Map<String, String> cfgMap) {
         return null;
     }
 

@@ -1,13 +1,10 @@
 package com.baidu.ueditor.hunter;
 
 import com.baidu.ueditor.Context;
-import com.baidu.ueditor.PathFormat;
-import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.MultiState;
 import com.baidu.ueditor.define.State;
-import org.apache.commons.io.FileUtils;
-import org.hsweb.ezorm.param.Term;
+import org.hsweb.ezorm.core.param.Term;
 import org.hsweb.web.bean.common.PagerResult;
 import org.hsweb.web.bean.common.QueryParam;
 import org.hsweb.web.bean.po.resource.Resources;
@@ -16,14 +13,15 @@ import org.hsweb.web.core.utils.WebUtil;
 import org.hsweb.web.service.resource.ResourcesService;
 
 import java.io.File;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class FileManager {
 
-    private String dir = null;
-    private String rootPath = null;
+    private String   dir        = null;
+    private String   rootPath   = null;
     private String[] allowFiles = null;
-    private int count = 0;
+    private int      count      = 0;
 
     public FileManager(Map<String, Object> conf) {
 
@@ -42,7 +40,7 @@ public class FileManager {
             QueryParam param = QueryParam.build()
                     .where("creatorId", user == null ? "1" : user.getId());
             if (allowFiles != null) {
-                Term term=param.nest();
+                Term term = param.nest();
                 for (String allowFile : allowFiles) {
                     term.or("name$like", "%" + allowFile);
                 }

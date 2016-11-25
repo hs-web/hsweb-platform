@@ -1,7 +1,7 @@
 package org.hsweb.platform.ui.converter;
 
 import org.hsweb.commons.StringUtils;
-import org.hsweb.ezorm.meta.expand.OptionConverter;
+import org.hsweb.ezorm.core.OptionConverter;
 
 import java.util.Arrays;
 import java.util.Map;
