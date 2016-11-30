@@ -36,7 +36,7 @@
             数据源: <input id="datasource" class="mini-combobox" onvaluechanged="changeDatasource" textField="name" showNullItem="true"
                         nullItemText="默认数据源" emptyText="默认数据源" url="<@global.api "datasource?paging=false&includes=id,name"/>"/>
             <a class="mini-button" iconCls="icon-add" onclick="newWin()" plain="true">新建SQL窗口</a>
-            <a class="mini-button" iconCls="icon-reload" onclick="initData()" plain="true">刷新</a>
+            <a class="mini-button" iconCls="icon-reload" onclick="initData(true)" plain="true">刷新</a>
         </div>
     </div>
     <div showHeader="false" region="west" width="200" maxWidth="300" minWidth="100">
@@ -137,7 +137,7 @@
                 }
             },
             {
-                header: "不能为空", width: 50, field: "properties.not_null", renderer: "trueOrFalse", align: "center", headerAlign: "center",
+                header: "不能为空", dataType: "boolean", width: 50, field: "notNull", renderer: "trueOrFalse", align: "center", headerAlign: "center",
                 editor: {
                     type: "combobox", data: [{id: true, text: "是"}, {id: false, text: "否"}]
                 }
@@ -171,7 +171,6 @@
     function setMetaSql() {
         var tableMeta = {};
         var tableInfo = tree.getSelectedNode();
-
         tableMeta.name = tableInfo.name ? tableInfo.name : mini.get("tableName").getValue();
         if (!tableMeta.name || tableMeta.name == '') {
             showTips("表名不能为空");
@@ -182,13 +181,15 @@
         var fields = [];
         $(fieldList).each(function () {
             fields.push({
-                "name": this.name, "dataType": this.dataType, "comment": this.comment, properties: {
-                    "not-null": this.properties['not_null']
-                    , "old-name": this.old_name
+                "name": this.name, "dataType": this.dataType,
+                notNull: this.notNull, primaryKey: this.primaryKey,
+                "comment": this.comment,
+                properties: {
+                    "old-name": this.old_name
                 }
             });
         });
-        tableMeta.fields = fields;
+        tableMeta.columns = fields;
         Request.post("database/sql/" + nowMetaMod + "/" + datasource, tableMeta, function (e) {
             if (e.success) {
                 tableMetaSqlWindow.setSql(e.data);
@@ -200,14 +201,13 @@
         nowMetaMod = "alter";
         var node = tree.getSelectedNode();
         fieldWindow.show();
-        $(node.fields).each(function () {
+        $(node.columns).each(function () {
             this.old_name = this.name;
-        })
+        });
         mini.get("tableName").setValue(node.name);
         mini.get("tableName").setEnabled(false);
         mini.get("tableComment").setValue(node.comment);
-
-        fieldGrid.setData(node.fields);
+        fieldGrid.setData(node.columns);
         tableMetaTabsObj.activeTab(0);
     }
 
@@ -216,7 +216,7 @@
         mini.get("tableName").setValue("t_new_table");
         mini.get("tableName").setEnabled(true);
         mini.get("tableComment").setValue("新建表");
-        fieldGrid.setData([{name: "u_id", comment: "主键", properties: {not_null: true},"properties.not_null":true, dataType: "varchar(32)"}]);
+        fieldGrid.setData([{name: "u_id", comment: "主键", notNull: true, primaryKey: true, dataType: "varchar(32)"}]);
         tableMetaTabsObj.activeTab(0);
         mini.get('win').show();
     }
@@ -241,25 +241,26 @@
         tabs.addTab(tab);
         tabs.activeTab(tab);
     }
-    function initData() {
+    function initData(r) {
         var old = tree.getSelectedNode();
         var isExpandedNode = old && tree.isExpandedNode(old);
-        Request.get("database/tables/" + datasource, function (e) {
+        var reload = r == true;
+        Request.get("database/tables/" + datasource, {reload: reload}, function (e) {
             if (e) {
                 tables = e;
                 var data = mini.clone(tables);
                 $(data).each(function () {
                     this.icon = "icon-application-view-columns";
                     this.text = this.name + ( this.comment ? "(" + this.comment + ")" : "");
-                    $(this.fields).each(function () {
+                    $(this.columns).each(function () {
                         this.icon = "icon-table-column";
                         this.text = this.name + ( this.comment ? "(" + this.comment + ")" : "");
                         this.properties['not_null'] = this.properties['not-null']
                     });
-                    this.children = this.fields;
+                    this.children = this.columns;
                 });
                 var text = mini.get("datasource").getText();
-                if (text == "")text = "默认数据源";
+                if (text == "") text = "默认数据源";
                 tree.setData([{icon: "icon-folder-database", text: text, children: data}]);
                 if (old) {
                     var newNode = tree.findNodes(function (node) {
