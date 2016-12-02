@@ -1,0 +1,39 @@
+.form-table {
+    border: 0px;
+    margin: auto;
+}
+
+.action-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: 50% 50%;
+    cursor: pointer;
+    line-height: 16px;
+}
+
+.action-span {
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 16px;
+}
+
+.asLabel .mini-textbox-border,
+.asLabel .mini-textbox-input,
+.asLabel .mini-buttonedit-border,
+.asLabel .mini-buttonedit-input,
+.asLabel .mini-textboxlist-border {
+    border: 0;
+    background: none;
+    cursor: default;
+}
+
+.asLabel .mini-buttonedit-button,
+.asLabel .mini-textboxlist-close {
+    display: none;
+}
+
+.asLabel .mini-textboxlist-item {
+    padding-right: 8px;
+}

@@ -169,7 +169,7 @@
 
         function parseParam(prefix, index, term) {
             if (!term.children || term.children.length == 0) {
-                terms[prefix + "[" + index + "]" + ".field"] = term.field;
+                terms[prefix + "[" + index + "]" + ".column"] = term.field;
                 terms[prefix + "[" + index + "]" + ".value"] = term.value;
                 terms[prefix + "[" + index + "]" + ".type"] = term.type;
                 terms[prefix + "[" + index + "]" + ".termType"] = term.termType;
@@ -179,7 +179,7 @@
                 terms[prefix + "[" + (index ) + "]" + ".type"] = term.type;
                 terms[prefix + "[" + (index ) + "]" + ".termType"] = term.termType;
 
-                terms[prefix + "[" + index + "].terms[0]" + ".field"] = term.field;
+                terms[prefix + "[" + index + "].terms[0]" + ".column"] = term.field;
                 terms[prefix + "[" + index + "].terms[0]" + ".value"] = term.value;
                 terms[prefix + "[" + index + "].terms[0]" + ".type"] = term.type;
                 terms[prefix + "[" + index + "].terms[0]" + ".termType"] = term.termType;

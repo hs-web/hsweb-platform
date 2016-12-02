@@ -55,7 +55,7 @@ spring:
 # MyBatis
 mybatis:
     mapper-locations:
-    config: classpath:config/mybatis-config.xml
+    config-location: classpath:config/mybatis-config.xml
 hsweb:
     dynamic-datasource:
           url: ${jdbc.url}

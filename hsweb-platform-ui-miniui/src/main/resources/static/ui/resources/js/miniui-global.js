@@ -1,7 +1,18 @@
-/**
- * Created by zhouhao on 16-5-6.
- */
-
+function trace(count, skip) {
+    var caller = arguments.callee.caller;
+    var i = 0;
+    count = count || 10;
+    skip = skip || 0;
+    if (window.console) {
+        while (caller && i < count) {
+            if (i >= skip) {
+                console.log(caller.toString());
+            }
+            caller = caller.caller;
+            i++;
+        }
+    }
+}
 mini_debugger = false;
 function showTips(msg, state) {
     mini.showTips({
@@ -25,6 +36,7 @@ function openWindow(url, title, width, height, ondestroy, onload) {
         width: width,
         height: height,
         maskOnLoad: false,
+        showModal: false,
         onload: onload,
         ondestroy: ondestroy
     });
@@ -38,16 +50,59 @@ function openFileUploader(accept, title, onupload, defaultData) {
     }, function () {
         var iframe = this.getIFrameEl();
         var win = iframe.contentWindow;
-        if (win.grid) {
-            if (defaultData) {
-                defaultData = mini.clone(defaultData);
-                $(defaultData).each(function (i, e) {
-                    e.status = "已上传";
-                    e.resourceId = e.id;
-                });
-                iframe.contentWindow.grid.setData(defaultData);
+
+        function init() {
+            if (win.grid) {
+                if (defaultData) {
+                    defaultData = mini.clone(defaultData);
+                    $(defaultData).each(function (i, e) {
+                        e.status = "已上传";
+                        e.resourceId = e.id;
+                    });
+                    iframe.contentWindow.grid.setData(defaultData);
+                }
             }
         }
+
+        $(iframe).on("load", init);
+        init();
+    });
+}
+function renderWarningInfo(e) {
+    var row = e.record;
+    if (!row.warning || !row.warning.u_id) {
+        return "/";
+    } else {
+        e.rowStyle = "background:#FDCECE";
+        return row.warning.reason;
+    }
+}
+function createWarning(type, key, pk, cbk) {
+    openWindow(Request.BASH_PATH + "admin/warning/save.html", "添加预警信息", "850", "500", cbk, function () {
+        var iframe = this.getIFrameEl();
+        var win = iframe.contentWindow;
+
+        function init() {
+            if (win && win.init) {
+                win.init(type, key, pk);
+            }
+        }
+
+        $(iframe).on("load", init);
+        init();
+    });
+}
+function handleWarning(type, pk, cbk) {
+    openWindow(Request.BASH_PATH + "admin/warning/handle.html", "处理预警信息", "850", "500", cbk, function () {
+        var iframe = this.getIFrameEl();
+        var win = iframe.contentWindow;
+        function init() {
+            if (win && win.init) {
+                win.init(key, pk);
+            }
+        }
+        $(iframe).on("load", init);
+        init();
     });
 }
 
@@ -61,6 +116,9 @@ function openScriptEditor(mode, script, ondestroy) {
         maskOnLoad: false,
         onload: function () {
             var iframe = this.getIFrameEl();
+            $(iframe).on("load", function () {
+                iframe.contentWindow.init(mode, script);
+            });
             iframe.contentWindow.init(mode, script);
         },
         ondestroy: function (e) {
@@ -82,53 +140,15 @@ function bindCellBeginButtonEdit(grid) {
     });
 }
 
-function downloadExcel(headerJson, dataJson, fileName) {
-    var form = $("<form style='display: none'></form>");
-    form.attr({
-        action: Request.BASH_PATH + "file/download/" + fileName + ".xlsx",
-        target: "_blank",
-        method: "POST"
-    });
-    form.append($("<input name='header' />").val(headerJson));
-    form.append($("<input name='data' />").val(dataJson));
-    form.appendTo(document.body);
-    form.submit();
-}
-
-
-function downloadGridExcel(grid, fileName) {
-    var columns = grid.getColumns();
-    var header = [{title: "序号", field: "__index"}];
-    var renderer = {};
-    $(columns).each(function () {
-        if (this.visible && this.displayField && this.field) {
-            renderer[this.displayField ? this.displayField : this.field] = this.renderer;
-            header.push({title: this.header, field: this.displayField ? this.displayField : this.field});
-        }
-    });
-    var datas = mini.clone(grid.getData());
-
-    $(datas).each(function (i, e) {
-        e.__index = i + 1;
-        for (var f in e) {
-            if (renderer[f]) {
-                window.tmp_row = {record: e, value: e[f]};
-                e[f] = eval("(function(){return " + renderer[f] + "(window.tmp_row);})()");
-            }
-        }
-    });
-    downloadExcel(mini.encode(header), mini.encode(datas), fileName);
-}
-
 function renderIcon(e) {
     return '<i style="width: 16px; height: 16px; display: inline-block; background-position: 50% 50%;line-height: 16px;" ' +
         'class="mini-iconfont ' + e.value + '" style=""></i>';
 }
-
+//绑定表格默认属性
 function bindDefaultAction(grid) {
     grid.setSortFieldField("sorts[0].field");
     grid.setSortOrderField("sorts[0].dir");
-
+    grid.setAjaxOptions({type: "GET", dataType: "json"});
     grid.un("loaderror", function (e) {
     });
     grid.on("loaderror", function (e) {
@@ -142,13 +162,18 @@ function bindDefaultAction(grid) {
             showTips("权限不够", "danger");
         }
         else if (res.code == 500) {
-            showTips("数据加载失败:系统错误", "danger");
+            showTips("数据加载失败:" + res.message, "danger");
             if (window.console) {
                 window.console.log(res.message);
             }
         } else {
             showTips("数据加载失败:" + res.message, "danger");
         }
+    });
+    var tip = new mini.ToolTip();
+    tip.set({
+        target: document,
+        selector: '.action-span'
     });
 }
 
@@ -205,27 +230,114 @@ function getCleanData(grid) {
     });
     return data;
 }
+var User = function () {
+    var tmp = this;
+    this.getModuleData = function () {
+        return tmp.info['modulesData'];
+    };
+    this.getAccessOrgIds = function () {
+        if (tmp.info.accessOrgIds) {
+            return mini.clone(tmp.info.accessOrgIds);
+        }
+        return [];
+    };
+    this.getAccessAreaIds = function () {
+        if (tmp.info.accessAreaList) {
+            return mini.clone(tmp.info.accessAreaList);
+        }
+        return [];
+    };
+    this.isRootOrgUser = function () {
+        return tmp.info.rootOrgUser;
+    };
+    this.getMaxAreaLevel = function () {
+        return tmp.info.maxAreaLevel;
+    };
+    this.getModuleMapData = function () {
+        return tmp.info['moduleMapData'];
+    };
+    this.getModulesMenuData = function () {
+        return tmp.info['modulesMenuData'];
+    };
+    this.load = function (func) {
+        var e = Request.get("userModule/loginUser");
+        if (e) {
+            tmp.info = e;
+            tmp.info.modulesMenuData = [];
+            tmp.info.moduleMapData = {};
+            var mData = tmp.info['modulesData'];
+            for (var i = 0; i < mData.length; i++) {
+                tmp.info.moduleMapData[mData[i].id] = mData[i];
+                //持有M权限
+                if (tmp.hasAccessModule(mData[i].id, "M")) {
+                    tmp.info.modulesMenuData.push(mData[i]);
+                }
+            }
+            if (tmp.onload) {
+                tmp.onload();
+            }
+            var expands = e.properties && e.properties.user_expands ? e.properties.user_expands : {};
+            tmp.info.accessOrgIds = expands.accessOrgIds;
+            tmp.info.accessAreaList = expands.accessAreaList;
+            tmp.info.rootOrgUser = expands.rootOrgUser;
+            tmp.info.maxAreaLevel = expands.maxAreaLevel;
+            if (func)func();
+        }
+    };
+    this.hasAccessModule = function () {
+        var args = arguments;
+        var module = tmp.info.modules[args[0]];
+        var mData = tmp.info.moduleMapData[args[0]];
+        if (module && mData) {
+            if (args.length == 1)return true;
+            if (args.length > 1) {
+                for (var i = 1; i < args.length; i++) {
+                    if (module.indexOf(args[i]) != -1 && mData.optionalMap[args[i]])return true;
+                }
+            }
+        }
+        return false;
+    };
+    this.hasAccessRole = function () {
+        var args = arguments;
+        var roles = tmp.info['roles'];
+        if (roles) {
+            for (var i = 0; i < roles.length; i++) {
+                for (var j = 0; j < args.length; j++) {
+                    if (args[j] == roles[i].roleId)return true;
+                }
+            }
+        }
+        return false;
+    };
+    return this;
+};
+
+function getUser(func) {
+    if (!window.top.user) {
+        window.top.user = new User();
+        if (func)
+            window.top.user.load(func);
+        else
+            window.top.user.load(function () {
+            });
+    }
+    if (func) {
+        window.setTimeout(func, 10);
+    }
+    return window.top.user;
+}
 
 function downloadText(text, fileName) {
-    try {
-        var aLink = document.createElement('a');
-        var blob = new Blob(["\ufeff" + text]);
-        var evt = document.createEvent("HTMLEvents");
-        evt.initEvent("click", false, false);
-        aLink.download = fileName;
-        aLink.href = URL.createObjectURL(blob);
-        aLink.dispatchEvent(evt);
-    } catch (e) {
-        var form = $("<form style='display: none'></form>");
-        form.attr({
-            action: Request.BASH_PATH + "file/download-text/" + fileName,
-            target: "_blank",
-            method: "POST"
-        });
-        form.append($("<input name='text' />").val(text));
-        form.appendTo(document.body);
-        form.submit();
-    }
+    var form = $("<form style='display: none'></form>");
+    form.attr({
+        action: Request.BASH_PATH + "file/download-text/" + fileName,
+        target: "_blank",
+        method: "POST"
+    });
+    form.append($("<input name='text' />").val(text));
+    form.appendTo(document.body);
+    form.submit();
 }
 
 function downloadZip(data, fileName) {
@@ -240,6 +352,20 @@ function downloadZip(data, fileName) {
     form.submit();
 }
 
+function submitForm(url, method, param) {
+    var form = $("<form style='display: none'></form>");
+    form.attr({
+        action: url,
+        target: "_blank",
+        method: method
+    });
+    for (var i in param) {
+        form.append($("<input name='" + i + "' />").val(param[i]));
+    }
+    form.appendTo(document.body);
+    form.submit();
+
+}
 function createActionButton(text, action, icon) {
     return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
         '<span class="action-icon ' + icon + '"></span>' + "" //text
@@ -248,8 +374,56 @@ function createActionButton(text, action, icon) {
 String.prototype.endWith = function (str) {
     var reg = new RegExp(str + "$");
     return reg.test(this);
+};
+
+function downloadExcel(headerJson, dataJson, fileName) {
+    var form = $("<form style='display: none'></form>");
+    form.attr({
+        action: Request.BASH_PATH + "file/download/" + fileName + ".xlsx",
+        target: "_blank",
+        method: "POST"
+    });
+    form.append($("<input name='header' />").val(headerJson));
+    form.append($("<input name='data' />").val(dataJson));
+    form.appendTo(document.body);
+    form.submit();
 }
 
+
+function downloadGridExcel(grid, fileName) {
+    var columns = grid.getColumns();
+    var header = [{title: "序号", field: "__index"}];
+    var renderer = {};
+    $(columns).each(function () {
+        if (this.visible && this.displayField && this.field) {
+            renderer[this.displayField ? this.displayField : this.field] = this.renderer;
+            header.push({title: this.header, field: this.displayField ? this.displayField : this.field});
+        }
+    });
+    var datas = mini.clone(grid.getData());
+
+    $(datas).each(function (i, e) {
+        e.__index = i + 1;
+        for (var f in e) {
+            if (renderer[f]) {
+                window.tmp_row = {record: e, value: e[f]};
+                e[f] = eval("(function(){return " + renderer[f] + "(window.tmp_row);})()");
+            }
+        }
+    });
+    downloadExcel(mini.encode(header), mini.encode(datas), fileName);
+}
+
+function randomChar(len) {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz';
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (var i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
 
 function openCronEditor(cbk, cron) {
     openWindow(Request.BASH_PATH + "ui/plugins/crontool/index.html", "Cron选择器", "840", "530", function (cron) {

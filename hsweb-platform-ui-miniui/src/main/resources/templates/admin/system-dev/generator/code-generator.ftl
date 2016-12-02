@@ -143,7 +143,7 @@
 <div id="dbMetaWin" title="选择表" class="mini-window" style="width: 600px;" showFooter="true">
     数据源: <input id="datasource" style="width: 20%" class="mini-combobox" emptyText="默认数据源" nullItemText="默认数据源"
                 onvaluechanged="changeDatasource" textField="name" showNullItem="true"
-                 url="<@global.api "datasource?paging=false&includes=id,name"/>"/>
+                url="<@global.api "datasource?paging=false&includes=id,name"/>"/>
     表:<input class="mini-combobox" style="width: 60%" id="dbList" allowInput="true"><br>
     <div property="footer" style="text-align:right;padding: 5px 15px 5px 5px;">
         <input type='button' value="确定" onclick="chooseDbMeta()" style='vertical-align:middle;'/>
@@ -406,7 +406,7 @@
         });
     }
 
-    changeDatasource({selected:{id:""}});
+    changeDatasource({selected: {id: ""}});
     function changeDatasource(e) {
         var id = "";
         if (e.selected)
@@ -430,12 +430,12 @@
             var meta = dbMeta[tName];
             if (meta) {
                 var fields = [];
-                $(meta.fields).each(function () {
+                $(meta.columns).each(function () {
                     var data = mini.clone(this);
                     if (data.name == 'u_id') {
-                        fields.push({column: data.name, property: "id", comment: data.comment, dataType: data.dataType});
+                        fields.push({column: data.name, property: "id", comment: data.comment, javaType: data.javaType, jdbcType: data.jdbcType, dataType: data.dataType});
                     } else
-                        fields.push({column: data.name, comment: data.comment, dataType: data.dataType});
+                        fields.push({column: data.name, comment: data.comment, javaType: data.javaType, jdbcType: data.jdbcType, dataType: data.dataType});
                 });
                 tableMetaGrid.setData(fields);
                 var varData = varsGrid.getData();
@@ -528,7 +528,7 @@
     }
 
     function initAbsPath(parent, children, each) {
-        if (!parent.absPath)parent.absPath = "/";
+        if (!parent.absPath) parent.absPath = "/";
         if (children)
             $(children).each(function () {
                 this.parentPath = parent.absPath;
@@ -548,7 +548,7 @@
             var list = [];
             $(data).each(function () {
                 if (this.type == 'template') {
-                    if (!this.code)this.code = "";
+                    if (!this.code) this.code = "";
                     if (this.absPath.indexOf("/") == 0) {
                         this.absPath = this.absPath.substring(1, this.absPath.length);
                     }
