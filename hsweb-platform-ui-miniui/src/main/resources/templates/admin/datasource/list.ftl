@@ -41,10 +41,9 @@
          sizeList="[10,20,50,200]" pageSize="20">
         <div property="columns">
             <div type="indexcolumn"></div>
+            <div field="id" width="60" align="center" headerAlign="center" allowSort="true">ID</div>
             <div field="name" width="120" align="center" headerAlign="center" allowSort="true">数据源名称</div>
-            <div field="driver" width="120" align="center" headerAlign="center" allowSort="true">driver</div>
             <div field="url" width="120" align="center" headerAlign="center" allowSort="true">url</div>
-
             <div field="username" width="120" align="center" headerAlign="center" allowSort="true">用户名</div>
             <div field="createDate" width="120" dateFormat="yyyy-MM-dd" align="center" headerAlign="center" allowSort="true">创建日期</div>
             <div field="enabled" width="50" renderer="renderStatus" align="center" headerAlign="center" allowSort="true">是否启用</div>

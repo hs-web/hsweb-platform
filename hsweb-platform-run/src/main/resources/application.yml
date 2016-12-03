@@ -57,6 +57,9 @@ mybatis:
     mapper-locations:
     config-location: classpath:config/mybatis-config.xml
 hsweb:
+    app:
+      name: hsweb-platform
+      version: 2.2.0
     dynamic-datasource:
           url: ${jdbc.url}
           username: ${jdbc.username}

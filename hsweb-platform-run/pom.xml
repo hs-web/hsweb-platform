@@ -45,11 +45,11 @@
                 <jdbc.password></jdbc.password>
             </properties>
             <!--<properties>-->
-                <!--<environment.package>product</environment.package>-->
-                <!--<logging.path>./logger/</logging.path>-->
-                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;upinGlobalTxToPhysicalConnection=true</jdbc.url>-->
-                <!--<jdbc.username>root</jdbc.username>-->
-                <!--<jdbc.password>19920622</jdbc.password>-->
+            <!--<environment.package>product</environment.package>-->
+            <!--<logging.path>./logger/</logging.path>-->
+            <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;upinGlobalTxToPhysicalConnection=true</jdbc.url>-->
+            <!--<jdbc.username>root</jdbc.username>-->
+            <!--<jdbc.password>19920622</jdbc.password>-->
             <!--</properties>-->
         </profile>
 
@@ -159,17 +159,7 @@
 
         <dependency>
             <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-web-controller</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-web-service-simple</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-web-dao-mybatis</artifactId>
+            <artifactId>hsweb-web-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -205,31 +195,27 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hsweb</groupId>
-            <artifactId>hsweb-web-websocket</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.fusesource</groupId>
             <artifactId>sigar</artifactId>
             <version>1.6.4</version>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.hsweb</groupId>
             <artifactId>hsweb-expands-request</artifactId>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-redis</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-redis</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.session</groupId>-->
-            <!--<artifactId>spring-session-data-redis</artifactId>-->
+        <!--<groupId>org.springframework.session</groupId>-->
+        <!--<artifactId>spring-session-data-redis</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
         <!--<groupId>org.hsweb</groupId>-->

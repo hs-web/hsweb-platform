@@ -91,10 +91,25 @@
         </tr>
         </tbody>
     </table>
-</div>
-<div >
 
 </div>
+<div id="propertiesGrid" class="mini-datagrid" style="width:90%;height:300px;margin: auto"
+     allowCellEdit="true" allowCellSelect="true"
+     sortField="id" idField="id" showPager="false"
+     contextMenu="#gridMenu">
+    <div property="columns">
+        <div field="key" width="100" align="center" headerAlign="center">配置名
+            <input property="editor" class="mini-textbox"/>
+        </div>
+        <div field="value" width="100" align="center" headerAlign="center">值
+            <input property="editor" class="mini-textbox"/>
+        </div>
+        <div name="action" width="60" renderer="rendererAction" align="center" headerAlign="center">操作</div>
+    </div>
+</div>
+<ul id="gridMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
+    <li name="add" iconCls="icon-add" onclick="propertiesGrid.addRow({})">新增配置</li>
+</ul>
 <div style="width: 100%;height: 20px;text-align: center">
     <a class="mini-button" iconCls="icon-save" plain="true" onclick="save()">保存</a>
     <a class="mini-button" iconCls="icon-undo" plain="true" onclick="closeWindow('close')">返回</a>
@@ -105,6 +120,15 @@
 <script type="text/javascript">
     var id = "${param.id!''}";
     mini.parse();
+    var propertiesGrid = mini.get("propertiesGrid");
+    function onBeforeOpen(e) {
+
+    }
+
+    function rendererAction(e) {
+        return createActionButton("删除", "removeRow(propertiesGrid," + e.record._id + ")", "icon-remove");
+    }
+
     uParse('#data-form', {
         rootPath: Request.BASH_PATH + 'ui/plugins/ueditor',
         chartContainerHeight: 500
@@ -115,6 +139,12 @@
             Request.get("datasource/" + id, {}, function (e) {
                 mini.getbyName("id").setEnabled(false);
                 if (e.success) {
+                    var properties = e.data.properties;
+                    var list = [];
+                    for (var i in properties) {
+                        list.push({key: i, value: properties[i]});
+                    }
+                    propertiesGrid.setData(list);
                     new mini.Form('#data-form').setData(e.data);
                 } else {
                     showTips(e.message, "danger");
@@ -122,7 +152,14 @@
             });
         }
     }
-
+    function getProperties() {
+        var data = propertiesGrid.getData();
+        var map = {};
+        $(data).each(function () {
+            map[this.key] = this.value;
+        });
+        return map;
+    }
     function save() {
         var api = "datasource/" + id;
         var func = id == "" ? Request.post : Request.put;
@@ -131,6 +168,7 @@
         if (form.isValid() == false) return;
         //提交数据
         var data = form.getData();
+        data.properties = getProperties();
         var box = mini.loading("提交中...", "");
         func(api, data, function (e) {
             mini.hideMessageBox(box);
