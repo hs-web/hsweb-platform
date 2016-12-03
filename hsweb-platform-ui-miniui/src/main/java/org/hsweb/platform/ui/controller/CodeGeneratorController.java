@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.hsweb.commons.StringUtils;
 import org.hsweb.platform.generator.Generator;
+import org.hsweb.platform.generator.SourceCode;
 import org.hsweb.platform.generator.support.freemarker.FreemarkerGenerator;
 import org.hsweb.platform.generator.template.SimpleCodeTemplate;
 import org.hsweb.platform.generator.template.TemplateInput;
@@ -12,13 +13,16 @@ import org.hsweb.web.core.authorize.annotation.Authorize;
 import org.hsweb.web.core.exception.BusinessException;
 import org.hsweb.web.core.logger.annotation.AccessLogger;
 import org.hsweb.web.core.message.ResponseMessage;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static org.hsweb.web.core.message.ResponseMessage.ok;
 
 /**
  * @author zhouhao
@@ -29,6 +33,46 @@ import java.util.Map;
 public class CodeGeneratorController {
 
     Generator<String> generator = new FreemarkerGenerator();
+
+    @RequestMapping(value = "/write", method = RequestMethod.POST)
+    @Authorize(module = "generator")
+    @AccessLogger("写出代码")
+    public ResponseMessage writeCode(@RequestParam(value = "path") String path, @RequestBody JSONArray codes) {
+        for (int i = 0; i < codes.size(); i++) {
+            JSONObject file = codes.getJSONObject(i);
+            if ("file".equals(file.getString("type"))) {
+                String fileName = path + "/" + file.getString("fileName");
+                String code = file.getString("code");
+                if (StringUtils.isNullOrEmpty(fileName)) continue;
+                try {
+                    new SourceCode() {
+                        @Override
+                        public String getFileName() {
+                            return fileName;
+                        }
+
+                        @Override
+                        public InputStream readCode() {
+                            return new ByteArrayInputStream(code == null ? new byte[0] : code.getBytes());
+                        }
+
+                        @Override
+                        public ReplaceMod getReplaceMode() {
+                            try {
+                                return ReplaceMod.valueOf(file.getString("replaceMod"));
+                            } catch (Exception e) {
+                                return ReplaceMod.ignore;
+                            }
+                        }
+                    }.write();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new BusinessException("写出文件失败:" + fileName, e, 500);
+                }
+            }
+        }
+        return ok();
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     @Authorize(module = "generator")
@@ -49,7 +93,7 @@ public class CodeGeneratorController {
         vars.put("fields", fields);
         JSONObject template = config.getJSONObject("template");
         renderTemplateTree(vars, template);
-        return ResponseMessage.ok(template);
+        return ok(template);
     }
 
     protected void renderTemplateTree(Map<String, Object> vars, JSONObject template) {

@@ -51,7 +51,7 @@
                 <tbody>
                 <tr class="firstRow">
                     <th style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="4">
-                        <h1 align="center" id="tableTitle">新建权限</h1>
+                        <h1 style="font-size: 18px;" align="center" id="tableTitle">新建权限</h1>
                     </th>
                 </tr>
                 <tr>
@@ -96,26 +96,27 @@
                 </tbody>
             </table>
         </div>
-        <div style="margin: auto;width:600px;">
+        <div style="margin: auto;width:80%;">
             <br/>
-            <h3 align="center">可选操作</h3>
-            <a class="mini-button" iconCls="icon-add" onclick="mini.get('m_option_table').addRow({},0)" plain="true"></a>
-            <a class="mini-button" iconCls="icon-remove" plain="true" onclick="mini.get('m_option_table').removeRow(mini.get('m_option_table').getSelected())"></a>
-
-            <div id="m_option_table" class="mini-datagrid"
+            <h2 align="center">可选操作</h2>
+            <a class="mini-button" iconCls="icon-add" onclick="mini.get('m_option_table').addNode({})" plain="true"></a>
+            <div id="m_option_table" class="mini-treegrid"
                  style="margin: auto;width:100%;height:300px;border: 0px;"
-                 showPager="false" allowCellEdit="true"
-                 allowCellSelect="true" allowAlternating="true" editNextOnEnterKey="true">
+                 showPager="false" allowCellEdit="true" allowDrop="true"
+                 allowCellSelect="true" treeColumn="treeColumn" allowDrag="true" showTreeIcon="false"
+                 allowAlternating="true" editNextOnEnterKey="true">
                 <div property="columns">
-                    <div field="id" width="30" align="center" headerAlign="center">ID
+                    <div type="indexcolumn" name="treeColumn"  align="center" headerAlign="center">拖动排序</div>
+                    <div field="id" width="60" align="center" headerAlign="center">ID
                         <input property="editor" class="mini-textbox"/>
                     </div>
-                    <div field="text" width="30" align="center" headerAlign="center">备注
+                    <div field="text" width="60" align="center" headerAlign="center">备注
                         <input property="editor" class="mini-textarea"/>
                     </div>
                     <div field="checked" width="30" align="center" headerAlign="center" renderer="renderTrueOrFalse">默认
                         <input property="editor" class="mini-combobox" data="[{'id':true,text:'是'},{'id':false,text:'否'}]" valueField="id" textField="text"/>
                     </div>
+                    <div name="action" renderer="renderAction" align="center" headerAlign="center" width="50">操作</div>
                 </div>
             </div>
         </div>
@@ -141,5 +142,6 @@
     function renderTrueOrFalse(e){
         return e.value+""=="true"?"是":"否";
     }
+
 </script>
 <@global.resources "js/module/list.js"/>

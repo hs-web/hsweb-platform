@@ -47,23 +47,10 @@
         </tr>
         <tr>
             <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;"
-                width="180" align="right">
-                driver
-            </td>
-            <td valign="top" colspan="3" style="border-color: rgb(221, 221, 221); word-break: break-all;"
-                width="500">
-                <input class="mini-combobox" required="true" name="driver" url="<@global.api 'config/data-source.array' />"
-                       valuefield="value" textfield="key" valuefromselect="true" clearonload="true"
-                       allowinput="true" style="width:100%">
-            </td>
-        </tr>
-        <tr>
-            <td valign="middle" style="border-color: rgb(221, 221, 221); word-break: break-all;"
                 width="89" align="right">
                 url
             </td>
-            <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1"
-                colspan="3">
+            <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1" colspan="3">
                 <input class="mini-textbox" required="true" name="url" style="width:100%">
             </td>
         </tr>

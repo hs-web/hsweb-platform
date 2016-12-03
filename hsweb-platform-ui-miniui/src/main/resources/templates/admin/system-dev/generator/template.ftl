@@ -54,7 +54,7 @@
 </head>
 <body>
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
-    <div showHeader="false" region="west" width="150" maxWidth="300" minWidth="100">
+    <div showHeader="false" region="west" width="200" maxWidth="300" minWidth="100">
         <div id="leftTree" style="height: 100%;" class="mini-tree"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
              contextMenu="#treeMenu" onnodedblclick="renameFile()" allowDrag="true" allowLeafDropIn="true" allowDrop="true"
@@ -83,6 +83,14 @@
                     <td width="129" valign="middle" style="word-break: break-all;" align="left">
                         <input style="width:100%" name="fileName" id="fileName" class="mini-textbox" required="true"/>
                     </td>
+                </tr>
+                <tr id="mod">
+                    <td width="50" valign="middle" style="word-break: break-all;" align="right">覆盖模式</td>
+                    <td valign="middle" style="word-break: break-all;" align="left">
+                        <input style="width:100%" name="replaceMod" value="ignore" id="replaceMod"
+                               data="[{'id':'all','text':'全部覆盖'},{'id':'append','text':'追加到尾部'},{'id':'ignore','text':'忽略'}]" class="mini-combobox"/>
+                    </td>
+                    <td colspan="2" >*当生成代码后,使用直接替换源码的方式时。<br>如果代码已存在,则使用设置的模式进行处理。(只对文本文件有效)</td>
                 </tr>
                 <tr>
                     <td colspan="4" align="center">
@@ -147,7 +155,7 @@
         cut();
         return false;
     });
-    Mousetrap.bind(['del',"ctrl+d"], function (e) {
+    Mousetrap.bind(['del', "ctrl+d"], function (e) {
         deleteNode();
         return false;
     });
@@ -207,8 +215,8 @@
     function cut() {
         var node = tree.getSelectedNode();
         if (clipboard && node) {
-            var target=mini.clone(clipboard);
-            tree.addNode(target,0, node);
+            var target = mini.clone(clipboard);
+            tree.addNode(target, 0, node);
             tree.beginEdit(target);
             tree.expandNode(target);
         }
@@ -217,7 +225,7 @@
         var dragNode = e.dragNode;
         var dropNode = e.dropNode;
         var dragAction = e.dragAction;
-        if (dropNode.type != 'dir'&&dragAction=='add') {
+        if (dropNode.type != 'dir' && dragAction == 'add') {
             e.cancel = true;
         }
     }
@@ -238,15 +246,18 @@
     }
     function nodeselect(e) {
         saveNode();
+        $("#mod").hide();
         var node = e.node;
         if (node.id != 'parent') {
             $('.CodeMirror').show();
             $('.configGrid').hide();
             nowEditNode = node;
             mini.get("name").setValue(nowEditNode.name);
-            if (!nowEditNode.fileName)nowEditNode.fileName = nowEditNode.name;
+            if (!nowEditNode.fileName) nowEditNode.fileName = nowEditNode.name;
             mini.get("fileName").setValue(nowEditNode.fileName);
+            mini.get("replaceMod").setValue(nowEditNode.replaceMod?nowEditNode.replaceMod:"ignore");
             if (nowEditNode.type != 'dir') {
+                $("#mod").show();
                 if (nowEditNode.fileName.endWith(".java")) {
                     init("text/x-java", "");
                 } else if (nowEditNode.fileName.endWith(".xml")) {
@@ -312,6 +323,7 @@
         data = mini.clone(data);
         tree.loadData([data]);
         datagrid.setData(data.config);
+        tree.expandAll();
     }
 
     function submit() {

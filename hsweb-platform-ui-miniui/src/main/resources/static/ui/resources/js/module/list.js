@@ -16,6 +16,17 @@ grid.setData(defaultGridData);
 if (nowEditorId != "") {
     tree.selectNode({id: nowEditorId});
 }
+function removeNode(id){
+    var nodes = grid.findNodes(function(node){
+        if(node._id==id) return true;
+    });
+    grid.removeNodes(nodes);
+}
+function renderAction(e){
+
+    return createActionButton("删除","removeNode("+e.record._id+")","icon-remove");
+}
+
 function newModule() {
     var node = tree.getSelectedNode();
     if (!node) {

@@ -123,11 +123,6 @@
             newData.push({header: "操作", width: 20, renderer: renderAction, headerAlign: "center", align: "center"});
         return newData;
     }
-    function createActionButton(text, action, icon) {
-        return '<span class="action-span" title="' + text + '" onclick="' + action + '">' +
-                '<i class="action-icon ' + icon + '"></i>' + "" //text
-                + '</span>&nbsp;';
-    }
     function renderAction(e) {
         var html = "";
         if (meta.canRemoveRow + "" == 'true') {

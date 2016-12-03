@@ -116,6 +116,7 @@
                         <tr>
                             <td style="width:100%;">
                                 <a class="mini-button" iconCls="icon-download" plain="true" onclick="downloadCode()">下载代码</a>
+                                <a class="mini-button" iconCls="icon-save" plain="true" onclick="writeCode()">写出到开发环境</a>
                             </td>
                         </tr>
                     </table>
@@ -180,6 +181,9 @@
             }, function () {
                 var iframe = this.getIFrameEl();
                 var win = iframe.contentWindow;
+                $(iframe).on("load", function () {
+                    win.setData(node);
+                });
                 win.setData(node);
             });
         }
@@ -243,9 +247,48 @@
             $('.CodeMirror').remove();
         }
         editor = CodeMirror.fromTextArea(document.getElementById("resultCode"), option);
-
     }
 
+    function getSourceDir() {
+        var vars = getCleanData(varsGrid);
+        var path;
+        $(vars).each(function () {
+            console.log(this);
+            if (this.name == "sourceDir") {
+                path = this.value;
+            }
+        });
+        return path;
+    }
+    function writeCode() {
+        mini.confirm("确定写出源码?", "确定？",
+                function (action) {
+                    if (action == "ok") {
+                        var data = mini.clone(resultTree.getData());
+                        var list = [];
+                        var path = getSourceDir();
+                        if (!path) {
+                            showTips("未设置变量: sourceDir")
+                            return;
+                        }
+                        initAbsPath(data[0], data[0].children, function (e) {
+                            var e2 = mini.clone(e);
+                            delete e2.children;
+                            if (e2.type == "template") {
+                                list.push({type: "file", fileName: e2.absPath, code: e2.code, replaceMod: e2.replaceMod});
+                            }
+                        });
+                        Request.post("generator/write?path=" + path, list, function (e) {
+                            if (e.success) {
+                                showTips("写出成功");
+                            } else {
+                                showTips(e.message, "danger");
+                            }
+                        })
+                    }
+                }
+        );
+    }
     function generator() {
         var data = {};
         data.fields = getCleanData(tableMetaGrid);
@@ -292,6 +335,17 @@
                                         oldMap[this.absPath] = this;
                                     });
                                     $(list).each(function () {
+                                        var old = oldMap[this.absPath];
+                                        if (old && old.replaceMod) {
+                                            if (old.replaceMod == "append") {
+                                                console.log(old.code);
+                                                console.log(this.code);
+                                                if (old.code && this.code && old.code.indexOf(this.code) == -1) {
+
+                                                    this.code = old.code + this.code;
+                                                }
+                                            }
+                                        }
                                         oldMap[this.absPath] = this;
                                     });
                                     var newData = [];
