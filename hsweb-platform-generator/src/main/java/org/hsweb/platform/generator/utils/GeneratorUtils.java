@@ -26,6 +26,30 @@ public class GeneratorUtils {
         return "set" + StringUtils.toUpperCaseFirstOne(name);
     }
 
+    public String getSqlLengthByDataType(String dataType) {
+        if (dataType == null) return "";
+        if (dataType.contains("(")) {
+            return ".length" + dataType.substring(dataType.indexOf("("), dataType.length());
+        } else {
+            return "";
+        }
+    }
+
+    public String toLowerCase(Object o) {
+        return String.valueOf(o).toLowerCase();
+    }
+
+    public String createSqlColumnBuilder(Map<String, Object> column) {
+        String script = String.format("name(\"%s\").alias(\"%s\").comment(\"%s\").jdbcType(java.sql.JDBCType.%s)%s",
+                toLowerCase(column.get("column")), column.get("property"),
+                column.getOrDefault("comment", column.get("property")),
+                column.get("jdbcType"), getSqlLengthByDataType((String) column.get("dataType")));
+        if (StringUtils.isTrue(column.get("notNull"))) {
+            script += ".notNull()";
+        }
+        return script;
+    }
+
     public String buildCreateSQL(String dbType, String tableName, String comment, List<Map<String, Object>> fields) {
         if (fields == null || fields.size() == 0) return "";
         RDBDatabaseMetaData databaseMetaData;
