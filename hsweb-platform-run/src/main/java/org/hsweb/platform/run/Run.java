@@ -1,11 +1,7 @@
 package org.hsweb.platform.run;
 
 
-import org.hsweb.ezorm.rdb.meta.parser.AbstractTableMetaParser;
 import org.hsweb.web.core.authorize.annotation.Authorize;
-import org.hsweb.web.datasource.dynamic.DynamicDataSourceAutoConfiguration;
-import org.hsweb.web.datasource.dynamic.DynamicDataSourceServiceImpl;
-import org.hsweb.web.service.impl.system.DataBaseManagerServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
@@ -36,3 +32,4 @@ public class Run {
     }
 
 }
+

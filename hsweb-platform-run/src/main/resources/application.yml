@@ -1,42 +1,15 @@
-#LOGGING
-logging:
-    config: classpath:config/logback.xml
 server:
-    port: 8088
+    port: 8080
+#文件上传配置
 multipart:
     enabled: true
     maxFileSize: 100Mb
     maxRequestSize: 100Mb
-    location: ./upload
-#启用登录
-login:
-    enable: true
+#    location: ./upload
 #spring config
 spring:
-    aop:
-        auto: true
-    application:
-        name: ${app.name}
-        version: ${app.version}
-#    datasource:
-#        name: core
-#        url: ${jdbc.url}
-#        username: ${jdbc.username}
-#        password: ${jdbc.password}
-#        type: com.alibaba.druid.pool.DruidDataSource
-#        filters: stat
-#        maxActive: 20
-#        initialSize: 1
-#        maxWait: 60000
-#        minIdle: 1
-#        timeBetweenEvictionRunsMillis: 60000
-#        minEvictableIdleTimeMillis: 300000
-#        validationQuery: select 'x'
-#        testWhileIdle: true
-#        testOnBorrow: false
-#        testOnReturn: false
-#        poolPreparedStatements: true
-#        maxOpenPreparedStatements: 20
+    profiles:
+       active: dev
     freemarker :
         suffix : .ftl
         request-context-attribute : request
@@ -44,24 +17,15 @@ spring:
     mvc:
         favicon:
             enabled: false
-    messages:
-        basename: messages
-    cache:
-        #type: redis
-        type: simple
-    redis :
-        host: 127.0.0.1
-        port: 6379
+    aop:
+      auto: true
 # MyBatis
 mybatis:
-    mapper-locations:
-    config-location: classpath:config/mybatis-config.xml
+    mapper-locations: classpath:mappers/**/*.xml
+    config: classpath:config/mybatis-config.xml
+#    dynamic-datasource: true  #启用mybatis动态数据源
 hsweb:
     app:
       name: hsweb-platform
       version: 2.2.0
-    dynamic-datasource:
-          url: ${jdbc.url}
-          username: ${jdbc.username}
-          password: ${jdbc.password}
-    access-logger: on
+      comment: 测试

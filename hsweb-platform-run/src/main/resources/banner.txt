@@ -3,9 +3,6 @@ ${AnsiColor.RED}         _                      _
         | '_ \/ __\ \ /\ / / _ \ '_ \
         | | | \__ \\ V  V /  __/ |_) |
         |_| |_|___/ \_/\_/ \___|_.__/
-${AnsiColor.YELLOW}-------------------database---------------------
-${AnsiColor.RED}jdbc-url:${jdbc.url}
-${AnsiColor.RED}jdbc-username:${jdbc.username}
 ${AnsiColor.YELLOW}--------------------start-----------------------
-${AnsiColor.YELLOW}:: ${AnsiColor.GREEN}Running ${AnsiColor.RED}${app.name} ${AnsiColor.YELLOW}(${app.version})
+${AnsiColor.YELLOW}       :: ${AnsiColor.GREEN}Running ${AnsiColor.RED}${hsweb.app.name} ${AnsiColor.YELLOW}(${hsweb.app.version})
 ${AnsiColor.YELLOW}------------------------------------------------${AnsiColor.WHITE}

@@ -17,55 +17,6 @@
         <app.version>${project.parent.version}</app.version>
     </properties>
 
-    <!--环境配置-->
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <environment.package>develop</environment.package>
-                <logging.path>./logger/</logging.path>
-                <jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password></jdbc.password>
-                <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;upinGlobalTxToPhysicalConnection=true</jdbc.url>-->
-                <!--<jdbc.username>root</jdbc.username>-->
-                <!--<jdbc.password>19920622</jdbc.password>-->
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <environment.package>product</environment.package>
-                <logging.path>./logger/</logging.path>
-                <jdbc.url>jdbc:h2:file:./data/h2db;DB_CLOSE_ON_EXIT=FALSE</jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password></jdbc.password>
-            </properties>
-            <!--<properties>-->
-            <!--<environment.package>product</environment.package>-->
-            <!--<logging.path>./logger/</logging.path>-->
-            <!--<jdbc.url>jdbc:mysql://127.0.0.1:3306/hsweb?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;upinGlobalTxToPhysicalConnection=true</jdbc.url>-->
-            <!--<jdbc.username>root</jdbc.username>-->
-            <!--<jdbc.password>19920622</jdbc.password>-->
-            <!--</properties>-->
-        </profile>
-
-        <profile>
-            <id>test</id>
-            <properties>
-                <environment.package>test</environment.package>
-                <jdbc.type>oracle</jdbc.type>
-                <jdbc.url>jdbc:h2:mem:hsweb</jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password></jdbc.password>
-                <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
         <finalName>${project.artifactId}</finalName>
         <resources>
