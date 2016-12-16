@@ -97,7 +97,7 @@ public class IdeController {
 
     @RequestMapping(value = "/auto-complete-data", method = RequestMethod.GET)
     @AccessLogger("获取自动补全数据")
-    @Authorize(module = "idea")
+    @Authorize(module = "ide")
     public ResponseMessage autoCompleteData() {
         return ok(autoCompleteData);
     }
