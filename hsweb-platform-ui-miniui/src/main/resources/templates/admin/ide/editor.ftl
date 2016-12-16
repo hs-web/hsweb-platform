@@ -9,6 +9,7 @@
         body {
             overflow: hidden;
         }
+
         #editor {
             margin: 0;
             position: absolute;
@@ -18,6 +19,10 @@
             right: 0;
             font-size: 18px;
         }
+
+        .ace_autocomplete {
+            width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -25,20 +30,23 @@
 </body>
 </html>
 <@global.importPlugin "ace/ace.js","ace/ext-language_tools.js"/>
+<@global.importJquery/>
+<@global.importRequest/>
 <script type="text/javascript">
     var langTools = ace.require("ace/ext/language_tools");
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/eclipse");
-    window.getSelection=function(){
+    window.getSelection = function () {
         return editor.getSelectedText();
     }
+
+    var complateData;
 
     //由父页面调用
     window.init = function (lang, script, isServer) {
         editor.getSession().setMode("ace/mode/" + lang);
-        editor.setValue(script);
-        editor.$blockScrolling=Infinity;
-        editor.focus();
+        editor.setValue(script, -1);
+        editor.$blockScrolling = Infinity;
         editor.setOptions({
             enableBasicAutocompletion: true,
             enableSnippets: true,
@@ -46,13 +54,17 @@
         });
         //如果是服务端脚本，应该调用服务器获取自动补全数据
         if (isServer) {
-            //TODO
-            setCompleteData([
-               // {meta: "根据主键查询", caption: "userService.selectByPk", value: "userService.selectByPk(id);", score: 1}
-            ]);
+            if (!complateData) {
+                Request.get("ide/auto-complete-data", function (e) {
+                    if (e.success) {
+                        setCompleteData(complateData = e.data);
+                    }
+                });
+            } else {
+                setCompleteData(complateData);
+            }
         } else {
             if (lang == "javascript") {
-
             }
         }
     }
@@ -60,7 +72,7 @@
         return editor.getValue();
     }
     window.setScript = function (script) {
-        return editor.setValue(script);
+        editor.setValue(script, -1);
     }
     //自定义自动补全数据
     var setCompleteData = function (data) {

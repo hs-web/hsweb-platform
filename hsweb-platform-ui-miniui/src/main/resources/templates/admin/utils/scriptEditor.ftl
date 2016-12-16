@@ -38,8 +38,16 @@
             mode = "javascript";
         } else if (mode.indexOf("groovy") != -1) {
             mode = "groovy";
+            isServer=true;
         } else if (mode.indexOf("java") != -1) {
             mode = "java";
+            isServer=true;
+        }else if (mode.indexOf("json") != -1) {
+            mode = "json";
+            isServer=false;
+        }else if (mode.indexOf("html") != -1) {
+            mode = "html";
+            isServer=false;
         }
         var editor = document.getElementById("editor");
         $(editor).on("load", function () {

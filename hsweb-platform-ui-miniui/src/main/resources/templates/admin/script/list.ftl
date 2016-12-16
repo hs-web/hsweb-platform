@@ -8,28 +8,6 @@
     <title></title>
 <@global.importMiniui />
 <@global.importUeditorParser/>
-<@global.importPlugin
-'codemirror/lib/codemirror.css'
-,'codemirror/addon/fold/foldgutter.css'
-,'codemirror/addon/hint/show-hint.css'
-,'codemirror/addon/dialog/dialog.css'
-,'codemirror/theme/eclipse.css'
-,'codemirror/lib/codemirror.js'
-,'codemirror/addon/search/searchcursor.js'
-,'codemirror/addon/search/search.js'
-,'codemirror/addon/dialog/dialog.js'
-,'codemirror/addon/edit/matchbrackets.js'
-,'codemirror/addon/edit/closebrackets.js'
-,'codemirror/addon/wrap/hardwrap.js'
-,'codemirror/addon/fold/foldcode.js'
-,'codemirror/addon/hint/show-hint.js'
-,'codemirror/addon/hint/javascript-hint.js'
-,'codemirror/addon/hint/anyword-hint.js'
-,'codemirror/mode/javascript/javascript.js'
-,'codemirror/mode/clike/clike.js'
-,'codemirror/mode/groovy/groovy.js'
-,'codemirror/keymap/sublime.js'
-/>
     <style type="text/css">
         body {
             margin: 0;
@@ -39,7 +17,7 @@
             height: 100%;
         }
 
-        .CodeMirror {
+        #editor {
             border: 1px solid #D2D6D7;
             font-size: 16px;
             width: 100%;
@@ -111,9 +89,11 @@
                 </tbody>
             </table>
         </div>
-        <div id="tableMetaTabs" class="mini-tabs" activeIndex="0" style="width:90%;height:90%;margin: auto">
-            <div title="脚本" showCloseButton="false" name="first" style="text-align: center;width: 100%;margin: auto;">
-                <textarea id="code"></textarea>
+        <div id="tableMetaTabs" class="mini-tabs" activeIndex="0" style="width:90%;height:80%;margin: auto">
+            <div title="脚本" showCloseButton="false" name="first" style="text-align: center;width: 100%;height:100% ;margin: auto;">
+                <iframe id="editor" src="<@global.api "admin/ide/editor.html"/>" style="width:100%;height:100%">
+
+                </iframe>
             </div>
             <div title="运行" name="exec" showCloseButton="false" style="text-align: center;width: 100%;margin: auto;">
                 <a class="mini-button" iconCls="icon-application" plain="true" onclick="exec">运行</a>
@@ -121,7 +101,6 @@
                 <input id="paramBuilder" class="mini-textarea" style="width: 80%" emptyText="参数构建脚本(js)"/>
                 <br>
                 <br>
-
                 <div id="result" style="width: 80%;height:300px;border: 1px solid #D2D6D7;margin: auto;font-size: 16px">
 
                 </div>
@@ -133,6 +112,9 @@
 </html>
 <@global.importRequest/>
 <script type="text/javascript">
+    var editorEl = document.getElementById("editor");
+    var editor;
+
     var scriptType = [
         {id: "groovy", text: "groovy"},
         {id: "java", text: "java"},
@@ -217,7 +199,7 @@
         } else {
             data.classifiedId = (node = tree.getParentNode(nowEditorNode)).id;
         }
-        data.content = editor.getValue();
+        data.content = editor.getScript();
         var box = mini.loading("提交中...");
         fun(api, data, function (e) {
             mini.hideMessageBox(box);
@@ -240,15 +222,15 @@
             var script = "(function(){" + paramBuilder + "})();";
             try {
                 var param = eval(script);
-                if (typeof(param) == 'undefined')param = {};
+                if (typeof(param) == 'undefined') param = {};
                 var api = Request.BASH_PATH + "script/exec/" + nowEditorId;
                 $("#result").append("执行:" + api + "</br>");
                 $("#result").append("方法 :" + method + "</br>");
                 $("#result").append("参数 :" + mini.encode(param) + "</br>");
 
-                Request.doAjax(api, param,method, function (e) {
+                Request.doAjax(api, param, method, function (e) {
                     $("#result").append("执行结果 :" + mini.encode(e) + "</br>");
-                }, true, method != 'GET'&&method != 'DELETE');
+                }, true, method != 'GET' && method != 'DELETE');
             } catch (e) {
                 $("#result").html("error:" + e);
                 throw e;
@@ -268,15 +250,13 @@
     function initConfig() {
         if (nowEditorId == "") {
             new mini.Form("#formContainer").setData({});
-            editor.setValue("");
+            editor.setScript("");
             return;
         }
         Request.get("script/" + nowEditorId, {}, function (e) {
             if (e.success) {
                 new mini.Form("#formContainer").setData(e.data);
                 var type = e.data.type;
-                if (type == 'js')type = 'javascript';
-                if (type == 'java')type = 'text/x-java';
                 initScriptEditor(type, e.data.content);
             }
         });
@@ -284,7 +264,7 @@
     function newClassified() {
         var pid;
         var nodeTmp = nowEditorNode;
-        if (!nowEditorNode)pid = "-1";
+        if (!nowEditorNode) pid = "-1";
         else if (nowEditorNode._type != 'classified') {
             pid = ( nodeTmp = tree.getParentNode(nowEditorNode)).id;
         } else {
@@ -329,20 +309,16 @@
         new mini.Form("#formContainer").setData({});
         grid.setData([]);
     }
-    initScriptEditor("groovy", "");
+    $(editorEl).on("load", function () {
+        var win = editorEl.contentWindow;
+        if (win.init) {
+            editor = win;
+            initScriptEditor("groovy", "",tree);
+        }
+    });
     function initScriptEditor(mode, script) {
-        $(".CodeMirror").remove();
-        $("#code").html(script);
-        editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            lineNumbers: true,
-            matchBrackets: true,
-            lineWrapping: true,
-            extraKeys: {
-                "Alt-/": 'autocomplete'
-            },
-            foldGutter: true,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-            mode: mode
-        });
+        if (editor) {
+            editor.init(mode, script, true);
+        }
     }
 </script>
