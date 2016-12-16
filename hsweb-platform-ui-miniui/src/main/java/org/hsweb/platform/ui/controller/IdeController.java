@@ -99,7 +99,6 @@ public class IdeController {
     @AccessLogger("获取自动补全数据")
     @Authorize(module = "idea")
     public ResponseMessage autoCompleteData() {
-        init();
         return ok(autoCompleteData);
     }
 }
