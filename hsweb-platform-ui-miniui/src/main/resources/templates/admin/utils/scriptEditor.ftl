@@ -48,6 +48,9 @@
         }else if (mode.indexOf("html") != -1) {
             mode = "html";
             isServer=false;
+        }else if (mode.indexOf("css") != -1) {
+            mode = "css";
+            isServer=false;
         }
         var editor = document.getElementById("editor");
         $(editor).on("load", function () {
