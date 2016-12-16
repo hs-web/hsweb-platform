@@ -87,7 +87,7 @@
             </td>
             <td valign="top" style="border-color: rgb(221, 221, 221);" rowspan="1"
                 colspan="3" height="400">
-                <iframe id="scriptArea"></iframe>
+                <iframe id="scriptArea" style="border: 1px solid grey"></iframe>
             </td>
         </tr>
         </tbody>

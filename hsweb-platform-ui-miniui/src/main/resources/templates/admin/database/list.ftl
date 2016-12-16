@@ -241,6 +241,9 @@
         tabs.addTab(tab);
         tabs.activeTab(tab);
     }
+    window.getTableMetas = function () {
+        return mini.clone(tree.getData());
+    }
     function initData(r) {
         var old = tree.getSelectedNode();
         var isExpandedNode = old && tree.isExpandedNode(old);

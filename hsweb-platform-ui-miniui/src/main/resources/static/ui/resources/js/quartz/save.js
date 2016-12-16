@@ -1,6 +1,6 @@
 var languageData = [{id: "groovy", text: "groovy", name: "groovy"},
-    {id: "js", text: "js", name: "text/javascript"},
-    {id: "java", text: "java", name: "text/x-java"}];
+    {id: "js", text: "js", name: "javascript"},
+    {id: "java", text: "java", name: "java"}];
 mini.parse();
 
 uParse('#data-form', {
@@ -11,14 +11,27 @@ var iframe = $("#scriptArea");
 var codeWindow;
 var data = {script: ""};
 function initScript() {
-    iframe.attr("src", Request.BASH_PATH + "admin/utils/scriptEditorFrame.html");
+    iframe.attr("src", Request.BASH_PATH + "admin/ide/editor.html");
     codeWindow = iframe[0].contentWindow;
     iframe.on("load", function () {
         var lang = mini.getbyName("language");
+        lang = lang.getSelected()["name"];
         var sc = data.script;
-        // if(!sc|| sc == "") {
-        // }
-        codeWindow.initScript(lang.getSelected()["name"], sc);
+        if(!sc|| sc == "") {
+            if(lang=="java"){
+                sc="package org.hsweb.quratz.jobs;\n"+
+                    "\n"+
+                    "import org.hsweb.expands.script.engine.java.Executor;\n\n" +
+                    "public class MyJob001 implements Executor{\n"+
+                    "\n"+
+                    "    @Override\n"+
+                    "    public Object execute(Map<String, Object> var) throws Exception {\n"+
+                    "        return null;\n"+
+                    "    }\n"+
+                    "}\n";
+            }
+        }
+        codeWindow.init(lang, sc, true);
     });
 }
 loadData();

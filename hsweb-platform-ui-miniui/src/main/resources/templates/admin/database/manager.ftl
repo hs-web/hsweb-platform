@@ -7,25 +7,6 @@
     <meta charset="UTF-8">
     <title></title>
 <@global.importMiniui />
-<@global.importPlugin
-'codemirror/lib/codemirror.css'
-,'codemirror/addon/fold/foldgutter.css'
-,'codemirror/addon/hint/show-hint.css'
-,'codemirror/addon/dialog/dialog.css'
-,'codemirror/theme/eclipse.css'
-,'codemirror/lib/codemirror.js'
-,'codemirror/addon/search/searchcursor.js'
-,'codemirror/addon/search/search.js'
-,'codemirror/addon/dialog/dialog.js'
-,'codemirror/addon/edit/matchbrackets.js'
-,'codemirror/addon/edit/closebrackets.js'
-,'codemirror/addon/wrap/hardwrap.js'
-,'codemirror/addon/fold/foldcode.js'
-,'codemirror/addon/hint/show-hint.js'
-,'codemirror/addon/hint/anyword-hint.js'
-,'codemirror/mode/sql/sql.js'
-,'codemirror/keymap/sublime.js'
-/>
     <style type="text/css">
         body {
             margin: 0;
@@ -52,7 +33,7 @@
 <div class="mini-toolbar">
     <a class="mini-button" iconCls="icon-application" onclick="exec()" plain="true">运行</a>
 </div>
-<textarea id="sql"></textarea>
+<iframe id="sqlEditor" src="<@global.api "admin/ide/editor.html"/>" style="width:100%;height: 200px;border: 1px solid #cacaca"></iframe>
 
 <div class="mini-fit">
     <div id="mainTabs" closeclick="" class="mini-tabs" activeIndex="0" style="width:100%;height:100%;">
@@ -63,11 +44,16 @@
 </html>
 <@global.importRequest/>
 <script type="text/javascript">
+    var sqlEditor = document.getElementById("sqlEditor");
     var editor;
     mini.parse();
     var datasource = "";
     window.setDataSource = function (ds) {
+        if (datasource != ds && editor) {
+            editor.location.reload();
+        }
         datasource = ds;
+
     }
     var tabs = mini.get('mainTabs');
     function nodedblclick(e) {
@@ -78,7 +64,7 @@
         tabs.removeAll();
         var sql;
         if ((sql = editor.getSelection()) == '') {
-            sql = editor.getValue()
+            sql = editor.getScript()
         }
         if ($.trim(sql) == "")return;
         Request.post("database/exec/" + datasource, sql, function (e) {
@@ -125,18 +111,39 @@
         tabs.activeTab(tab);
         return el;
     }
+
     function initScriptEditor(script) {
-        $("#sql").html(script);
-        editor = CodeMirror.fromTextArea(document.getElementById("sql"), {
-            lineNumbers: true,
-            matchBrackets: true,
-            lineWrapping: true,
-            foldGutter: true,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-            mode: "text/x-sql"
+        $(sqlEditor).on("load", function () {
+            var win = sqlEditor.contentWindow;
+            if (win.init) {
+                editor = win;
+                editor.init("sql", script, false);
+                initAutoComplete();
+            }
         });
     }
+    function initAutoComplete() {
+        var data = window.parent.getTableMetas();
+        var autoComplete = [];
+        if (data && data[0]) {
+            $(data[0].children).each(function () {
+                var t = this;
+                autoComplete.push({meta: this.comment, caption: this.name.toLowerCase(), value: this.name.toLowerCase(), score: 1});
+                $(this.children).each(function () {
+                    autoComplete.push({meta: this.comment ? t.comment + ":" + this.comment : "", caption: t.name.toLowerCase() + "." + this.name, value: this.name, score: 1});
+                });
+            });
+        }
+        if (editor)
+            editor.setCompleteData(autoComplete);
+    }
     window.setSql = function (sql) {
-        editor.setValue(sql);
+        var i = window.setInterval(function () {
+            if (editor) {
+                editor.setScript(sql);
+                i = null;
+            }
+        }, 100);
+
     }
 </script>
