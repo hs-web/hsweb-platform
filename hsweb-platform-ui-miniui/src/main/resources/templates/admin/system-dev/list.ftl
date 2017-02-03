@@ -34,7 +34,7 @@
 <body>
 <div id="layout1" class="mini-layout" style="width:100%;height:100%;">
     <div showHeader="false" region="west" width="150" maxWidth="300" minWidth="100">
-        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sorts[0].field=sort_index&excludes=m_option" />"
+        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sorts[0].name=sort_index&excludes=m_option" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" showTreeIcon="true" iconField="icon"
              onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0">
         </div>

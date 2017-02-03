@@ -90,7 +90,7 @@
             <div id="grid" class="mini-datagrid" style="width:100%;height:100%;"
                  url="<@global.api 'form/~latest'/>" ajaxOptions="{type:'GET',dataType:'json'}" idField="uId"
                  sizeList="[10,20,50,200]" pageSize="20" onshowrowdetail="onShowRowDetail"
-                 sortFieldField="sorts[0].field" sortOrderField="sorts[0].dir">
+                 sortFieldField="sorts[0].name" sortOrderField="sorts[0].dir">
                 <div property="columns">
                     <div type="expandcolumn">#</div>
                     <div field="name" width="120" align="center" headerAlign="center" allowSort="true">表单名称</div>
@@ -105,7 +105,7 @@
             </div>
             <div id="detailGrid_Form" style="display:none;">
                 <div id="employee_grid" class="mini-datagrid" ajaxOptions="{type:'GET',dataType:'json'}" showPager="false" style="width:100%;height:150px;"
-                     url="<@global.api 'form'/>" sortFieldField="sorts[0].field" sortOrderField="sorts[0].dir">
+                     url="<@global.api 'form'/>" sortFieldField="sorts[0].name" sortOrderField="sorts[0].dir">
                     <div property="columns">
                         <div type="indexcolumn"></div>
                         <div field="name" width="120" align="center" headerAlign="center" allowSort="true">表单名称</div>

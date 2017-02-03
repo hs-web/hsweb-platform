@@ -11,7 +11,7 @@ var module_data = [];
 loadData();
 function loadData() {
     tree = mini.get('funcTree');
-    Request.get("module", {paging: false, "sorts[0].field": "sort_index"}, function (e) {
+    Request.get("module", {paging: false, "sorts[0].name": "sort_index"}, function (e) {
         module_data = e;
         tree.loadList(e);
         if (id != "") {

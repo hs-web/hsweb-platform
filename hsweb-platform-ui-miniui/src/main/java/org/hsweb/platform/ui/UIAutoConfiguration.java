@@ -21,7 +21,6 @@ public class UIAutoConfiguration {
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-//        configurer.setTemplateLoaderPaths("classpath*:templates/");
         configurer.setDefaultEncoding("utf-8");
         configurer.setPreTemplateLoaders(new SpringTemplateLoader(new PathMatchingResourcePatternResolver() {
             @Override

@@ -31,7 +31,7 @@
         </div>
     </div>
     <div showHeader="false" region="west" width="250" maxWidth="500" minWidth="200">
-        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sorts[0].field=sortIndex" />"
+        <div id="leftTree" style="height: 100%;" class="mini-tree" url="<@global.api "module?paging=false&sorts[0].name=sortIndex" />"
              expandOnLoad="true" resultAsTree="false" ajaxOptions="{type:'GET'}" ondrawnode="drawnode" showTreeIcon="true"
              iconField="icon"
              onnodeselect="nodeselect" idField="id" parentField="parentId" textField="name" borderStyle="border:0"

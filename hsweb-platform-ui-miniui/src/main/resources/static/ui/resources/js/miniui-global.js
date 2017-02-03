@@ -146,7 +146,7 @@ function renderIcon(e) {
 }
 //绑定表格默认属性
 function bindDefaultAction(grid) {
-    grid.setSortFieldField("sorts[0].field");
+    grid.setSortFieldField("sorts[0].name");
     grid.setSortOrderField("sorts[0].dir");
     grid.setAjaxOptions({type: "GET", dataType: "json"});
     grid.un("loaderror", function (e) {
