@@ -141,9 +141,8 @@
         var i = window.setInterval(function () {
             if (editor) {
                 editor.setScript(sql);
-                i = null;
+                clearInterval(i);
             }
         }, 100);
-
     }
 </script>
