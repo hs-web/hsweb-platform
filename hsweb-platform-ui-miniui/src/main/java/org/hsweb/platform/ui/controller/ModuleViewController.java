@@ -39,6 +39,7 @@ public class ModuleViewController {
         ModelAndView modelAndView = new ModelAndView("admin/module-view/list-fast");
         modelAndView.addObject("key", key);
         modelAndView.addObject("metaId", metaId);
+        modelAndView.addObject("absPath", WebUtil.getBasePath(WebUtil.getHttpServletRequest()));
         return modelAndView;
     }
 
@@ -63,6 +64,7 @@ public class ModuleViewController {
         modelAndView.addObject("metaId", metaId);
         modelAndView.addObject("version", version);
         modelAndView.addObject("id", id);
+        modelAndView.addObject("absPath", WebUtil.getBasePath(WebUtil.getHttpServletRequest()));
         return modelAndView;
     }
 

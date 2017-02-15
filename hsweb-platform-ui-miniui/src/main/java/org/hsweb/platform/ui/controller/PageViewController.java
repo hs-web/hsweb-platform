@@ -25,6 +25,7 @@ public class PageViewController {
         ModelAndView modelAndView = new ModelAndView("admin/login");
         if (uri != null)
             modelAndView.addObject("uri", uri);
+        modelAndView.addObject("absPath", WebUtil.getBasePath(WebUtil.getHttpServletRequest()));
         return modelAndView;
     }
 
@@ -38,6 +39,7 @@ public class PageViewController {
         ModelAndView modelAndView = new ModelAndView(path);
         modelAndView.addObject("param", param);
         modelAndView.addObject("absPath", WebUtil.getBasePath(request));
+
         return modelAndView;
     }
 
@@ -49,9 +51,4 @@ public class PageViewController {
         }
         return path;
     }
-
-    public static void main(String[] args) {
-        System.out.println(new BigInteger(MD5.encode("aaaaaass"),16));
-    }
-
 }

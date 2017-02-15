@@ -36,14 +36,14 @@ public class UIAutoConfiguration {
         return configurer;
     }
 
-    @Bean
-    public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("classpath*:/static");
-                super.addResourceHandlers(registry);
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//                registry.addResourceHandler("classpath*:/static");
+//                super.addResourceHandlers(registry);
+//            }
+//        };
+//    }
 }
