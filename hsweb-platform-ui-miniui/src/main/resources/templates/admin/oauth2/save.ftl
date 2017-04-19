@@ -46,7 +46,7 @@
                 <div id="userId" class="mini-autocomplete" name="userId" required="true" ajaxType="GET"
                      style="width:100%;" popupWidth="400" textField="username"
                      valueField="id" searchField="terms[0].value"
-                     url="<@global.api "user?terms[0].field=username&terms[0].termType=like" />">
+                     url="<@global.api "user?terms[0].column=username&terms[0].termType=like" />">
                     <div property="columns">
                         <div header="用户名" field="username" width="30"></div>
                         <div header="姓名" field="name"></div>
