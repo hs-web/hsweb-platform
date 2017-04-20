@@ -4,6 +4,7 @@ package org.hsweb.platform.ui.listener;
 import com.alibaba.fastjson.JSON;
 import org.hsweb.commons.StringUtils;
 import org.hsweb.ezorm.core.OptionConverter;
+import org.hsweb.ezorm.core.param.SqlTerm;
 import org.hsweb.ezorm.core.param.Term;
 import org.hsweb.ezorm.core.param.TermType;
 import org.hsweb.ezorm.rdb.meta.Correlation;
@@ -57,12 +58,8 @@ public class FormInitListener implements FormParser.Listener {
                 correlation.setAlias(alias);
                 correlation.setComment(comment);
                 correlationConfig.forEach((k, v) -> correlation.setProperty(k, v));
-                Term term1 = new Term();
-                term1.setColumn(term);
-                term1.setValue(term);
                 correlation.setJoin(join);
-                term1.setTermType(TermType.func);
-                correlation.addTerm(term1);
+                correlation.addTerm(new SqlTerm(term));
                 tableMetaData.addCorrelation(correlation);
             });
         }
