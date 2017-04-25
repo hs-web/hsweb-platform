@@ -52,12 +52,13 @@ public class FormMetaController {
         } else {
             metaData = table.getMeta();
         }
-        List<Map<String, String>> fieldMeta = metaData.getColumns()
+        List<Map<String, Object>> fieldMeta = metaData.getColumns()
                 .stream().sorted().map(fieldMetaData -> {
-                    Map<String, String> data = new HashMap<>();
+                    Map<String, Object> data = new HashMap<>();
                     data.put("id", fieldMetaData.getAlias());
                     data.put("text", fieldMetaData.getAlias() + "(" + fieldMetaData.getComment() + ")");
                     data.put("comment", fieldMetaData.getComment());
+                    data.put("properties", fieldMetaData.getProperties());
                     return data;
                 }).collect(Collectors.toList());
         //关联表
@@ -65,12 +66,13 @@ public class FormMetaController {
             RDBTableMetaData metaData1 = metaData.getDatabaseMetaData().getTableMetaData(correlation.getTargetTable());
             if (metaData1 == null) return;
             metaData1.getColumns().stream().sorted().forEach(m -> {
-                Map<String, String> data = new HashMap<>();
+                Map<String, Object> data = new HashMap<>();
                 data.put("id", correlation.getAlias() + "." + m.getAlias());
                 data.put("text", correlation.getAlias() + "." + m.getAlias() + "(" + m.getComment() + ")");
                 String comment = correlation.getComment();
                 if (comment == null) comment = metaData1.getComment();
                 data.put("comment", comment + ":" + m.getComment());
+                data.put("properties", m.getProperties());
                 fieldMeta.add(data);
             });
         });
