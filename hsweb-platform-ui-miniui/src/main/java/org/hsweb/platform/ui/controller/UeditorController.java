@@ -40,7 +40,8 @@ public class UeditorController {
 
     public String getDownloadPath(HttpServletRequest request) {
         String contextPath = request.getContextPath();
-        return "/" + (StringUtils.isNullOrEmpty(contextPath) ? "" : contextPath + "/");
+
+        return (StringUtils.isNullOrEmpty(contextPath) || contextPath.equals("/") ? "/" : contextPath + "/");
     }
 
     @RequestMapping(method = RequestMethod.POST)
