@@ -54,17 +54,11 @@ public class ConfigOptionConverter implements OptionConverter {
                     }
                 }
             }
-            //key-value 倒置
-            return map.entrySet().stream().collect(Collectors.toMap(e -> (String) e.getValue(), Map.Entry::getKey));
+            if (map == null) return new HashMap<>();
 
-//            return map.entrySet().stream().map(stringObjectEntry -> {
-//                Map<String, Object> config = new HashMap<>();
-//                config.put((String) stringObjectEntry.getValue(), stringObjectEntry.getKey());
-//                return config;
-//            }).reduce((map1, map2) -> {
-//                map1.putAll(map2);
-//                return map1;
-//            }).get();
+            //key-value 倒置
+            return map.entrySet().stream().collect(Collectors.toMap(e -> String.valueOf(e.getValue()), Map.Entry::getKey));
+
         } catch (Exception e) {
             logger.error("转换data为value时出错", e);
         }
