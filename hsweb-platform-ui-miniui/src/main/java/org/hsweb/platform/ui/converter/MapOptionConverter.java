@@ -35,7 +35,7 @@ public class MapOptionConverter implements OptionConverter {
         for (Map.Entry<String, Object> entry : mapping.entrySet()) {
             if (entry.getValue().equals(value)) {
                 obj = entry.getKey();
-                continue;
+                break;
             }
         }
         if (obj == null) {
