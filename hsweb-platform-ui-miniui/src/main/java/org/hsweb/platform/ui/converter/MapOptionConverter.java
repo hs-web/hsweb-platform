@@ -10,8 +10,8 @@ import java.util.Map;
  * Created by zhouhao on 16-6-6.
  */
 public class MapOptionConverter implements OptionConverter {
-    protected String filedName;
-    private Map<String, Object> mapping;
+    protected String              filedName;
+    private   Map<String, Object> mapping;
 
     public MapOptionConverter(String filedName, Map<String, Object> mapping) {
         this.filedName = filedName;
@@ -42,12 +42,12 @@ public class MapOptionConverter implements OptionConverter {
             String strValue = String.valueOf(value);
             if (strValue.contains(",")) {
                 String[] arrayValue = strValue.split("[,]");
-                obj = Arrays.asList(arrayValue).stream()
+                obj = Arrays.stream(arrayValue)
                         .map(str -> {
                             Object v = converterData(str.trim());
                             if (v == null) v = str;
                             return v;
-                        }).reduce((s1, s2) -> s1 + "," + s2).get();
+                        }).reduce((s1, s2) -> s1 + "," + s2).orElse(null);
             }
         }
         return obj;
@@ -61,14 +61,14 @@ public class MapOptionConverter implements OptionConverter {
             //转换多个值
             if (stringData.contains(",")) {
                 String[] arrayData = stringData.split("[,]");
-                value = Arrays.asList(arrayData).stream()
+                value = Arrays.stream(arrayData)
                         .map(str -> {
                             Object v = mapping.get(str.trim());
                             if (StringUtils.isNullOrEmpty(v)) {
                                 v = str.trim();
                             }
                             return v;
-                        }).reduce((s1, s2) -> s1 + "," + s2).get();
+                        }).reduce((s1, s2) -> s1 + "," + s2).orElse(null);
             }
         }
         if (value == null) value = data;
