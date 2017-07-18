@@ -134,6 +134,7 @@
             $->INFO: 双击菜单，插入控件。右侧属性表格中编辑属性，按[ctrl+s]可自动保存。
         </div>
     </div>
+</div>
 </body>
 </html>
 <@global.importRequest />
@@ -196,9 +197,9 @@
         var win = window.open("about:blank");
         win.document.write("<textarea style=\"border: 0px;width: 100%;height: " + ($(document).height()) + "px\">" + formattedHtml + "</textarea>");
         $(win.document.body).css({
-            padding:0,
-            border:0,
-            margin:0
+            padding: 0,
+            border: 0,
+            margin: 0
         });
     }
 </script>
