@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hsweb-platform</artifactId>
+        <groupId>org.hswebframework.web</groupId>
+        <version>3.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hsweb-platform-starter</artifactId>
+
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hswebframework</groupId>
+                    <artifactId>hsweb-code-generator-core</artifactId>
+                    <version>3.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.hswebframework</groupId>
+                    <artifactId>hsweb-code-generator-ui</artifactId>
+                    <version>3.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!--权限管理-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-authorization-starter</artifactId>
+        </dependency>
+
+        <!--权限控制-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-authorization-basic</artifactId>
+        </dependency>
+
+        <!--jwt-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-authorization-jwt</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+
+        <!--组织架构-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-organizational-starter</artifactId>
+        </dependency>
+        <!--动态表单-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-dynamic-form-starter</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <!--&lt;!&ndash;定时调度&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.hswebframework.web</groupId>-->
+            <!--<artifactId>hsweb-system-schedule-starter</artifactId>-->
+            <!--<version>${hsweb.framework.version}</version>-->
+        <!--</dependency>-->
+        <!--动态脚本-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-script-starter</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <!--访问日志-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-access-logging-aop</artifactId>
+        </dependency>
+        <!--oauth2 server支持-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-oauth2-server-starter</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+
+        <!--oauth2 client支持-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-oauth2-client-starter</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+
+        <!--ueditor支持，需要引入文件上传功能-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-thirdparty-ueditor</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <!--文件上传-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-file-starter</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+
+        <!--数据库管理-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-database-manager-starter</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+
+        <!--数据源-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-datasource-api</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-datasource-web</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        <!--swagger-->
+
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>spring-boot-starter-swagger</artifactId>
+            <version>1.5.1.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.40</version>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.oracle</groupId>-->
+        <!--<artifactId>ojdbc14</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
